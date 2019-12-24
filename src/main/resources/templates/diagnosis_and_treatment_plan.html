@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/hospital.css">
     <link rel="stylesheet" href="/css/selectcheck.css">
     <script src="/js/selectcheck.js"></script>
+    <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
 </head>
 <style>
     textarea{
@@ -39,72 +40,80 @@
             </div>
         </div>
         <div class="col-xs-12 col-md-12">
-            <div class="col-xs-2" style="border-right-style: solid;border-color: #e1e1e1;height: 590px">
+            <div class="col-xs-2" id="btnContainer" style="border-right-style: solid;border-color: #e1e1e1;height: 590px">
                 <div class="btnrow">
-                    <button type="button" id="listbtn" class="btn btn-info">方案一</button>
+                    <button type="button" value="list" class="btn btn-info planBtn">方案一</button>
                 </div>
                 <div class="btnrow">
-                    <button type="button" id="rilibtn" class="btn btn-info">方案2</button>
+                    <button id="addPlan" type="button" class="btn btn-info"><i class="fa fa-plus"></i></button>
                 </div>
             </div>
-            <div class="col-xs-9" style="height: 500px;margin-top: 20px">
+            <div class="col-xs-9" id="planContainer" style="height: 500px;margin-top: 20px">
                 <div id="list" style="display: block">
-                    <table border="1" align="center">
-                        <tr style="height: 70px">
-                            <td width="150px">1.用药</td>
-                            <td width="400px">
-                                <select id="organId" name="organId" multiple="multiple" >
-                                　　　<option value="1">张</option>
-                                　　　<option value="2">ab</option>
-                                　　　<option value="3">c</option>
-                                　　　<option value="4">d</option>
-                                　　　<option value="5">a</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr style="height: 70px">
-                            <td>2.检验</td>
-                            <td>
-                                <select id="inspection" name="organId" multiple="multiple" >
+                    <form action="#">
+                        <table border="1" align="center">
+                            <tr>
+                                <td colspan="2" align="center">
+                                    <input placeholder="请输入方案名称">
+                                    <button type="submit" class="btn btn-info btn-sm">保存</button>
+                                </td>
+                            </tr>
+                            <tr style="height: 70px">
+                                <td width="150px">1.用药</td>
+                                <td width="400px">
+                                    <select id="organId" name="organId" multiple="multiple" >
                                     　　　<option value="1">张</option>
                                     　　　<option value="2">ab</option>
                                     　　　<option value="3">c</option>
                                     　　　<option value="4">d</option>
                                     　　　<option value="5">a</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr style="height: 70px">
-                            <td>3.检查</td>
-                            <td>
-                                <select id="check" name="organId" multiple="multiple" >
-                                    　　　<option value="1">张</option>
-                                    　　　<option value="2">ab</option>
-                                    　　　<option value="3">c</option>
-                                    　　　<option value="4">d</option>
-                                    　　　<option value="5">a</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr style="height: 100px">
-                            <td>4.治疗</td>
-                            <td>
-                                <textarea></textarea>
-                            </td>
-                        </tr>
-                        <tr style="height: 100px">
-                            <td>5.手术</td>
-                            <td>
-                                <textarea></textarea>
-                            </td>
-                        </tr>
-                        <tr style="height: 100px">
-                            <td>6.通知</td>
-                            <td>
-                                <textarea></textarea>
-                            </td>
-                        </tr>
-                    </table>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr style="height: 70px">
+                                <td>2.检验</td>
+                                <td>
+                                    <select id="inspection" name="organId" multiple="multiple" >
+                                        　　　<option value="1">张</option>
+                                        　　　<option value="2">ab</option>
+                                        　　　<option value="3">c</option>
+                                        　　　<option value="4">d</option>
+                                        　　　<option value="5">a</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr style="height: 70px">
+                                <td>3.检查</td>
+                                <td>
+                                    <select id="check" name="organId" multiple="multiple" >
+                                        　　　<option value="1">张</option>
+                                        　　　<option value="2">ab</option>
+                                        　　　<option value="3">c</option>
+                                        　　　<option value="4">d</option>
+                                        　　　<option value="5">a</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr style="height: 100px">
+                                <td>4.治疗</td>
+                                <td>
+                                    <textarea></textarea>
+                                </td>
+                            </tr>
+                            <tr style="height: 100px">
+                                <td>5.手术</td>
+                                <td>
+                                    <textarea>一一</textarea>
+                                </td>
+                            </tr>
+                            <tr style="height: 100px">
+                                <td>6.通知</td>
+                                <td>
+                                    <textarea></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
                 </div>
             </div>
 
@@ -114,19 +123,106 @@
 </body>
 <script>
     $(function () {
-        $("#listbtn").click(function () {
-            $("#tu").css("display","none");
-            $("#list").css("display","block");
-        })
-        $("#rilibtn").click(function () {
-            $("#tu").css("display","block");
-            $("#list").css("display","none");
+
+        $(document).on("click",".planBtn",function () {
+            showPlan(this.value);
         })
 
+        /*$(".planBtn").click(function () {
+            showPlan(this.value);
+        })*/
 
         $("#organId").fSelect();
         $("#inspection").fSelect();
         $("#check").fSelect();
+
+        var count = 0;
+        $("#addPlan").click(function () {
+            $("#addPlan").parent().before("<div class=\"btnrow\">\n" +
+                "                    <button type=\"button\" value='list"+count+"' class=\"btn btn-info planBtn\">方案"+count+"</button>\n" +
+                "                </div>");
+            $("#planContainer").append("<div id='list"+count+"' style=\"display: block\">\n" +
+                "                    <table border=\"1\" align=\"center\">\n" +
+                "                        <tr style=\"height: 70px\">\n" +
+                "                            <td width=\"150px\">1.用药</td>\n" +
+                "                            <td width=\"400px\">\n" +
+                "                                <select id='organId"+count+"' name=\"organId\" multiple=\"multiple\" >\n" +
+                "                                　　　<option value=\"1\">张</option>\n" +
+                "                                　　　<option value=\"2\">ab</option>\n" +
+                "                                　　　<option value=\"3\">c</option>\n" +
+                "                                　　　<option value=\"4\">d</option>\n" +
+                "                                　　　<option value=\"5\">a</option>\n" +
+                "                                </select>\n" +
+                "                            </td>\n" +
+                "                        </tr>\n" +
+                "                        <tr style=\"height: 70px\">\n" +
+                "                            <td>2.检验</td>\n" +
+                "                            <td>\n" +
+                "                                <select id='inspection"+count+"' name=\"organId\" multiple=\"multiple\" >\n" +
+                "                                    　　　<option value=\"1\">张</option>\n" +
+                "                                    　　　<option value=\"2\">ab</option>\n" +
+                "                                    　　　<option value=\"3\">c</option>\n" +
+                "                                    　　　<option value=\"4\">d</option>\n" +
+                "                                    　　　<option value=\"5\">a</option>\n" +
+                "                                </select>\n" +
+                "                            </td>\n" +
+                "                        </tr>\n" +
+                "                        <tr style=\"height: 70px\">\n" +
+                "                            <td>3.检查</td>\n" +
+                "                            <td>\n" +
+                "                                <select id='check"+count+"' name=\"organId\" multiple=\"multiple\" >\n" +
+                "                                    　　　<option value=\"1\">张</option>\n" +
+                "                                    　　　<option value=\"2\">ab</option>\n" +
+                "                                    　　　<option value=\"3\">c</option>\n" +
+                "                                    　　　<option value=\"4\">d</option>\n" +
+                "                                    　　　<option value=\"5\">a</option>\n" +
+                "                                </select>\n" +
+                "                            </td>\n" +
+                "                        </tr>\n" +
+                "                        <tr style=\"height: 100px\">\n" +
+                "                            <td>4.治疗</td>\n" +
+                "                            <td>\n" +
+                "                                <textarea></textarea>\n" +
+                "                            </td>\n" +
+                "                        </tr>\n" +
+                "                        <tr style=\"height: 100px\">\n" +
+                "                            <td>5.手术</td>\n" +
+                "                            <td>\n" +
+                "                                <textarea></textarea>\n" +
+                "                            </td>\n" +
+                "                        </tr>\n" +
+                "                        <tr style=\"height: 100px\">\n" +
+                "                            <td>6.通知</td>\n" +
+                "                            <td>\n" +
+                "                                <textarea></textarea>\n" +
+                "                            </td>\n" +
+                "                        </tr>\n" +
+                "                    </table>\n" +
+                "                </div>");
+            $("#list").css("display","none");
+            var listname = 'list'+count;
+            $("#listname").css("display","block");
+
+            var organId = 'organId'+count;
+            var inspectionId = 'inspection'+count;
+            var checkId = 'check'+count;
+            $("#" + organId + "").fSelect();
+            $("#" + inspectionId + "").fSelect();
+            $("#" + checkId + "").fSelect();
+            showPlan(listname);
+            count++;
+        });
+
+        function showPlan(name) {
+            var a = $("#planContainer").children("div");
+            a.each(function () {
+                if (this.id==name){
+                    $("#"+name+"").css("display","block");
+                }else {
+                    $("#"+this.id+"").css("display","none");
+                }
+            })
+        }
 
         var tableColumns = [
             {checkbox: true},

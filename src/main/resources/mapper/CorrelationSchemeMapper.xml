@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.hospital.dao.CorrelationSchemeMapper">
-  <resultMap id="BaseResultMap" type="com.example.hospital.model.correlationScheme">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.CorrelationScheme">
     <id column="cs_id" jdbcType="INTEGER" property="csId" />
     <result column="programme_id" jdbcType="INTEGER" property="programmeId" />
     <result column="pat_id" jdbcType="INTEGER" property="patId" />
@@ -19,13 +19,13 @@
     delete from correlation_scheme
     where cs_id = #{csId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.example.hospital.model.correlationScheme">
+  <insert id="insert" parameterType="com.example.hospital.model.CorrelationScheme">
     insert into correlation_scheme (cs_id, programme_id, pat_id
       )
     values (#{csId,jdbcType=INTEGER}, #{programmeId,jdbcType=INTEGER}, #{patId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.example.hospital.model.correlationScheme">
+  <insert id="insertSelective" parameterType="com.example.hospital.model.CorrelationScheme">
     insert into correlation_scheme
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="csId != null">
@@ -50,7 +50,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.correlationScheme">
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.CorrelationScheme">
     update correlation_scheme
     <set>
       <if test="programmeId != null">
@@ -62,7 +62,7 @@
     </set>
     where cs_id = #{csId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.correlationScheme">
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.CorrelationScheme">
     update correlation_scheme
     set programme_id = #{programmeId,jdbcType=INTEGER},
       pat_id = #{patId,jdbcType=INTEGER}
