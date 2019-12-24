@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.hospital.mapper.FollowUpMapper">
+<mapper namespace="com.example.hospital.dao.FollowUpMapper">
   <resultMap id="BaseResultMap" type="com.example.hospital.model.FollowUp">
     <id column="follow_id" jdbcType="INTEGER" property="followId" />
     <result column="follow_time" jdbcType="TIMESTAMP" property="followTime" />

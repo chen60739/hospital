@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.hospital.mapper.SelectTemplateMapper">
+<mapper namespace="com.example.hospital.dao.SelectTemplateMapper">
   <resultMap id="BaseResultMap" type="com.example.hospital.model.SelectTemplate">
     <id column="st_id" jdbcType="INTEGER" property="stId" />
     <result column="select_template_id" jdbcType="INTEGER" property="selectTemplateId" />

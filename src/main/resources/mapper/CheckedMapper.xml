@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.hospital.mapper.CheckedMapper">
+<mapper namespace="com.example.hospital.dao.CheckedMapper">
   <resultMap id="BaseResultMap" type="com.example.hospital.model.Checked">
     <id column="c_id" jdbcType="INTEGER" property="cId" />
     <result column="checked_id" jdbcType="INTEGER" property="checkedId" />
