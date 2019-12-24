@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.TemplateSettingMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.TemplateSetting">
+    <id column="template_setting_id" jdbcType="INTEGER" property="templateSettingId" />
+    <result column="t_id" jdbcType="INTEGER" property="tId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="template_setting_create_time" jdbcType="TIMESTAMP" property="templateSettingCreateTime" />
+    <result column="update_people" jdbcType="INTEGER" property="updatePeople" />
+    <result column="create_people" jdbcType="INTEGER" property="createPeople" />
+    <result column="template_setting_version" jdbcType="INTEGER" property="templateSettingVersion" />
+    <result column="template_setting_state" jdbcType="TINYINT" property="templateSettingState" />
+    <result column="template_name" jdbcType="VARCHAR" property="templateName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    template_setting_id, t_id, update_time, template_setting_create_time, update_people, 
+    create_people, template_setting_version, template_setting_state, template_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from template_setting
+    where template_setting_id = #{templateSettingId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from template_setting
+    where template_setting_id = #{templateSettingId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.TemplateSetting">
+    insert into template_setting (template_setting_id, t_id, update_time, 
+      template_setting_create_time, update_people, 
+      create_people, template_setting_version, template_setting_state, 
+      template_name)
+    values (#{templateSettingId,jdbcType=INTEGER}, #{tId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{templateSettingCreateTime,jdbcType=TIMESTAMP}, #{updatePeople,jdbcType=INTEGER}, 
+      #{createPeople,jdbcType=INTEGER}, #{templateSettingVersion,jdbcType=INTEGER}, #{templateSettingState,jdbcType=TINYINT}, 
+      #{templateName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.TemplateSetting">
+    insert into template_setting
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="templateSettingId != null">
+        template_setting_id,
+      </if>
+      <if test="tId != null">
+        t_id,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="templateSettingCreateTime != null">
+        template_setting_create_time,
+      </if>
+      <if test="updatePeople != null">
+        update_people,
+      </if>
+      <if test="createPeople != null">
+        create_people,
+      </if>
+      <if test="templateSettingVersion != null">
+        template_setting_version,
+      </if>
+      <if test="templateSettingState != null">
+        template_setting_state,
+      </if>
+      <if test="templateName != null">
+        template_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="templateSettingId != null">
+        #{templateSettingId,jdbcType=INTEGER},
+      </if>
+      <if test="tId != null">
+        #{tId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="templateSettingCreateTime != null">
+        #{templateSettingCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePeople != null">
+        #{updatePeople,jdbcType=INTEGER},
+      </if>
+      <if test="createPeople != null">
+        #{createPeople,jdbcType=INTEGER},
+      </if>
+      <if test="templateSettingVersion != null">
+        #{templateSettingVersion,jdbcType=INTEGER},
+      </if>
+      <if test="templateSettingState != null">
+        #{templateSettingState,jdbcType=TINYINT},
+      </if>
+      <if test="templateName != null">
+        #{templateName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.TemplateSetting">
+    update template_setting
+    <set>
+      <if test="tId != null">
+        t_id = #{tId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="templateSettingCreateTime != null">
+        template_setting_create_time = #{templateSettingCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePeople != null">
+        update_people = #{updatePeople,jdbcType=INTEGER},
+      </if>
+      <if test="createPeople != null">
+        create_people = #{createPeople,jdbcType=INTEGER},
+      </if>
+      <if test="templateSettingVersion != null">
+        template_setting_version = #{templateSettingVersion,jdbcType=INTEGER},
+      </if>
+      <if test="templateSettingState != null">
+        template_setting_state = #{templateSettingState,jdbcType=TINYINT},
+      </if>
+      <if test="templateName != null">
+        template_name = #{templateName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where template_setting_id = #{templateSettingId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.TemplateSetting">
+    update template_setting
+    set t_id = #{tId,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      template_setting_create_time = #{templateSettingCreateTime,jdbcType=TIMESTAMP},
+      update_people = #{updatePeople,jdbcType=INTEGER},
+      create_people = #{createPeople,jdbcType=INTEGER},
+      template_setting_version = #{templateSettingVersion,jdbcType=INTEGER},
+      template_setting_state = #{templateSettingState,jdbcType=TINYINT},
+      template_name = #{templateName,jdbcType=VARCHAR}
+    where template_setting_id = #{templateSettingId,jdbcType=INTEGER}
+  </update>
+</mapper>

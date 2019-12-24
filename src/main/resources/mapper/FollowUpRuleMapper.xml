@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.FollowUpRuleMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.FollowUpRule">
+    <id column="rule_id" jdbcType="INTEGER" property="ruleId" />
+    <result column="benchmark_event" jdbcType="INTEGER" property="benchmarkEvent" />
+    <result column="is_in_hospital" jdbcType="TINYINT" property="isInHospital" />
+    <result column="is_first" jdbcType="TINYINT" property="isFirst" />
+    <result column="that_visit" jdbcType="TINYINT" property="thatVisit" />
+    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="interval_time" jdbcType="TIMESTAMP" property="intervalTime" />
+    <result column="baseline_count" jdbcType="INTEGER" property="baselineCount" />
+    <result column="advance_notice" jdbcType="INTEGER" property="advanceNotice" />
+    <result column="rule_template_id" jdbcType="INTEGER" property="ruleTemplateId" />
+    <result column="rule_reminders_id" jdbcType="INTEGER" property="ruleRemindersId" />
+    <result column="is_scheduling" jdbcType="TINYINT" property="isScheduling" />
+    <result column="is_postpone" jdbcType="TINYINT" property="isPostpone" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    rule_id, benchmark_event, is_in_hospital, is_first, that_visit, begin_time, interval_time, 
+    baseline_count, advance_notice, rule_template_id, rule_reminders_id, is_scheduling, 
+    is_postpone
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from follow_up_rule
+    where rule_id = #{ruleId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from follow_up_rule
+    where rule_id = #{ruleId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.FollowUpRule">
+    insert into follow_up_rule (rule_id, benchmark_event, is_in_hospital, 
+      is_first, that_visit, begin_time, 
+      interval_time, baseline_count, advance_notice, 
+      rule_template_id, rule_reminders_id, is_scheduling, 
+      is_postpone)
+    values (#{ruleId,jdbcType=INTEGER}, #{benchmarkEvent,jdbcType=INTEGER}, #{isInHospital,jdbcType=TINYINT}, 
+      #{isFirst,jdbcType=TINYINT}, #{thatVisit,jdbcType=TINYINT}, #{beginTime,jdbcType=TIMESTAMP}, 
+      #{intervalTime,jdbcType=TIMESTAMP}, #{baselineCount,jdbcType=INTEGER}, #{advanceNotice,jdbcType=INTEGER}, 
+      #{ruleTemplateId,jdbcType=INTEGER}, #{ruleRemindersId,jdbcType=INTEGER}, #{isScheduling,jdbcType=TINYINT}, 
+      #{isPostpone,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.FollowUpRule">
+    insert into follow_up_rule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ruleId != null">
+        rule_id,
+      </if>
+      <if test="benchmarkEvent != null">
+        benchmark_event,
+      </if>
+      <if test="isInHospital != null">
+        is_in_hospital,
+      </if>
+      <if test="isFirst != null">
+        is_first,
+      </if>
+      <if test="thatVisit != null">
+        that_visit,
+      </if>
+      <if test="beginTime != null">
+        begin_time,
+      </if>
+      <if test="intervalTime != null">
+        interval_time,
+      </if>
+      <if test="baselineCount != null">
+        baseline_count,
+      </if>
+      <if test="advanceNotice != null">
+        advance_notice,
+      </if>
+      <if test="ruleTemplateId != null">
+        rule_template_id,
+      </if>
+      <if test="ruleRemindersId != null">
+        rule_reminders_id,
+      </if>
+      <if test="isScheduling != null">
+        is_scheduling,
+      </if>
+      <if test="isPostpone != null">
+        is_postpone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ruleId != null">
+        #{ruleId,jdbcType=INTEGER},
+      </if>
+      <if test="benchmarkEvent != null">
+        #{benchmarkEvent,jdbcType=INTEGER},
+      </if>
+      <if test="isInHospital != null">
+        #{isInHospital,jdbcType=TINYINT},
+      </if>
+      <if test="isFirst != null">
+        #{isFirst,jdbcType=TINYINT},
+      </if>
+      <if test="thatVisit != null">
+        #{thatVisit,jdbcType=TINYINT},
+      </if>
+      <if test="beginTime != null">
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="intervalTime != null">
+        #{intervalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="baselineCount != null">
+        #{baselineCount,jdbcType=INTEGER},
+      </if>
+      <if test="advanceNotice != null">
+        #{advanceNotice,jdbcType=INTEGER},
+      </if>
+      <if test="ruleTemplateId != null">
+        #{ruleTemplateId,jdbcType=INTEGER},
+      </if>
+      <if test="ruleRemindersId != null">
+        #{ruleRemindersId,jdbcType=INTEGER},
+      </if>
+      <if test="isScheduling != null">
+        #{isScheduling,jdbcType=TINYINT},
+      </if>
+      <if test="isPostpone != null">
+        #{isPostpone,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.FollowUpRule">
+    update follow_up_rule
+    <set>
+      <if test="benchmarkEvent != null">
+        benchmark_event = #{benchmarkEvent,jdbcType=INTEGER},
+      </if>
+      <if test="isInHospital != null">
+        is_in_hospital = #{isInHospital,jdbcType=TINYINT},
+      </if>
+      <if test="isFirst != null">
+        is_first = #{isFirst,jdbcType=TINYINT},
+      </if>
+      <if test="thatVisit != null">
+        that_visit = #{thatVisit,jdbcType=TINYINT},
+      </if>
+      <if test="beginTime != null">
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="intervalTime != null">
+        interval_time = #{intervalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="baselineCount != null">
+        baseline_count = #{baselineCount,jdbcType=INTEGER},
+      </if>
+      <if test="advanceNotice != null">
+        advance_notice = #{advanceNotice,jdbcType=INTEGER},
+      </if>
+      <if test="ruleTemplateId != null">
+        rule_template_id = #{ruleTemplateId,jdbcType=INTEGER},
+      </if>
+      <if test="ruleRemindersId != null">
+        rule_reminders_id = #{ruleRemindersId,jdbcType=INTEGER},
+      </if>
+      <if test="isScheduling != null">
+        is_scheduling = #{isScheduling,jdbcType=TINYINT},
+      </if>
+      <if test="isPostpone != null">
+        is_postpone = #{isPostpone,jdbcType=TINYINT},
+      </if>
+    </set>
+    where rule_id = #{ruleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.FollowUpRule">
+    update follow_up_rule
+    set benchmark_event = #{benchmarkEvent,jdbcType=INTEGER},
+      is_in_hospital = #{isInHospital,jdbcType=TINYINT},
+      is_first = #{isFirst,jdbcType=TINYINT},
+      that_visit = #{thatVisit,jdbcType=TINYINT},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      interval_time = #{intervalTime,jdbcType=TIMESTAMP},
+      baseline_count = #{baselineCount,jdbcType=INTEGER},
+      advance_notice = #{advanceNotice,jdbcType=INTEGER},
+      rule_template_id = #{ruleTemplateId,jdbcType=INTEGER},
+      rule_reminders_id = #{ruleRemindersId,jdbcType=INTEGER},
+      is_scheduling = #{isScheduling,jdbcType=TINYINT},
+      is_postpone = #{isPostpone,jdbcType=TINYINT}
+    where rule_id = #{ruleId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.RemindersMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.Reminders">
+    <id column="rem_id" jdbcType="INTEGER" property="remId" />
+    <result column="reminders_id" jdbcType="INTEGER" property="remindersId" />
+    <result column="reminders_dictionary_id" jdbcType="INTEGER" property="remindersDictionaryId" />
+    <result column="reminders_occupation_id" jdbcType="INTEGER" property="remindersOccupationId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    rem_id, reminders_id, reminders_dictionary_id, reminders_occupation_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from reminders
+    where rem_id = #{remId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from reminders
+    where rem_id = #{remId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.Reminders">
+    insert into reminders (rem_id, reminders_id, reminders_dictionary_id, 
+      reminders_occupation_id)
+    values (#{remId,jdbcType=INTEGER}, #{remindersId,jdbcType=INTEGER}, #{remindersDictionaryId,jdbcType=INTEGER}, 
+      #{remindersOccupationId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.Reminders">
+    insert into reminders
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="remId != null">
+        rem_id,
+      </if>
+      <if test="remindersId != null">
+        reminders_id,
+      </if>
+      <if test="remindersDictionaryId != null">
+        reminders_dictionary_id,
+      </if>
+      <if test="remindersOccupationId != null">
+        reminders_occupation_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="remId != null">
+        #{remId,jdbcType=INTEGER},
+      </if>
+      <if test="remindersId != null">
+        #{remindersId,jdbcType=INTEGER},
+      </if>
+      <if test="remindersDictionaryId != null">
+        #{remindersDictionaryId,jdbcType=INTEGER},
+      </if>
+      <if test="remindersOccupationId != null">
+        #{remindersOccupationId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Reminders">
+    update reminders
+    <set>
+      <if test="remindersId != null">
+        reminders_id = #{remindersId,jdbcType=INTEGER},
+      </if>
+      <if test="remindersDictionaryId != null">
+        reminders_dictionary_id = #{remindersDictionaryId,jdbcType=INTEGER},
+      </if>
+      <if test="remindersOccupationId != null">
+        reminders_occupation_id = #{remindersOccupationId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where rem_id = #{remId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Reminders">
+    update reminders
+    set reminders_id = #{remindersId,jdbcType=INTEGER},
+      reminders_dictionary_id = #{remindersDictionaryId,jdbcType=INTEGER},
+      reminders_occupation_id = #{remindersOccupationId,jdbcType=INTEGER}
+    where rem_id = #{remId,jdbcType=INTEGER}
+  </update>
+</mapper>

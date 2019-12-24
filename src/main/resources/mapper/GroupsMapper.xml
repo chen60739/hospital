@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.GroupsMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.Groups">
+    <id column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+    <result column="group_principal" jdbcType="VARCHAR" property="groupPrincipal" />
+    <result column="group_hospital_id" jdbcType="INTEGER" property="groupHospitalId" />
+    <result column="group_department_id" jdbcType="INTEGER" property="groupDepartmentId" />
+    <result column="group_rank_id" jdbcType="INTEGER" property="groupRankId" />
+    <result column="group_phone" jdbcType="CHAR" property="groupPhone" />
+    <result column="group_state" jdbcType="VARCHAR" property="groupState" />
+    <result column="group_start_time" jdbcType="TIMESTAMP" property="groupStartTime" />
+    <result column="group_end_time" jdbcType="TIMESTAMP" property="groupEndTime" />
+    <result column="group_num" jdbcType="VARCHAR" property="groupNum" />
+    <result column="patient_num" jdbcType="INTEGER" property="patientNum" />
+    <result column="control_group" jdbcType="TINYINT" property="controlGroup" />
+    <result column="background" jdbcType="VARCHAR" property="background" />
+    <result column="is_del" jdbcType="TINYINT" property="isDel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    group_id, group_name, group_principal, group_hospital_id, group_department_id, group_rank_id, 
+    group_phone, group_state, group_start_time, group_end_time, group_num, patient_num, 
+    control_group, background, is_del
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from groups
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from groups
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.Groups">
+    insert into groups (group_id, group_name, group_principal, 
+      group_hospital_id, group_department_id, group_rank_id, 
+      group_phone, group_state, group_start_time, 
+      group_end_time, group_num, patient_num, 
+      control_group, background, is_del
+      )
+    values (#{groupId,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, #{groupPrincipal,jdbcType=VARCHAR}, 
+      #{groupHospitalId,jdbcType=INTEGER}, #{groupDepartmentId,jdbcType=INTEGER}, #{groupRankId,jdbcType=INTEGER}, 
+      #{groupPhone,jdbcType=CHAR}, #{groupState,jdbcType=VARCHAR}, #{groupStartTime,jdbcType=TIMESTAMP}, 
+      #{groupEndTime,jdbcType=TIMESTAMP}, #{groupNum,jdbcType=VARCHAR}, #{patientNum,jdbcType=INTEGER}, 
+      #{controlGroup,jdbcType=TINYINT}, #{background,jdbcType=VARCHAR}, #{isDel,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.Groups">
+    insert into groups
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="groupName != null">
+        group_name,
+      </if>
+      <if test="groupPrincipal != null">
+        group_principal,
+      </if>
+      <if test="groupHospitalId != null">
+        group_hospital_id,
+      </if>
+      <if test="groupDepartmentId != null">
+        group_department_id,
+      </if>
+      <if test="groupRankId != null">
+        group_rank_id,
+      </if>
+      <if test="groupPhone != null">
+        group_phone,
+      </if>
+      <if test="groupState != null">
+        group_state,
+      </if>
+      <if test="groupStartTime != null">
+        group_start_time,
+      </if>
+      <if test="groupEndTime != null">
+        group_end_time,
+      </if>
+      <if test="groupNum != null">
+        group_num,
+      </if>
+      <if test="patientNum != null">
+        patient_num,
+      </if>
+      <if test="controlGroup != null">
+        control_group,
+      </if>
+      <if test="background != null">
+        background,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="groupName != null">
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupPrincipal != null">
+        #{groupPrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="groupHospitalId != null">
+        #{groupHospitalId,jdbcType=INTEGER},
+      </if>
+      <if test="groupDepartmentId != null">
+        #{groupDepartmentId,jdbcType=INTEGER},
+      </if>
+      <if test="groupRankId != null">
+        #{groupRankId,jdbcType=INTEGER},
+      </if>
+      <if test="groupPhone != null">
+        #{groupPhone,jdbcType=CHAR},
+      </if>
+      <if test="groupState != null">
+        #{groupState,jdbcType=VARCHAR},
+      </if>
+      <if test="groupStartTime != null">
+        #{groupStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="groupEndTime != null">
+        #{groupEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="groupNum != null">
+        #{groupNum,jdbcType=VARCHAR},
+      </if>
+      <if test="patientNum != null">
+        #{patientNum,jdbcType=INTEGER},
+      </if>
+      <if test="controlGroup != null">
+        #{controlGroup,jdbcType=TINYINT},
+      </if>
+      <if test="background != null">
+        #{background,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Groups">
+    update groups
+    <set>
+      <if test="groupName != null">
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupPrincipal != null">
+        group_principal = #{groupPrincipal,jdbcType=VARCHAR},
+      </if>
+      <if test="groupHospitalId != null">
+        group_hospital_id = #{groupHospitalId,jdbcType=INTEGER},
+      </if>
+      <if test="groupDepartmentId != null">
+        group_department_id = #{groupDepartmentId,jdbcType=INTEGER},
+      </if>
+      <if test="groupRankId != null">
+        group_rank_id = #{groupRankId,jdbcType=INTEGER},
+      </if>
+      <if test="groupPhone != null">
+        group_phone = #{groupPhone,jdbcType=CHAR},
+      </if>
+      <if test="groupState != null">
+        group_state = #{groupState,jdbcType=VARCHAR},
+      </if>
+      <if test="groupStartTime != null">
+        group_start_time = #{groupStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="groupEndTime != null">
+        group_end_time = #{groupEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="groupNum != null">
+        group_num = #{groupNum,jdbcType=VARCHAR},
+      </if>
+      <if test="patientNum != null">
+        patient_num = #{patientNum,jdbcType=INTEGER},
+      </if>
+      <if test="controlGroup != null">
+        control_group = #{controlGroup,jdbcType=TINYINT},
+      </if>
+      <if test="background != null">
+        background = #{background,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+    </set>
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Groups">
+    update groups
+    set group_name = #{groupName,jdbcType=VARCHAR},
+      group_principal = #{groupPrincipal,jdbcType=VARCHAR},
+      group_hospital_id = #{groupHospitalId,jdbcType=INTEGER},
+      group_department_id = #{groupDepartmentId,jdbcType=INTEGER},
+      group_rank_id = #{groupRankId,jdbcType=INTEGER},
+      group_phone = #{groupPhone,jdbcType=CHAR},
+      group_state = #{groupState,jdbcType=VARCHAR},
+      group_start_time = #{groupStartTime,jdbcType=TIMESTAMP},
+      group_end_time = #{groupEndTime,jdbcType=TIMESTAMP},
+      group_num = #{groupNum,jdbcType=VARCHAR},
+      patient_num = #{patientNum,jdbcType=INTEGER},
+      control_group = #{controlGroup,jdbcType=TINYINT},
+      background = #{background,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=TINYINT}
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </update>
+</mapper>

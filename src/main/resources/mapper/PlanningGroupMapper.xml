@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.PlanningGroupMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.PlanningGroup">
+    <id column="planning_id" jdbcType="INTEGER" property="planningId" />
+    <result column="p_group_id" jdbcType="INTEGER" property="pGroupId" />
+    <result column="p_patient_id" jdbcType="INTEGER" property="pPatientId" />
+    <result column="in_group_time" jdbcType="TIMESTAMP" property="inGroupTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    planning_id, p_group_id, p_patient_id, in_group_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from planning_group
+    where planning_id = #{planningId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from planning_group
+    where planning_id = #{planningId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.PlanningGroup">
+    insert into planning_group (planning_id, p_group_id, p_patient_id, 
+      in_group_time)
+    values (#{planningId,jdbcType=INTEGER}, #{pGroupId,jdbcType=INTEGER}, #{pPatientId,jdbcType=INTEGER}, 
+      #{inGroupTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.PlanningGroup">
+    insert into planning_group
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="planningId != null">
+        planning_id,
+      </if>
+      <if test="pGroupId != null">
+        p_group_id,
+      </if>
+      <if test="pPatientId != null">
+        p_patient_id,
+      </if>
+      <if test="inGroupTime != null">
+        in_group_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="planningId != null">
+        #{planningId,jdbcType=INTEGER},
+      </if>
+      <if test="pGroupId != null">
+        #{pGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="pPatientId != null">
+        #{pPatientId,jdbcType=INTEGER},
+      </if>
+      <if test="inGroupTime != null">
+        #{inGroupTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.PlanningGroup">
+    update planning_group
+    <set>
+      <if test="pGroupId != null">
+        p_group_id = #{pGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="pPatientId != null">
+        p_patient_id = #{pPatientId,jdbcType=INTEGER},
+      </if>
+      <if test="inGroupTime != null">
+        in_group_time = #{inGroupTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where planning_id = #{planningId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.PlanningGroup">
+    update planning_group
+    set p_group_id = #{pGroupId,jdbcType=INTEGER},
+      p_patient_id = #{pPatientId,jdbcType=INTEGER},
+      in_group_time = #{inGroupTime,jdbcType=TIMESTAMP}
+    where planning_id = #{planningId,jdbcType=INTEGER}
+  </update>
+</mapper>

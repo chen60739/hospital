@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.FollowUpMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.FollowUp">
+    <id column="follow_id" jdbcType="INTEGER" property="followId" />
+    <result column="follow_time" jdbcType="TIMESTAMP" property="followTime" />
+    <result column="follow_group_id" jdbcType="INTEGER" property="followGroupId" />
+    <result column="follow_department_id" jdbcType="INTEGER" property="followDepartmentId" />
+    <result column="follow_state" jdbcType="TINYINT" property="followState" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    follow_id, follow_time, follow_group_id, follow_department_id, follow_state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from follow_up
+    where follow_id = #{followId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from follow_up
+    where follow_id = #{followId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.FollowUp">
+    insert into follow_up (follow_id, follow_time, follow_group_id, 
+      follow_department_id, follow_state)
+    values (#{followId,jdbcType=INTEGER}, #{followTime,jdbcType=TIMESTAMP}, #{followGroupId,jdbcType=INTEGER}, 
+      #{followDepartmentId,jdbcType=INTEGER}, #{followState,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.FollowUp">
+    insert into follow_up
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="followId != null">
+        follow_id,
+      </if>
+      <if test="followTime != null">
+        follow_time,
+      </if>
+      <if test="followGroupId != null">
+        follow_group_id,
+      </if>
+      <if test="followDepartmentId != null">
+        follow_department_id,
+      </if>
+      <if test="followState != null">
+        follow_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="followId != null">
+        #{followId,jdbcType=INTEGER},
+      </if>
+      <if test="followTime != null">
+        #{followTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="followGroupId != null">
+        #{followGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="followDepartmentId != null">
+        #{followDepartmentId,jdbcType=INTEGER},
+      </if>
+      <if test="followState != null">
+        #{followState,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.FollowUp">
+    update follow_up
+    <set>
+      <if test="followTime != null">
+        follow_time = #{followTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="followGroupId != null">
+        follow_group_id = #{followGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="followDepartmentId != null">
+        follow_department_id = #{followDepartmentId,jdbcType=INTEGER},
+      </if>
+      <if test="followState != null">
+        follow_state = #{followState,jdbcType=TINYINT},
+      </if>
+    </set>
+    where follow_id = #{followId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.FollowUp">
+    update follow_up
+    set follow_time = #{followTime,jdbcType=TIMESTAMP},
+      follow_group_id = #{followGroupId,jdbcType=INTEGER},
+      follow_department_id = #{followDepartmentId,jdbcType=INTEGER},
+      follow_state = #{followState,jdbcType=TINYINT}
+    where follow_id = #{followId,jdbcType=INTEGER}
+  </update>
+</mapper>

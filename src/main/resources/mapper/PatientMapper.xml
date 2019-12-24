@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.PatientMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.Patient">
+    <id column="patient_id" jdbcType="INTEGER" property="patientId" />
+    <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
+    <result column="patient_sex" jdbcType="VARCHAR" property="patientSex" />
+    <result column="patient_birthday" jdbcType="TIMESTAMP" property="patientBirthday" />
+    <result column="nation_id" jdbcType="INTEGER" property="nationId" />
+    <result column="outpatient_service" jdbcType="INTEGER" property="outpatientService" />
+    <result column="hospitalization_number" jdbcType="INTEGER" property="hospitalizationNumber" />
+    <result column="disease_name" jdbcType="VARCHAR" property="diseaseName" />
+    <result column="disease" jdbcType="VARCHAR" property="disease" />
+    <result column="result_level" jdbcType="VARCHAR" property="resultLevel" />
+    <result column="is_del" jdbcType="TINYINT" property="isDel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    patient_id, patient_name, patient_sex, patient_birthday, nation_id, outpatient_service, 
+    hospitalization_number, disease_name, disease, result_level, is_del
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from patient
+    where patient_id = #{patientId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from patient
+    where patient_id = #{patientId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.Patient">
+    insert into patient (patient_id, patient_name, patient_sex, 
+      patient_birthday, nation_id, outpatient_service, 
+      hospitalization_number, disease_name, disease, 
+      result_level, is_del)
+    values (#{patientId,jdbcType=INTEGER}, #{patientName,jdbcType=VARCHAR}, #{patientSex,jdbcType=VARCHAR}, 
+      #{patientBirthday,jdbcType=TIMESTAMP}, #{nationId,jdbcType=INTEGER}, #{outpatientService,jdbcType=INTEGER}, 
+      #{hospitalizationNumber,jdbcType=INTEGER}, #{diseaseName,jdbcType=VARCHAR}, #{disease,jdbcType=VARCHAR}, 
+      #{resultLevel,jdbcType=VARCHAR}, #{isDel,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.Patient">
+    insert into patient
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="patientId != null">
+        patient_id,
+      </if>
+      <if test="patientName != null">
+        patient_name,
+      </if>
+      <if test="patientSex != null">
+        patient_sex,
+      </if>
+      <if test="patientBirthday != null">
+        patient_birthday,
+      </if>
+      <if test="nationId != null">
+        nation_id,
+      </if>
+      <if test="outpatientService != null">
+        outpatient_service,
+      </if>
+      <if test="hospitalizationNumber != null">
+        hospitalization_number,
+      </if>
+      <if test="diseaseName != null">
+        disease_name,
+      </if>
+      <if test="disease != null">
+        disease,
+      </if>
+      <if test="resultLevel != null">
+        result_level,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="patientId != null">
+        #{patientId,jdbcType=INTEGER},
+      </if>
+      <if test="patientName != null">
+        #{patientName,jdbcType=VARCHAR},
+      </if>
+      <if test="patientSex != null">
+        #{patientSex,jdbcType=VARCHAR},
+      </if>
+      <if test="patientBirthday != null">
+        #{patientBirthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nationId != null">
+        #{nationId,jdbcType=INTEGER},
+      </if>
+      <if test="outpatientService != null">
+        #{outpatientService,jdbcType=INTEGER},
+      </if>
+      <if test="hospitalizationNumber != null">
+        #{hospitalizationNumber,jdbcType=INTEGER},
+      </if>
+      <if test="diseaseName != null">
+        #{diseaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="disease != null">
+        #{disease,jdbcType=VARCHAR},
+      </if>
+      <if test="resultLevel != null">
+        #{resultLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Patient">
+    update patient
+    <set>
+      <if test="patientName != null">
+        patient_name = #{patientName,jdbcType=VARCHAR},
+      </if>
+      <if test="patientSex != null">
+        patient_sex = #{patientSex,jdbcType=VARCHAR},
+      </if>
+      <if test="patientBirthday != null">
+        patient_birthday = #{patientBirthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nationId != null">
+        nation_id = #{nationId,jdbcType=INTEGER},
+      </if>
+      <if test="outpatientService != null">
+        outpatient_service = #{outpatientService,jdbcType=INTEGER},
+      </if>
+      <if test="hospitalizationNumber != null">
+        hospitalization_number = #{hospitalizationNumber,jdbcType=INTEGER},
+      </if>
+      <if test="diseaseName != null">
+        disease_name = #{diseaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="disease != null">
+        disease = #{disease,jdbcType=VARCHAR},
+      </if>
+      <if test="resultLevel != null">
+        result_level = #{resultLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=TINYINT},
+      </if>
+    </set>
+    where patient_id = #{patientId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Patient">
+    update patient
+    set patient_name = #{patientName,jdbcType=VARCHAR},
+      patient_sex = #{patientSex,jdbcType=VARCHAR},
+      patient_birthday = #{patientBirthday,jdbcType=TIMESTAMP},
+      nation_id = #{nationId,jdbcType=INTEGER},
+      outpatient_service = #{outpatientService,jdbcType=INTEGER},
+      hospitalization_number = #{hospitalizationNumber,jdbcType=INTEGER},
+      disease_name = #{diseaseName,jdbcType=VARCHAR},
+      disease = #{disease,jdbcType=VARCHAR},
+      result_level = #{resultLevel,jdbcType=VARCHAR},
+      is_del = #{isDel,jdbcType=TINYINT}
+    where patient_id = #{patientId,jdbcType=INTEGER}
+  </update>
+</mapper>

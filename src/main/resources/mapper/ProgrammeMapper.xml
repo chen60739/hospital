@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.ProgrammeMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.Programme">
+    <id column="programme_id" jdbcType="INTEGER" property="programmeId" />
+    <result column="medication_id" jdbcType="INTEGER" property="medicationId" />
+    <result column="test_id" jdbcType="INTEGER" property="testId" />
+    <result column="checked_id" jdbcType="INTEGER" property="checkedId" />
+    <result column="treatment" jdbcType="VARCHAR" property="treatment" />
+    <result column="operation" jdbcType="VARCHAR" property="operation" />
+    <result column="notice" jdbcType="VARCHAR" property="notice" />
+    <result column="department_id" jdbcType="INTEGER" property="departmentId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    programme_id, medication_id, test_id, checked_id, treatment, operation, notice, department_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from programme
+    where programme_id = #{programmeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from programme
+    where programme_id = #{programmeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.Programme">
+    insert into programme (programme_id, medication_id, test_id, 
+      checked_id, treatment, operation, 
+      notice, department_id)
+    values (#{programmeId,jdbcType=INTEGER}, #{medicationId,jdbcType=INTEGER}, #{testId,jdbcType=INTEGER}, 
+      #{checkedId,jdbcType=INTEGER}, #{treatment,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR}, 
+      #{notice,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.Programme">
+    insert into programme
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="programmeId != null">
+        programme_id,
+      </if>
+      <if test="medicationId != null">
+        medication_id,
+      </if>
+      <if test="testId != null">
+        test_id,
+      </if>
+      <if test="checkedId != null">
+        checked_id,
+      </if>
+      <if test="treatment != null">
+        treatment,
+      </if>
+      <if test="operation != null">
+        operation,
+      </if>
+      <if test="notice != null">
+        notice,
+      </if>
+      <if test="departmentId != null">
+        department_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="programmeId != null">
+        #{programmeId,jdbcType=INTEGER},
+      </if>
+      <if test="medicationId != null">
+        #{medicationId,jdbcType=INTEGER},
+      </if>
+      <if test="testId != null">
+        #{testId,jdbcType=INTEGER},
+      </if>
+      <if test="checkedId != null">
+        #{checkedId,jdbcType=INTEGER},
+      </if>
+      <if test="treatment != null">
+        #{treatment,jdbcType=VARCHAR},
+      </if>
+      <if test="operation != null">
+        #{operation,jdbcType=VARCHAR},
+      </if>
+      <if test="notice != null">
+        #{notice,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null">
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Programme">
+    update programme
+    <set>
+      <if test="medicationId != null">
+        medication_id = #{medicationId,jdbcType=INTEGER},
+      </if>
+      <if test="testId != null">
+        test_id = #{testId,jdbcType=INTEGER},
+      </if>
+      <if test="checkedId != null">
+        checked_id = #{checkedId,jdbcType=INTEGER},
+      </if>
+      <if test="treatment != null">
+        treatment = #{treatment,jdbcType=VARCHAR},
+      </if>
+      <if test="operation != null">
+        operation = #{operation,jdbcType=VARCHAR},
+      </if>
+      <if test="notice != null">
+        notice = #{notice,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null">
+        department_id = #{departmentId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where programme_id = #{programmeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Programme">
+    update programme
+    set medication_id = #{medicationId,jdbcType=INTEGER},
+      test_id = #{testId,jdbcType=INTEGER},
+      checked_id = #{checkedId,jdbcType=INTEGER},
+      treatment = #{treatment,jdbcType=VARCHAR},
+      operation = #{operation,jdbcType=VARCHAR},
+      notice = #{notice,jdbcType=VARCHAR},
+      department_id = #{departmentId,jdbcType=INTEGER}
+    where programme_id = #{programmeId,jdbcType=INTEGER}
+  </update>
+</mapper>

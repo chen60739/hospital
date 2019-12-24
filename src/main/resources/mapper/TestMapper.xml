@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.TestMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.Test">
+    <id column="t_id" jdbcType="INTEGER" property="tId" />
+    <result column="test_id" jdbcType="INTEGER" property="testId" />
+    <result column="test_dictionary_id" jdbcType="INTEGER" property="testDictionaryId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    t_id, test_id, test_dictionary_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from test
+    where t_id = #{tId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from test
+    where t_id = #{tId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.Test">
+    insert into test (t_id, test_id, test_dictionary_id
+      )
+    values (#{tId,jdbcType=INTEGER}, #{testId,jdbcType=INTEGER}, #{testDictionaryId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.Test">
+    insert into test
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tId != null">
+        t_id,
+      </if>
+      <if test="testId != null">
+        test_id,
+      </if>
+      <if test="testDictionaryId != null">
+        test_dictionary_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tId != null">
+        #{tId,jdbcType=INTEGER},
+      </if>
+      <if test="testId != null">
+        #{testId,jdbcType=INTEGER},
+      </if>
+      <if test="testDictionaryId != null">
+        #{testDictionaryId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Test">
+    update test
+    <set>
+      <if test="testId != null">
+        test_id = #{testId,jdbcType=INTEGER},
+      </if>
+      <if test="testDictionaryId != null">
+        test_dictionary_id = #{testDictionaryId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Test">
+    update test
+    set test_id = #{testId,jdbcType=INTEGER},
+      test_dictionary_id = #{testDictionaryId,jdbcType=INTEGER}
+    where t_id = #{tId,jdbcType=INTEGER}
+  </update>
+</mapper>

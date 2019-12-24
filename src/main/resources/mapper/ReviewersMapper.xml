@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.ReviewersMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.Reviewers">
+    <id column="checked_id" jdbcType="INTEGER" property="checkedId" />
+    <result column="doubters_id" jdbcType="INTEGER" property="doubtersId" />
+    <result column="reviewer_id" jdbcType="INTEGER" property="reviewerId" />
+    <result column="reviewer_time" jdbcType="TIMESTAMP" property="reviewerTime" />
+    <result column="data_item" jdbcType="INTEGER" property="dataItem" />
+    <result column="data_value" jdbcType="VARCHAR" property="dataValue" />
+    <result column="reviewer_propose_time" jdbcType="TIMESTAMP" property="reviewerProposeTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    checked_id, doubters_id, reviewer_id, reviewer_time, data_item, data_value, reviewer_propose_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from reviewers
+    where checked_id = #{checkedId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from reviewers
+    where checked_id = #{checkedId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.Reviewers">
+    insert into reviewers (checked_id, doubters_id, reviewer_id, 
+      reviewer_time, data_item, data_value, 
+      reviewer_propose_time)
+    values (#{checkedId,jdbcType=INTEGER}, #{doubtersId,jdbcType=INTEGER}, #{reviewerId,jdbcType=INTEGER}, 
+      #{reviewerTime,jdbcType=TIMESTAMP}, #{dataItem,jdbcType=INTEGER}, #{dataValue,jdbcType=VARCHAR}, 
+      #{reviewerProposeTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.Reviewers">
+    insert into reviewers
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="checkedId != null">
+        checked_id,
+      </if>
+      <if test="doubtersId != null">
+        doubters_id,
+      </if>
+      <if test="reviewerId != null">
+        reviewer_id,
+      </if>
+      <if test="reviewerTime != null">
+        reviewer_time,
+      </if>
+      <if test="dataItem != null">
+        data_item,
+      </if>
+      <if test="dataValue != null">
+        data_value,
+      </if>
+      <if test="reviewerProposeTime != null">
+        reviewer_propose_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="checkedId != null">
+        #{checkedId,jdbcType=INTEGER},
+      </if>
+      <if test="doubtersId != null">
+        #{doubtersId,jdbcType=INTEGER},
+      </if>
+      <if test="reviewerId != null">
+        #{reviewerId,jdbcType=INTEGER},
+      </if>
+      <if test="reviewerTime != null">
+        #{reviewerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataItem != null">
+        #{dataItem,jdbcType=INTEGER},
+      </if>
+      <if test="dataValue != null">
+        #{dataValue,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewerProposeTime != null">
+        #{reviewerProposeTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Reviewers">
+    update reviewers
+    <set>
+      <if test="doubtersId != null">
+        doubters_id = #{doubtersId,jdbcType=INTEGER},
+      </if>
+      <if test="reviewerId != null">
+        reviewer_id = #{reviewerId,jdbcType=INTEGER},
+      </if>
+      <if test="reviewerTime != null">
+        reviewer_time = #{reviewerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataItem != null">
+        data_item = #{dataItem,jdbcType=INTEGER},
+      </if>
+      <if test="dataValue != null">
+        data_value = #{dataValue,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewerProposeTime != null">
+        reviewer_propose_time = #{reviewerProposeTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where checked_id = #{checkedId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Reviewers">
+    update reviewers
+    set doubters_id = #{doubtersId,jdbcType=INTEGER},
+      reviewer_id = #{reviewerId,jdbcType=INTEGER},
+      reviewer_time = #{reviewerTime,jdbcType=TIMESTAMP},
+      data_item = #{dataItem,jdbcType=INTEGER},
+      data_value = #{dataValue,jdbcType=VARCHAR},
+      reviewer_propose_time = #{reviewerProposeTime,jdbcType=TIMESTAMP}
+    where checked_id = #{checkedId,jdbcType=INTEGER}
+  </update>
+</mapper>

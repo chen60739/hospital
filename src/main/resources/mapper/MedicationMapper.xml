@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.MedicationMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.Medication">
+    <id column="m_id" jdbcType="INTEGER" property="mId" />
+    <result column="medication_id" jdbcType="INTEGER" property="medicationId" />
+    <result column="medication_dictionary_id" jdbcType="INTEGER" property="medicationDictionaryId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    m_id, medication_id, medication_dictionary_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from medication
+    where m_id = #{mId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from medication
+    where m_id = #{mId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.Medication">
+    insert into medication (m_id, medication_id, medication_dictionary_id
+      )
+    values (#{mId,jdbcType=INTEGER}, #{medicationId,jdbcType=INTEGER}, #{medicationDictionaryId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.Medication">
+    insert into medication
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        m_id,
+      </if>
+      <if test="medicationId != null">
+        medication_id,
+      </if>
+      <if test="medicationDictionaryId != null">
+        medication_dictionary_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        #{mId,jdbcType=INTEGER},
+      </if>
+      <if test="medicationId != null">
+        #{medicationId,jdbcType=INTEGER},
+      </if>
+      <if test="medicationDictionaryId != null">
+        #{medicationDictionaryId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Medication">
+    update medication
+    <set>
+      <if test="medicationId != null">
+        medication_id = #{medicationId,jdbcType=INTEGER},
+      </if>
+      <if test="medicationDictionaryId != null">
+        medication_dictionary_id = #{medicationDictionaryId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where m_id = #{mId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Medication">
+    update medication
+    set medication_id = #{medicationId,jdbcType=INTEGER},
+      medication_dictionary_id = #{medicationDictionaryId,jdbcType=INTEGER}
+    where m_id = #{mId,jdbcType=INTEGER}
+  </update>
+</mapper>

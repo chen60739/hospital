@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.ComplicationsMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.Complications">
+    <id column="complications_id" jdbcType="INTEGER" property="complicationsId" />
+    <result column="pat_id" jdbcType="INTEGER" property="patId" />
+    <result column="complications_name_id" jdbcType="INTEGER" property="complicationsNameId" />
+    <result column="visiting_time" jdbcType="TIMESTAMP" property="visitingTime" />
+    <result column="visiting_doctor" jdbcType="INTEGER" property="visitingDoctor" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    complications_id, pat_id, complications_name_id, visiting_time, visiting_doctor
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from complications
+    where complications_id = #{complicationsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from complications
+    where complications_id = #{complicationsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.Complications">
+    insert into complications (complications_id, pat_id, complications_name_id, 
+      visiting_time, visiting_doctor)
+    values (#{complicationsId,jdbcType=INTEGER}, #{patId,jdbcType=INTEGER}, #{complicationsNameId,jdbcType=INTEGER}, 
+      #{visitingTime,jdbcType=TIMESTAMP}, #{visitingDoctor,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.Complications">
+    insert into complications
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="complicationsId != null">
+        complications_id,
+      </if>
+      <if test="patId != null">
+        pat_id,
+      </if>
+      <if test="complicationsNameId != null">
+        complications_name_id,
+      </if>
+      <if test="visitingTime != null">
+        visiting_time,
+      </if>
+      <if test="visitingDoctor != null">
+        visiting_doctor,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="complicationsId != null">
+        #{complicationsId,jdbcType=INTEGER},
+      </if>
+      <if test="patId != null">
+        #{patId,jdbcType=INTEGER},
+      </if>
+      <if test="complicationsNameId != null">
+        #{complicationsNameId,jdbcType=INTEGER},
+      </if>
+      <if test="visitingTime != null">
+        #{visitingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="visitingDoctor != null">
+        #{visitingDoctor,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Complications">
+    update complications
+    <set>
+      <if test="patId != null">
+        pat_id = #{patId,jdbcType=INTEGER},
+      </if>
+      <if test="complicationsNameId != null">
+        complications_name_id = #{complicationsNameId,jdbcType=INTEGER},
+      </if>
+      <if test="visitingTime != null">
+        visiting_time = #{visitingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="visitingDoctor != null">
+        visiting_doctor = #{visitingDoctor,jdbcType=INTEGER},
+      </if>
+    </set>
+    where complications_id = #{complicationsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Complications">
+    update complications
+    set pat_id = #{patId,jdbcType=INTEGER},
+      complications_name_id = #{complicationsNameId,jdbcType=INTEGER},
+      visiting_time = #{visitingTime,jdbcType=TIMESTAMP},
+      visiting_doctor = #{visitingDoctor,jdbcType=INTEGER}
+    where complications_id = #{complicationsId,jdbcType=INTEGER}
+  </update>
+</mapper>

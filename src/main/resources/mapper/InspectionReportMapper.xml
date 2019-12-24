@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.mapper.InspectionReportMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.InspectionReport">
+    <id column="Inspection_id" jdbcType="INTEGER" property="inspectionId" />
+    <result column="pat_id" jdbcType="INTEGER" property="patId" />
+    <result column="Inspection_content" jdbcType="VARCHAR" property="inspectionContent" />
+    <result column="Inspection_time" jdbcType="TIMESTAMP" property="inspectionTime" />
+    <result column="examiner" jdbcType="INTEGER" property="examiner" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Inspection_id, pat_id, Inspection_content, Inspection_time, examiner
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from inspection_report
+    where Inspection_id = #{inspectionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from inspection_report
+    where Inspection_id = #{inspectionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.InspectionReport">
+    insert into inspection_report (Inspection_id, pat_id, Inspection_content, 
+      Inspection_time, examiner)
+    values (#{inspectionId,jdbcType=INTEGER}, #{patId,jdbcType=INTEGER}, #{inspectionContent,jdbcType=VARCHAR}, 
+      #{inspectionTime,jdbcType=TIMESTAMP}, #{examiner,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.InspectionReport">
+    insert into inspection_report
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="inspectionId != null">
+        Inspection_id,
+      </if>
+      <if test="patId != null">
+        pat_id,
+      </if>
+      <if test="inspectionContent != null">
+        Inspection_content,
+      </if>
+      <if test="inspectionTime != null">
+        Inspection_time,
+      </if>
+      <if test="examiner != null">
+        examiner,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="inspectionId != null">
+        #{inspectionId,jdbcType=INTEGER},
+      </if>
+      <if test="patId != null">
+        #{patId,jdbcType=INTEGER},
+      </if>
+      <if test="inspectionContent != null">
+        #{inspectionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionTime != null">
+        #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examiner != null">
+        #{examiner,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.InspectionReport">
+    update inspection_report
+    <set>
+      <if test="patId != null">
+        pat_id = #{patId,jdbcType=INTEGER},
+      </if>
+      <if test="inspectionContent != null">
+        Inspection_content = #{inspectionContent,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionTime != null">
+        Inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examiner != null">
+        examiner = #{examiner,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Inspection_id = #{inspectionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.InspectionReport">
+    update inspection_report
+    set pat_id = #{patId,jdbcType=INTEGER},
+      Inspection_content = #{inspectionContent,jdbcType=VARCHAR},
+      Inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      examiner = #{examiner,jdbcType=INTEGER}
+    where Inspection_id = #{inspectionId,jdbcType=INTEGER}
+  </update>
+</mapper>
