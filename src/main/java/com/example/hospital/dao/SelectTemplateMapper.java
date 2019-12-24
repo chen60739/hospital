@@ -1,7 +1,9 @@
 package com.example.hospital.dao;
 
 import com.example.hospital.model.SelectTemplate;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface SelectTemplateMapper {
     int deleteByPrimaryKey(Integer stId);
 

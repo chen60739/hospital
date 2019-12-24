@@ -1,7 +1,9 @@
 package com.example.hospital.dao;
 
 import com.example.hospital.model.FollowUpRule;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface FollowUpRuleMapper {
     int deleteByPrimaryKey(Integer ruleId);
 

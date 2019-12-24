@@ -1,7 +1,9 @@
 package com.example.hospital.dao;
 
 import com.example.hospital.model.Reminders;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface RemindersMapper {
     int deleteByPrimaryKey(Integer remId);
 

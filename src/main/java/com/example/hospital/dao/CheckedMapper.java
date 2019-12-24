@@ -1,7 +1,9 @@
 package com.example.hospital.dao;
 
 import com.example.hospital.model.Checked;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface CheckedMapper {
     int deleteByPrimaryKey(Integer cId);
 
