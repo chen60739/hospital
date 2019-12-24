@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>诊疗方案</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-table.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap-table.js"></script>
+    <script src="/js/bootstrap-table-zh-CN.js"></script>
+    <link rel="stylesheet" href="/css/hospital.css">
+    <link rel="stylesheet" href="/css/selectcheck.css">
+    <script src="/js/selectcheck.js"></script>
+</head>
+<style>
+    textarea{
+        width: 393px;
+        height: 90px;
+    }
+    .btnrow{
+        padding-top: 10px;
+        padding-left: 35px;
+    }
+    .btn-info{
+        width: 100px;
+    }
+</style>
+<body>
+<div th:replace="navigation :: nav"></div>
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-xs-12 col-md-12">
+            <div style="padding-top: 20px">
+                <a href="javascript:history.back(-1)"><span class="glyphicon glyphicon-arrow-left"></span>返回随访组</a>
+                <h3 align="center">诊疗方案</h3>
+                <hr>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-xs-2" style="border-right-style: solid;border-color: #e1e1e1;height: 590px">
+                <div class="btnrow">
+                    <button type="button" id="listbtn" class="btn btn-info">方案一</button>
+                </div>
+                <div class="btnrow">
+                    <button type="button" id="rilibtn" class="btn btn-info">方案2</button>
+                </div>
+            </div>
+            <div class="col-xs-9" style="height: 500px;margin-top: 20px">
+                <div id="list" style="display: block">
+                    <table border="1" align="center">
+                        <tr style="height: 70px">
+                            <td width="150px">1.用药</td>
+                            <td width="400px">
+                                <select id="organId" name="organId" multiple="multiple" >
+                                　　　<option value="1">张</option>
+                                　　　<option value="2">ab</option>
+                                　　　<option value="3">c</option>
+                                　　　<option value="4">d</option>
+                                　　　<option value="5">a</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr style="height: 70px">
+                            <td>2.检验</td>
+                            <td>
+                                <select id="inspection" name="organId" multiple="multiple" >
+                                    　　　<option value="1">张</option>
+                                    　　　<option value="2">ab</option>
+                                    　　　<option value="3">c</option>
+                                    　　　<option value="4">d</option>
+                                    　　　<option value="5">a</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr style="height: 70px">
+                            <td>3.检查</td>
+                            <td>
+                                <select id="check" name="organId" multiple="multiple" >
+                                    　　　<option value="1">张</option>
+                                    　　　<option value="2">ab</option>
+                                    　　　<option value="3">c</option>
+                                    　　　<option value="4">d</option>
+                                    　　　<option value="5">a</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr style="height: 100px">
+                            <td>4.治疗</td>
+                            <td>
+                                <textarea></textarea>
+                            </td>
+                        </tr>
+                        <tr style="height: 100px">
+                            <td>5.手术</td>
+                            <td>
+                                <textarea></textarea>
+                            </td>
+                        </tr>
+                        <tr style="height: 100px">
+                            <td>6.通知</td>
+                            <td>
+                                <textarea></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        $("#listbtn").click(function () {
+            $("#tu").css("display","none");
+            $("#list").css("display","block");
+        })
+        $("#rilibtn").click(function () {
+            $("#tu").css("display","block");
+            $("#list").css("display","none");
+        })
+
+
+        $("#organId").fSelect();
+        $("#inspection").fSelect();
+        $("#check").fSelect();
+
+        var tableColumns = [
+            {checkbox: true},
+            {field: 'name', title: '门诊号',align:'center', sortable: true},
+            {field: 'lv', title: '随访组',align:'center', sortable: true},
+            {field: 'person', title: '姓名',align:'center' ,sortable: true},
+            {field: 'state', title: '性别',align:'center', sortable: true},
+            {field: 'class', title: '年龄',align:'center', sortable: true},
+            {field: 'creatTime', title: '入组时间',align:'center', sortable: true},
+            {field: 'class', title: '下次随访日期',align:'center', sortable: true},
+            {field: 'class', title: '状态',align:'center', sortable: true},
+            {field: 'class', title: '预览',align:'center', sortable: true}];
+        var data1 = [{"name":"内分泌随访",
+            "lv":"60%",
+            "person":"张三",
+            "state":"开放",
+            "class":"内分泌科",
+            "creatTime":"2018-11-12"},
+            {"name":"内分泌随访",
+                "lv":"40%",
+                "person":"xx",
+                "state":"开放",
+                "class":"内分泌科",
+                "creatTime":"2018-11-12"
+            }];
+
+        $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
+
+        /*$('#tableL01').bootstrapTable({
+            onClickCell: function(params){
+                alert(params);
+            }
+        });*/
+
+        $('#tableL01').bootstrapTable({//表格初始化
+            columns: tableColumns,  //表头
+            data:data1, //通过ajax返回的数据
+            width:300,
+            height:268,
+            method: 'get',
+            pageNumber: 1,
+            cache: false,
+            striped: true,
+            pagination: true,
+            sidePagination: 'client',
+            pageSize: 5,//单页记录数
+            pageList: [5, 10, 20, 30],//可选择单页记录数
+            search: false,
+            showRefresh: false,
+            showExport: false,
+            showFooter: true,
+            // exportTypes: ['csv', 'txt', 'xml'],
+            clickToSelect: true,
+            onClickCell: function(params){
+                location.href="/one";
+            }
+        });
+
+    })
+
+</script>
+</html>
