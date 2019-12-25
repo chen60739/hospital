@@ -3,7 +3,6 @@ package com.example.hospital.dao;
 import com.example.hospital.model.User;
 import org.apache.ibatis.annotations.Mapper;
 
-
 @Mapper
 public interface UserMapper {
     int deleteByPrimaryKey(Integer userId);

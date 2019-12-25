@@ -11,6 +11,7 @@
     <script src="/js/bootstrap-table.js"></script>
     <script src="/js/bootstrap-table-zh-CN.js"></script>
     <link rel="stylesheet" href="/css/hospital.css">
+    <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
 </head>
 <body>
 <div th:replace="navigation :: nav"></div>
@@ -38,32 +39,28 @@
                     <div class="row">
                         <div class="col-xs-4">
                             <div class="form-group">
-                                <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                 <div class="input-group">
-                                    <div class="input-group-addon">负责人</div>
-                                    <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                                    <div class="input-group-addon">门诊号</div>
+                                    <input type="text" class="form-control" placeholder="请输入门诊号">
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-4">
                             <div class="form-group">
-                                <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                 <div class="input-group">
-                                    <div class="input-group-addon">科室</div>
-                                    <select class="form-control">
-                                        <option>内分泌</option>
-                                    </select>
+                                    <div class="input-group-addon">住院号</div>
+                                    <input type="text" class="form-control" placeholder="请输入住院号">
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-4">
                             <div class="form-group">
-                                <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                 <div class="input-group">
-                                    <div class="input-group-addon">状态</div>
+                                    <div class="input-group-addon">性别</div>
                                     <select class="form-control">
-                                        <option>开放</option>
-                                        <option>关闭</option>
+                                        <option>-请选择-</option>
+                                        <option>男</option>
+                                        <option>女</option>
                                     </select>
                                 </div>
                             </div>
@@ -72,18 +69,26 @@
                     <div class="row" style="padding-top: 20px">
                         <div class="col-xs-6">
                             <div class="form-group">
-                                <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                 <div class="input-group">
-                                    <div class="input-group-addon">状态</div>
-                                    <input type="date" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                                    <div class="input-group-addon">入组时间</div>
+                                    <input type="date" class="form-control">
                                     <div class="input-group-addon">~</div>
-                                    <input type="date" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                                    <input type="date" class="form-control">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xs-6" style="padding-left: 400px">
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">姓名</div>
+                                    <input type="text" class="form-control" placeholder="请输入姓名">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3">
                             <button type="reset" class="btn btn-info">清空</button>
                             <button type="submit" class="btn btn-info">检索</button>
+                            <a>高级检索</a>
                         </div>
                     </div>
                 </form>
@@ -112,12 +117,13 @@
     $(function () {
         var tableColumns = [
             {checkbox: true},
-            {field: 'name', title: '名称',align:'center', sortable: true},
-            {field: 'lv', title: '入组率',align:'center', sortable: true},
-            {field: 'person', title: '负责人',align:'center' ,sortable: true},
-            {field: 'state', title: '状态',align:'center', sortable: true},
-            {field: 'class', title: '科室',align:'center', sortable: true},
-            {field: 'creatTime', title: '创建时间',align:'center', sortable: true}];
+            {field: 'name', title: '门诊号/住院号',align:'center', sortable: true},
+            {field: 'lv', title: '姓名',align:'center', sortable: true},
+            {field: 'person', title: '性别',align:'center' ,sortable: true},
+            {field: 'state', title: '年龄',align:'center', sortable: true},
+            {field: 'creatTime', title: '入组时间',align:'center', sortable: true},
+            {field: 'operate', title: '查看',align:'center', events: 'operateEvents',formatter: operateFormatter}
+        ];
         var data1 = [{"name":"内分泌随访",
             "lv":"60%",
             "person":"张三",
@@ -131,6 +137,19 @@
                 "class":"内分泌科",
                 "creatTime":"2018-11-12"
             }];
+
+        window.operateEvents = {
+            'click .RoleOfA': function (e, value, row, index) {
+                alert("A");
+            }
+        };
+
+
+        function operateFormatter(value, row, index) {
+            return [
+                '<button type="button" class="RoleOfA btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>'
+            ].join('');
+        }
 
         $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
 
