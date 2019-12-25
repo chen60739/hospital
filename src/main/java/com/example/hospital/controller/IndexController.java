@@ -58,4 +58,9 @@ public class IndexController {
         return "diagnosis_and_treatment_plan";
     }
 
+    @RequestMapping("/power")
+    public String power(){
+        return "power";
+    }
+
 }
