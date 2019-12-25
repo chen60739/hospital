@@ -1,7 +1,9 @@
 package com.example.hospital.dao;
 
 import com.example.hospital.model.Groups;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface GroupsMapper {
     int deleteByPrimaryKey(Integer groupId);
 

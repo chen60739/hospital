@@ -1,7 +1,9 @@
 package com.example.hospital.dao;
 
 import com.example.hospital.model.Power;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface PowerMapper {
     int deleteByPrimaryKey(Integer id);
 

@@ -1,7 +1,9 @@
 package com.example.hospital.dao;
 
 import com.example.hospital.model.Programme;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface ProgrammeMapper {
     int deleteByPrimaryKey(Integer programmeId);
 

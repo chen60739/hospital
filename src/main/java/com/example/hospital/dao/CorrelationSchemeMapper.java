@@ -1,7 +1,10 @@
 package com.example.hospital.dao;
 
 import com.example.hospital.model.CorrelationScheme;
+import org.apache.ibatis.annotations.Mapper;
 
+
+@Mapper
 public interface CorrelationSchemeMapper {
     int deleteByPrimaryKey(Integer csId);
 

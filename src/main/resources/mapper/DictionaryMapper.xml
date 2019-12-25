@@ -10,6 +10,12 @@
   <sql id="Base_Column_List">
     dictionary_id, dictionary_name, one_id, two_id
   </sql>
+  <select id="selectProgramme" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from dictionary
+    where one_id=14000 or one_id=15000 or one_id=16000
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

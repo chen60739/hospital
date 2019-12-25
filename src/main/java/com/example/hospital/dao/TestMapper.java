@@ -1,7 +1,9 @@
 package com.example.hospital.dao;
 
 import com.example.hospital.model.Test;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface TestMapper {
     int deleteByPrimaryKey(Integer tId);
 
