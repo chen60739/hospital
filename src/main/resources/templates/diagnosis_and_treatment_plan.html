@@ -50,39 +50,25 @@
             <div class="col-xs-9" style="height: 500px;margin-top: 20px">
                 <div id="list" style="display: block">
                     <table border="1" align="center">
-                        <tr style="height: 70px">
+                        <tr style="height: 70px" >
                             <td width="150px">1.用药</td>
                             <td width="400px">
-                                <select id="organId" name="organId" multiple="multiple" >
-                                　　　<option value="1">张</option>
-                                　　　<option value="2">ab</option>
-                                　　　<option value="3">c</option>
-                                　　　<option value="4">d</option>
-                                　　　<option value="5">a</option>
+                                <select id="organId" name="organId" multiple="multiple" class="medication">
+<!--                                　　<option th:each="plan:${plans}" th:if="${plan.oneId} eq '14000'" th:text="${plan.dictionaryName}" th:value="${plan.dictionaryId}">请选择药品</option>-->
                                 </select>
                             </td>
                         </tr>
                         <tr style="height: 70px">
                             <td>2.检验</td>
                             <td>
-                                <select id="inspection" name="organId" multiple="multiple" >
-                                    　　　<option value="1">张</option>
-                                    　　　<option value="2">ab</option>
-                                    　　　<option value="3">c</option>
-                                    　　　<option value="4">d</option>
-                                    　　　<option value="5">a</option>
+                                <select id="inspection" name="organId" multiple="multiple"  class="inspection">　　
                                 </select>
                             </td>
                         </tr>
                         <tr style="height: 70px">
                             <td>3.检查</td>
                             <td>
-                                <select id="check" name="organId" multiple="multiple" >
-                                    　　　<option value="1">张</option>
-                                    　　　<option value="2">ab</option>
-                                    　　　<option value="3">c</option>
-                                    　　　<option value="4">d</option>
-                                    　　　<option value="5">a</option>
+                                <select id="check" name="organId" multiple="multiple" class="check">
                                 </select>
                             </td>
                         </tr>
@@ -114,6 +100,24 @@
 </body>
 <script>
     $(function () {
+        $.get("findPlan",{},function (result) {
+            alert(result.length);
+            for (var i = 0; i <result.length ; i++) {
+                if(result[i].oneId==14000){
+                    $(".medication").append("<option value='"+result[i].dictionaryId+"'>"+result[i].dictionaryName+"</option>")
+                }
+                if(result[i].oneId==15000){
+                    $(".inspection").append("<option value='"+result[i].dictionaryId+"'>"+result[i].dictionaryName+"</option>")
+                }
+                if (result[i].oneId==16000){
+                    $(".check").append("<option value='"+result[i].dictionaryId+"'>"+result[i].dictionaryName+"</option>")
+                }
+            }
+            $("#organId").fSelect();
+            $("#inspection").fSelect();
+            $("#check").fSelect();
+            console.log(result);
+        })
         $("#listbtn").click(function () {
             $("#tu").css("display","none");
             $("#list").css("display","block");
@@ -124,9 +128,9 @@
         })
 
 
-        $("#organId").fSelect();
-        $("#inspection").fSelect();
-        $("#check").fSelect();
+
+
+
 
         var tableColumns = [
             {checkbox: true},
