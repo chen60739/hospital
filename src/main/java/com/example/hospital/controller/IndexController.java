@@ -62,5 +62,23 @@ public class IndexController {
     public String power(){
         return "power";
     }
+    @RequestMapping("/user")
+    public String user(){
+        return "user_management";
+    }
+
+    @RequestMapping("/groupPower")
+    public String groupPower(){
+        return "group_power";
+    }
+
+    @RequestMapping("/intoGroup")
+    public String intoGroup(){
+        return "into_group_management";
+    }
+    @RequestMapping("/tempView")
+    public String tempView(){
+        return "template_overview";
+    }
 
 }
