@@ -31,4 +31,10 @@ body{
 
 .row{
     margin-top: 10px;
+    margin-bottom: 10px;
+}
+.thead-blue th {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #0d7adf;
 }

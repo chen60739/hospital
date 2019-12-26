@@ -25,7 +25,7 @@
                 <hr>
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
-                        <button type="button" class="btn btn-info">创建模板</button>
+                        <button type="button" class="btn btn-info"><a href="/design" style="color: white">创建模板</a></button>
                     </div>
                     <hr>
                 </div>
@@ -69,8 +69,8 @@
             }];
 
         window.operateEvents = {
-            'click .RoleOfA': function (e, value, row, index) {
-                alert("A");
+            'click .RoleOfLook': function (e, value, row, index) {
+                window.location.href="/design";
             },
             'click .RoleOfB': function (e, value, row, index) {
                 alert("B");
@@ -86,7 +86,7 @@
 
         function operateFormatter(value, row, index) {
             return [
-                '<button type="button" class="RoleOfA btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>',
+                '<button type="button" class="RoleOfLook btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>',
                 '<button type="button" class="RoleOfB btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
                 '<button type="button" class="RoleOfC btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-plus"></i></button>',
                 '<button type="button" class="RoleOfD btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-close"></i></button>'
@@ -102,6 +102,7 @@
             height:268,
             method: 'get',
             pageNumber: 1,
+            theadClasses: "thead-blue",
             cache: false,
             striped: true,
             pagination: true,
