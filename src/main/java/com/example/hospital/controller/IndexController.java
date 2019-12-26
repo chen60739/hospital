@@ -70,5 +70,14 @@ public class IndexController {
     public String power(){
         return "power";
     }
+    @RequestMapping("/user")
+    public String user(){
+        return "user_management";
+    }
+
+    @RequestMapping("/groupPower")
+    public String groupPower(){
+        return "group_power";
+    }
 
 }
