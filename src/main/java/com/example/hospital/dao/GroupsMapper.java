@@ -16,4 +16,5 @@ public interface GroupsMapper {
     int updateByPrimaryKeySelective(Groups record);
 
     int updateByPrimaryKey(Groups record);
+
 }
