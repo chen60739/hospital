@@ -57,5 +57,4 @@ public class IndexController {
     public String plan(){
         return "diagnosis_and_treatment_plan";
     }
-
 }

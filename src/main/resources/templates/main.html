@@ -21,14 +21,14 @@
 
             <hr>
             <div class="col-xs-12 col-md-12" style="background-color: #e0f3f8">
-                <form class="form-inline" style="padding: 10px">
+                <div class="form-inline" style="padding: 10px">
                     <div class="row">
                         <div class="col-xs-4">
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                 <div class="input-group">
                                     <div class="input-group-addon">负责人</div>
-                                    <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                                    <input type="text" class="form-control" id="groupPrincipal" placeholder="Amount">
                                 </div>
                             </div>
                         </div>
@@ -37,8 +37,8 @@
                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                 <div class="input-group">
                                     <div class="input-group-addon">科室</div>
-                                    <select class="form-control">
-                                        <option>内分泌</option>
+                                    <select class="form-control" id="dictionaryName">
+                                        <option value="">请选择</option>
                                     </select>
                                 </div>
                             </div>
@@ -48,9 +48,10 @@
                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                 <div class="input-group">
                                     <div class="input-group-addon">状态</div>
-                                    <select class="form-control">
-                                        <option>开放</option>
-                                        <option>关闭</option>
+                                    <select class="form-control" id="groupState">
+                                        <option value="">请选择</option>
+                                        <option value="1">开放</option>
+                                        <option value="0">关闭</option>
                                     </select>
                                 </div>
                             </div>
@@ -61,19 +62,19 @@
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
                                 <div class="input-group">
-                                    <div class="input-group-addon">状态</div>
-                                    <input type="date" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                                    <div class="input-group-addon">创建时间</div>
+                                    <input type="date" class="form-control" id="time1" placeholder="Amount">
                                     <div class="input-group-addon">~</div>
-                                    <input type="date" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                                    <input type="date" class="form-control" id="time2" placeholder="Amount">
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-6" style="padding-left: 400px">
-                            <button type="reset" class="btn btn-info">清空</button>
-                            <button type="submit" class="btn btn-info">检索</button>
+                            <button type="reset" class="btn btn-info" onclick="empty()">清空</button>
+                            <button type="submit" class="btn btn-info" id="search">检索</button>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-md-12" style="padding-bottom: 20px;padding-top: 20px">
@@ -98,33 +99,37 @@
     $(function () {
         var tableColumns = [
             {checkbox: true},
-            {field: 'name', title: '名称',align:'center', sortable: true},
-            {field: 'lv', title: '入组率',align:'center', sortable: true},
-            {field: 'person', title: '负责人',align:'center' ,sortable: true},
-            {field: 'state', title: '状态',align:'center', sortable: true},
-            {field: 'class', title: '科室',align:'center', sortable: true},
-            {field: 'creatTime', title: '创建时间',align:'center', sortable: true}];
-        var data1 = [{"name":"内分泌随访",
-            "lv":"60%",
-            "person":"张三",
-            "state":"开放",
-            "class":"内分泌科",
-            "creatTime":"2018-11-12"},
-            {"name":"内分泌随访",
+            {field: 'groupName', title: '名称',align:'center', sortable: true},
+            {field: 'groupNum', title: '入组率',align:'center', sortable: true},
+            {field: 'groupPrincipal', title: '负责人',align:'center' ,sortable: true},
+            {field: 'groupState', title: '状态',align:'center', sortable: true ,formatter : function (value, row, index) {
+                    return value==true||value=='true' ? '开放' : '关闭';
+                }},
+            {field: 'dictionaryName', title: '科室',align:'center', sortable: true},
+            {field: 'groupStartTime', title: '创建时间',align:'center', sortable: true}];
+        /*var data1 = [{"groupName":"内分泌随访",,
+                "lv":"40%",
+                "person":"xx",
+                "state":"开放",
+                "class":"内分泌科",
+                "creatTime":"2018-11-12"},
+            {"groupName":"内分泌随访",
                 "lv":"40%",
                 "person":"xx",
                 "state":"开放",
                 "class":"内分泌科",
                 "creatTime":"2018-11-12"
-            }];
+            }];*/
+
 
         $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
 
         $('#tableL01').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
-            data:data1, //通过ajax返回的数据
+            /*data:data1, //通过ajax返回的数据*/
             width:300,
             height:268,
+            url:'findAllGroups',
             method: 'get',
             pageNumber: 1,
             cache: false,
@@ -141,11 +146,47 @@
             clickToSelect: true,
             onClickCell: function(params){
                 location.href="/one";
+            },
+            queryParams: function queryParams(params){
+                var param = {
+                    pageNumber: params.pageNumber,
+                    pageSize: params.pageSize,
+                    sortName: params.sortName,
+                    sortOrder: params.sortOrder,
+                    groupPrincipal:$("#groupPrincipal").val(),
+                    dictionaryId:$("#dictionaryName").val(),
+                    groupState:$("#groupState").val(),
+                    time1:$("#time1").val(),
+                    time2:$("#time2").val(),
+                };
+                return param;
             }
+
+        })
+        $(document).on('click', "#search",function(){
+            $('#tableL01').bootstrapTable('refresh');
         });
-
+        selectDiceionary();
     })
+    function selectDiceionary(){
+        $.get("findAllDepartment",{},function(rs){
+            if(rs !=null){
+                var aa=$("#dictionaryName");
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].dictionaryId+">"+rs[i].dictionaryName+"</option>");
+                    aa.append(varoption);
+                }
+            }
 
+        })
+    }
+    function empty(){
+        $("#groupPrincipal").val("");
+        $("#dictionaryName").val("");
+        $("#groupState").val("");
+        $("#time1").val("");
+        $("#time2").val("");
+    }
 </script>
 
 </html>
