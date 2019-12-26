@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.example.hospital.model.Patient">
     <id column="patient_id" jdbcType="INTEGER" property="patientId" />
     <result column="patient_name" jdbcType="VARCHAR" property="patientName" />
-    <result column="patient_sex" jdbcType="VARCHAR" property="patientSex" />
+    <result column="patient_sex" jdbcType="INTEGER" property="patientSex" />
     <result column="patient_birthday" jdbcType="TIMESTAMP" property="patientBirthday" />
     <result column="nation_id" jdbcType="INTEGER" property="nationId" />
     <result column="outpatient_service" jdbcType="INTEGER" property="outpatientService" />
@@ -14,10 +14,46 @@
     <result column="result_level" jdbcType="VARCHAR" property="resultLevel" />
     <result column="is_del" jdbcType="TINYINT" property="isDel" />
   </resultMap>
+  <resultMap id="SuperResultMap" type="com.example.hospital.dto.SuperPatient" extends="BaseResultMap">
+    <association property="planningGroups" javaType="com.example.hospital.model.PlanningGroup">
+      <id column="planning_id" jdbcType="INTEGER" property="planningId" />
+      <result column="p_group_id" jdbcType="INTEGER" property="pGroupId" />
+      <result column="p_patient_id" jdbcType="INTEGER" property="pPatientId" />
+      <result column="in_group_time" jdbcType="TIMESTAMP" property="inGroupTime" />
+    </association>
+  </resultMap>
   <sql id="Base_Column_List">
     patient_id, patient_name, patient_sex, patient_birthday, nation_id, outpatient_service, 
     hospitalization_number, disease_name, disease, result_level, is_del
   </sql>
+<!--我写的sql语句-->
+  <select id="selectPatientsByGroupId" resultMap="SuperResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,pg.in_group_time
+    from patient p,planning_group pg where pg.p_group_id=#{group1}
+    <if test="superPatient.outpatientService != null">
+    and p.outpatient_service like CONCAT('%',#{superPatient.outpatientService},'%')
+    </if>
+    <if test="superPatient.hospitalizationNumber !=null">
+      and p.hospitalization_number like  CONCAT('%',#{superPatient.hospitalizationNumber},'%')
+    </if>
+    <if test="superPatient.patientSex !=null  " >
+      and p.patient_sex like   CONCAT('%',#{superPatient.patientSex},'%')
+    </if>
+    <if test="superPatient.patientName !=null  " >
+      and p.patient_name like   CONCAT('%',#{superPatient.patientName},'%')
+    </if>
+    <if test="time1 !=null and time2 !=null" >
+      and pg.in_group_time between #{time1} and #{time2}
+    </if>
+    <if test="time1 ==null and time2 !=null" >
+      and pg.in_group_time &lt;= #{time2}
+    </if>
+    <if test="time1 !=null and time2 ==null" >
+    and pg.in_group_time &gt;=  #{time1}
+    </if>
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
