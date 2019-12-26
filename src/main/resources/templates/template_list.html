@@ -25,7 +25,7 @@
                 <hr>
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
-                        <button type="button" class="btn btn-info">创建模板</button>
+                        <button type="button" class="btn btn-info"><a href="/design" style="color: white">创建模板</a></button>
                     </div>
                     <hr>
                 </div>
@@ -43,42 +43,17 @@
 </div>
 </body>
 <script>
-    var tableColumns = [
-        {field: 'name', title: '模板名称',align:'center'},
-        {field: 'lv', title: '更新日期',align:'center'},
-        {field: 'person', title: '更新者',align:'center'},
-        {field: 'class', title: '版本号',align:'center'},
-        {field: 'creatTime', title: '创建日期',align:'center'},
-        {field: 'state', title: '状态',align:'center'},
-        {field: 'state', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
-    ];
-
-    window.operateEvents = {
-        'click .RoleOfA': function (e, value, row, index) {
-            alert("A");
-        },
-        'click .RoleOfB': function (e, value, row, index) {
-            alert("B");
-        },
-        'click .RoleOfC': function (e, value, row, index) {
-            alert("C");
-        },
-        'click .RoleOfEdit': function (e, value, row, index) {
-            alert("D");
-        }
-    };
-
-
-    function operateFormatter(value, row, index) {
-        return [
-            '<button type="button" class="RoleOfA btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>',
-            '<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
-            '<button type="button" class="RoleOfC btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-plus"></i></button>',
-            '<button type="button" class="RoleOfD btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-close"></i></button>',
-        ].join('');
-    }
-
     $(function () {
+        var tableColumns = [
+            {field: 'name', title: '模板名称',align:'center'},
+            {field: 'lv', title: '更新日期',align:'center'},
+            {field: 'person', title: '更新者',align:'center'},
+            {field: 'class', title: '版本号',align:'center'},
+            {field: 'creatTime', title: '创建日期',align:'center'},
+            {field: 'state', title: '状态',align:'center'},
+            {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
+        ];
+
         var data1 = [{"name":"内分泌随访",
             "lv":"60%",
             "person":"张三",
@@ -93,6 +68,31 @@
                 "creatTime":"2018-11-12"
             }];
 
+        window.operateEvents = {
+            'click .RoleOfLook': function (e, value, row, index) {
+                window.location.href="/design";
+            },
+            'click .RoleOfB': function (e, value, row, index) {
+                alert("B");
+            },
+            'click .RoleOfC': function (e, value, row, index) {
+                alert("C");
+            },
+            'click .RoleOfD': function (e, value, row, index) {
+                alert("D");
+            }
+        };
+
+
+        function operateFormatter(value, row, index) {
+            return [
+                '<button type="button" class="RoleOfLook btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>',
+                '<button type="button" class="RoleOfB btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
+                '<button type="button" class="RoleOfC btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-plus"></i></button>',
+                '<button type="button" class="RoleOfD btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-close"></i></button>'
+            ].join('');
+        }
+
         $('#table').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
 
         $('#table').bootstrapTable({//表格初始化
@@ -102,6 +102,7 @@
             height:268,
             method: 'get',
             pageNumber: 1,
+            theadClasses: "thead-blue",
             cache: false,
             striped: true,
             pagination: true,
@@ -114,10 +115,10 @@
             showFooter: true,
             // exportTypes: ['csv', 'txt', 'xml'],
             clickToSelect: true,
-            onLoadSuccess: function (data1) {
+            /*onLoadSuccess: function (data1) {
                 alert("aaa");
                 mergeCells(data1, "name", $("#table"));
-            },
+            },*/
         });
 
         function mergeCells(data, fieldName, target) {

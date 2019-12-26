@@ -4,13 +4,13 @@
     <title>新建随访组</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/community.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/bootstrap-table.css">
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/bootstrap-table.js"></script>
     <script src="/js/bootstrap-table-zh-CN.js"></script>
+    <link rel="stylesheet" href="/css/hospital.css">
 </head>
 <body>
 <div th:replace="navigation :: nav"></div>
@@ -24,6 +24,137 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-xs-3 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">责任医院</div>
+                    <select class="form-control">
+                        <option value="">-请选择-</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3 col-lg-offset-1">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">责任科室</div>
+                    <select class="form-control">
+                        <option value="">-请选择-</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">负责人</div>
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3 col-lg-offset-1">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">级别</div>
+                    <select class="form-control">
+                        <option value="">-请选择-</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-7 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">名称</div>
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">联系电话</div>
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3 col-lg-offset-1">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">状态</div>
+                    <select class="form-control">
+                        <option value="">-请选择-</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">开始日期</div>
+                    <input type="date" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3 col-lg-offset-1">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">结束日期</div>
+                    <input type="date" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">课题编号</div>
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-3 col-lg-offset-1">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">患者数量</div>
+                    <input type="number" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-7 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">对照组</div>
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-7 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">背景</div>
+                    <textarea type="text" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-7 col-lg-offset-5">
+            <button class="btn btn-info" style="width: 100px">保存</button>
+        </div>
     </div>
 </div>
 
