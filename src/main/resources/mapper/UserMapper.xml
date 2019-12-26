@@ -16,11 +16,35 @@
     <result column="grade_id" jdbcType="INTEGER" property="gradeId" />
     <result column="group_id" jdbcType="INTEGER" property="groupId" />
     <result column="occupation_id" jdbcType="INTEGER" property="occupationId" />
+
+  </resultMap>
+  <resultMap id="super" type="com.example.hospital.dto.SuperUser" extends="BaseResultMap">
+    <result column="dictionary_name" jdbcType="VARCHAR" property="dictionaryName" />
   </resultMap>
   <sql id="Base_Column_List">
-    user_id, user_name, user_pwd, user_sex, user_phone, user_email, department_id, role_id, 
-    create_time, modified_time, is_del, grade_id, group_id, occupation_id
-  </sql>
+  user_id, user_name, user_pwd, user_sex, user_phone, user_email, department_id, role_id,
+  create_time, modified_time, is_del, grade_id, group_id, occupation_id
+</sql>
+
+  <select id="getUser" resultMap="super">
+    SELECT user_id, user_name,dictionary_name FROM user ,dictionary
+    <where>
+      department_id=dictionary_id
+    </where>
+  </select>
+
+  <select id="getUserByName" resultMap="super">
+    SELECT user_id, user_name,dictionary_name FROM user ,dictionary
+    <where>
+      department_id=dictionary_id
+      <if test="dictionaryName!= null and dictionaryName != ''">
+        and dictionary_name =#{dictionaryName}
+      </if>
+      <if test="userName!= null and userName != ''">
+        and user_name =#{userName}
+      </if>
+    </where>
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

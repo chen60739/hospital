@@ -28,7 +28,9 @@
                                 <div class="input-group">
                                     <div class="input-group-addon">科室名称</div>
                                     <select class="form-control">
-                                        <option>-请选择科室-</option>
+                                        <option >-请选择科室-</option>
+                                        <option>${name}</option>
+
                                     </select>
                                 </div>
                             </div>
@@ -37,8 +39,9 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">人员名称</div>
-                                    <select class="form-control">
+                                    <select class="form-control" >
                                         <option>-请选择人员-</option>
+
                                     </select>
                                 </div>
                             </div>
@@ -61,7 +64,9 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table table-striped table-bordered table-hover" id="tableL01"></table>
+                <table class="table table-striped table-bordered table-hover" id="tableL01" >
+
+                </table>
             </div>
 
         </div>
@@ -76,12 +81,12 @@
 <script>
     $(function () {
         var tableColumns = [
-                {field: 'name', title: '序号',align:'center', sortable: true},
-                {field: 'class', title: '科室',align:'center', sortable: true},
-                {field: 'class', title: '人员',align:'center', sortable: true},
+                {field: 'userId', title: '序号',align:'center', sortable: true},
+                {field: 'dictionaryName', title: '科室',align:'center', sortable: true},
+                {field: 'userName', title: '人员',align:'center', sortable: true},
                 {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
             ];
-        var data1 = [{"name":"内分泌随访",
+       /* var data1 = [{"userId":"内分泌随访",
             "lv":"60%",
             "person":"张三",
             "state":"开放",
@@ -93,7 +98,7 @@
                 "state":"开放",
                 "class":"内分泌科",
                 "creatTime":"2018-11-12"
-            }];
+            }];*/
 
         window.operateEvents = {
             'click .RoleOfEdit': function (e, value, row, index) {
@@ -117,10 +122,11 @@
 
         $('#tableL01').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
-            data:data1, //通过ajax返回的数据
+           // data:data1, //通过ajax返回的数据
             width:300,
             height:268,
             method: 'get',
+            url:'getUser',
             pageNumber: 1,
             cache: false,
             striped: true,
@@ -139,6 +145,22 @@
             }*/
         });
 
+
+            $.ajax({
+                timeout: 3000,
+                async: false,
+                type: "POST",
+                url: "getUserByName",
+                dataType: "json",
+                data: {
+                    "dictionaryName":dictionaryName,"userName":userName
+                },
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#issued_sub_key_c").append("<option>" + data[i].Name + "</option>");
+                    }
+                }
+            });
 
 
     })
