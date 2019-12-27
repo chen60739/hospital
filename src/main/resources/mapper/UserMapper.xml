@@ -30,21 +30,48 @@
     SELECT user_id, user_name,dictionary_name FROM user ,dictionary
     <where>
       department_id=dictionary_id
+      <if test="dictionaryName!= null and dictionaryName != ''">
+        and dictionary_name = #{dictionaryName}
+      </if>
+      <if test="userName!= null and userName != ''">
+        and user_name = #{userName}
+      </if>
     </where>
   </select>
 
-  <select id="getUserByName" resultMap="super">
-    SELECT user_id, user_name,dictionary_name FROM user ,dictionary
+  <select id="selectUser" resultMap="super">
+    SELECT user_name,dictionary_name FROM user ,dictionary
     <where>
       department_id=dictionary_id
       <if test="dictionaryName!= null and dictionaryName != ''">
-        and dictionary_name =#{dictionaryName}
+        and dictionary_name = #{dictionaryName}
       </if>
       <if test="userName!= null and userName != ''">
-        and user_name =#{userName}
+        and user_name = #{userName}
       </if>
     </where>
   </select>
+<!--已经在科室的人-->
+  <select id="getUserByName" resultMap="super">
+    SELECT  user_name,dictionary_name FROM user ,dictionary
+    <where>
+      department_id=dictionary_id
+      <if test="dictionaryName!= null and dictionaryName != ''">
+        and dictionary_name = #{dictionaryName}
+      </if>
+      <if test="userName!= null and userName != ''">
+        and user_name = #{userName}
+      </if>
+    </where>
+  </select>
+ <!-- 没在科室的人-->
+  <select id="getUserByNUll" resultMap="super">
+    SELECT  user_name FROM user where
+      department_id = null
+  </select>
+
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -55,6 +82,7 @@
     delete from user
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" parameterType="com.example.hospital.model.User">
     insert into user (user_id, user_name, user_pwd, 
       user_sex, user_phone, user_email, 

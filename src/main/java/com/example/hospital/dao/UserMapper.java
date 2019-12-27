@@ -4,6 +4,7 @@ import com.example.hospital.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 @Component
 @Mapper
@@ -20,7 +21,11 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    List<User> getUser();
+    List<User> getUser(String dictionaryName,String userName);
 
     List<User> getUserByName(String dictionaryName,String userName);
+
+    List<User> selectUser();
+
+    List<User> getUserByNull();
 }

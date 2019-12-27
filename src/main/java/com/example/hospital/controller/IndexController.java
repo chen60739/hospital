@@ -80,4 +80,13 @@ public class IndexController {
         return "group_power";
     }
 
+    @RequestMapping("/intoGroup")
+    public String intoGroup(){
+        return "into_group_management";
+    }
+    @RequestMapping("/tempView")
+    public String tempView(){
+        return "template_overview";
+    }
+
 }
