@@ -216,7 +216,7 @@
   </update>
   <!--随访组管理查询-->
   <select id="selectAllGroups" resultMap="super">
-      select group_name,group_num,group_principal,group_state,
+      select group_id, group_name,group_num,group_principal,group_state,
 			group_department_id,group_start_time,dictionary_name
 	      from groups,dictionary
 	      where groups.group_department_id=dictionary.dictionary_id
