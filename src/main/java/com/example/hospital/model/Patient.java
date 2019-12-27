@@ -7,21 +7,21 @@ import java.util.Date;
  * @author 陈奕璇
  * @date 2019/12/24
  */
-public class Patient implements Serializable,Cloneable{
+public class  Patient implements Serializable,Cloneable{
     /** 患者id */
     private Integer patientId ;
     /** 姓名 */
     private String patientName ;
     /** 性别 */
-    private String patientSex ;
+    private Integer patientSex ;
     /** 出生日期 */
     private Date patientBirthday ;
     /** 民族0其他1汉族 */
     private Integer nationId ;
     /** 门诊号 */
-    private Integer outpatientService ;
+    private String outpatientService ;
     /** 住院号 */
-    private Integer hospitalizationNumber ;
+    private String hospitalizationNumber ;
     /** 疾病名称 */
     private String diseaseName ;
     /** 疾病编码集 */
@@ -48,13 +48,9 @@ public class Patient implements Serializable,Cloneable{
         this.patientName = patientName;
     }
     /** 性别 */
-    public String getPatientSex(){
-        return this.patientSex;
-    }
+    public Integer getPatientSex() { return patientSex; }
     /** 性别 */
-    public void setPatientSex(String patientSex){
-        this.patientSex = patientSex;
-    }
+    public void setPatientSex(Integer patientSex) { this.patientSex = patientSex; }
     /** 出生日期 */
     public Date getPatientBirthday(){
         return this.patientBirthday;
@@ -72,19 +68,19 @@ public class Patient implements Serializable,Cloneable{
         this.nationId = nationId;
     }
     /** 门诊号 */
-    public Integer getOutpatientService(){
-        return this.outpatientService;
+    public String getOutpatientService() {
+        return outpatientService;
     }
     /** 门诊号 */
-    public void setOutpatientService(Integer outpatientService){
+    public void setOutpatientService(String outpatientService) {
         this.outpatientService = outpatientService;
     }
     /** 住院号 */
-    public Integer getHospitalizationNumber(){
-        return this.hospitalizationNumber;
+    public String getHospitalizationNumber() {
+        return hospitalizationNumber;
     }
     /** 住院号 */
-    public void setHospitalizationNumber(Integer hospitalizationNumber){
+    public void setHospitalizationNumber(String hospitalizationNumber) {
         this.hospitalizationNumber = hospitalizationNumber;
     }
     /** 疾病名称 */
@@ -119,17 +115,16 @@ public class Patient implements Serializable,Cloneable{
     public void setIsDel(Boolean isDel){
         this.isDel = isDel;
     }
-
     @Override
     public String toString() {
         return "Patient{" +
                 "patientId=" + patientId +
                 ", patientName='" + patientName + '\'' +
-                ", patientSex='" + patientSex + '\'' +
+                ", patientSex=" + patientSex +
                 ", patientBirthday=" + patientBirthday +
                 ", nationId=" + nationId +
-                ", outpatientService=" + outpatientService +
-                ", hospitalizationNumber=" + hospitalizationNumber +
+                ", outpatientService='" + outpatientService + '\'' +
+                ", hospitalizationNumber='" + hospitalizationNumber + '\'' +
                 ", diseaseName='" + diseaseName + '\'' +
                 ", disease='" + disease + '\'' +
                 ", resultLevel='" + resultLevel + '\'' +

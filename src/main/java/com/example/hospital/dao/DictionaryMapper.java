@@ -3,6 +3,8 @@ package com.example.hospital.dao;
 import com.example.hospital.model.Dictionary;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface DictionaryMapper {
     int deleteByPrimaryKey(Integer dictionaryId);
@@ -16,4 +18,7 @@ public interface DictionaryMapper {
     int updateByPrimaryKeySelective(Dictionary record);
 
     int updateByPrimaryKey(Dictionary record);
+
+    //查询科室
+    List<Dictionary> selectAll();
 }

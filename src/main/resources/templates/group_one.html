@@ -27,7 +27,7 @@
                         <button type="button" class="btn btn-info"><a href="/groupPower" style="color: white">权限管理</a></button>
                         <button type="button" class="btn btn-info"><a href="/intoGroup" style="color: white">入组管理</a></button>
                         <button type="button" class="btn btn-info"><a href="/templist" style="color: white">模板设置</a></button>
-                        <button type="button" class="btn btn-info">随访规则设定</button>
+                        <button type="button" class="btn btn-info"><a href="/followUpSetting" style="color: white">随访规则设定</a></button>
                         <button type="button" class="btn btn-info"><a href="/plan" style="color: white">诊疗方案</a></button>
                     </div>
                     <hr>
@@ -40,7 +40,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">门诊号</div>
-                                    <input type="text" class="form-control" placeholder="请输入门诊号">
+                                    <input type="text" class="form-control" placeholder="请输入门诊号" id="outpatientService">
                                 </div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">住院号</div>
-                                    <input type="text" class="form-control" placeholder="请输入住院号">
+                                    <input type="text" class="form-control" placeholder="请输入住院号" id="hospitalizationNumber">
                                 </div>
                             </div>
                         </div>
@@ -56,10 +56,10 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">性别</div>
-                                    <select class="form-control">
-                                        <option>-请选择-</option>
-                                        <option>男</option>
-                                        <option>女</option>
+                                    <select class="form-control" id="sex">
+                                        <option value="">-请选择-</option>
+                                        <option value="1">男</option>
+                                        <option value="0">女</option>
                                     </select>
                                 </div>
                             </div>
@@ -70,9 +70,9 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">入组时间</div>
-                                    <input type="date" class="form-control">
+                                    <input type="date" class="form-control" id="preTime">
                                     <div class="input-group-addon">~</div>
-                                    <input type="date" class="form-control">
+                                    <input type="date" class="form-control" id="sufTime">
                                 </div>
                             </div>
                         </div>
@@ -80,102 +80,159 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">姓名</div>
-                                    <input type="text" class="form-control" placeholder="请输入姓名">
+                                    <input type="text" class="form-control" placeholder="请输入姓名" id="patientName">
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-3">
                             <button type="reset" class="btn btn-info">清空</button>
-                            <button type="submit" class="btn btn-info">检索</button>
+                            <button type="submit" id="search"  class="btn btn-info">检索</button>
                             <a>高级检索</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-12 col-md-12" style="padding-bottom: 20px;padding-top: 20px">
-                    <button type="button" class="btn btn-info">新增</button>
-                    <button type="button" class="btn btn-info">编辑</button>
-                    <button type="button" class="btn btn-danger">删除</button>
-                </div>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover" id="tableL01"></table>
             </div>
-
         </div>
     </div>
-    <nav aria-label="Page navigation">
-        <ul class="pagination" id="qian">
-        </ul>
-    </nav>
+</div>
+<div id="toolbar">
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">新增</button>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">编辑</button>
+    <button type="button" class="btn btn-danger">删除</button>
 </div>
 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">新建患者</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-5 col-xs-offset-1">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">住院号</div>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-5">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">姓名</div>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-5 col-xs-offset-1">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">门诊号</div>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-5">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">出生日期</div>
+                                <input type="date" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script>
-    $(function () {
-        var tableColumns = [
-            {checkbox: true},
-            {field: 'name', title: '门诊号/住院号',align:'center', sortable: true},
-            {field: 'lv', title: '姓名',align:'center', sortable: true},
-            {field: 'person', title: '性别',align:'center' ,sortable: true},
-            {field: 'state', title: '年龄',align:'center', sortable: true},
-            {field: 'creatTime', title: '入组时间',align:'center', sortable: true},
-            {field: 'operate', title: '查看',align:'center', events: 'operateEvents',formatter: operateFormatter}
-        ];
-        var data1 = [{"name":"内分泌随访",
-            "lv":"60%",
-            "person":"张三",
-            "state":"开放",
-            "class":"内分泌科",
-            "creatTime":"2018-11-12"},
-            {"name":"内分泌随访",
-                "lv":"40%",
-                "person":"xx",
-                "state":"开放",
-                "class":"内分泌科",
-                "creatTime":"2018-11-12"
-            }];
+            var tableColumns = [
+                {checkbox: true},
+                {field: 'outpatientService', title: '门诊号/住院号',align:'center', sortable: true},
+                {field: 'patientName', title: '姓名',align:'center', sortable: true},
+                {field: 'patientSex', title: '性别',align:'center' ,sortable: true,formatter:function (value) {
+                        if(value==1){
+                            return "男";
+                        }else{
+                            return "女";
+                        }
+                    }},
+                {field: 'patientBirthday', title: '年龄',align:'center', sortable: true,formatter:function (value) {
+                        var d=new Date();
+                        var nowyear=d.getFullYear()
+                        var birArr = value.split("-");
+                        var birYear = birArr[0];
+                        return nowyear-birYear+"岁";
+                    }},
+                {field: 'planningGroups.inGroupTime', title: '入组时间',align:'center', sortable: true},
+                {field: 'operate', title: '查看',align:'center', events: 'operateEvents',formatter: operateFormatter}
+            ];
 
-        window.operateEvents = {
-            'click .RoleOfA': function (e, value, row, index) {
-                alert("A");
+            window.operateEvents = {
+                'click .RoleOfA': function (e, value, row, index) {
+                    alert("A");
+                }
+            };
+
+
+            function operateFormatter(value, row, index) {
+                return [
+                    '<button type="button" class="RoleOfA btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>'
+                ].join('');
             }
-        };
-
-
-        function operateFormatter(value, row, index) {
-            return [
-                '<button type="button" class="RoleOfA btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>'
-            ].join('');
-        }
-
-        $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
-
+            $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
         $('#tableL01').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
-            data:data1, //通过ajax返回的数据
+            url:'/findPatients',
+            //data:data1, //通过ajax返回的数据
             width:300,
-            height:268,
+            height:400,
             method: 'get',
-            pageNumber: 1,
+            pageNumber: 1,//初始化加载第一页
             cache: false,
             striped: true,
             pagination: true,
             sidePagination: 'client',
-            pageSize: 5,//单页记录数
-            pageList: [5, 10, 20, 30],//可选择单页记录数
+            pageSize: 3,//单页记录数
+            pageList: [3, 5, 10, 20],//可选择单页记录数
             search: false,
             theadClasses: "thead-blue",
             showRefresh: false,
             showExport: false,
             showFooter: true,
+            silent:true,
             // exportTypes: ['csv', 'txt', 'xml'],
             clickToSelect: true,
+            toolbar:'#toolbar',
+            //得到查询的参数
+            queryParams:function queryParams(params) {
+                var param = {
+                    outpatientService:$('#outpatientService').val(),//门诊号
+                    hospitalizationNumber:$('#hospitalizationNumber').val(),//住院号
+                    patientSex: $('#sex').val(),//性别
+                    preTime: $('#preTime').val(),//前时间
+                    sufTime: $('#sufTime').val(),//后时间
+                    patientName: $('#patientName').val()//姓名
+                };
+                return param;
+            }
         });
 
-    })
-
+        $(document).on('click','#search',function () {
+            $('#tableL01').bootstrapTable('refresh');
+        })
 </script>
-
 </html>

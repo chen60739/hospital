@@ -9,7 +9,7 @@
     <result column="group_department_id" jdbcType="INTEGER" property="groupDepartmentId" />
     <result column="group_rank_id" jdbcType="INTEGER" property="groupRankId" />
     <result column="group_phone" jdbcType="CHAR" property="groupPhone" />
-    <result column="group_state" jdbcType="VARCHAR" property="groupState" />
+    <result column="group_state" jdbcType="INTEGER" property="groupState" />
     <result column="group_start_time" jdbcType="TIMESTAMP" property="groupStartTime" />
     <result column="group_end_time" jdbcType="TIMESTAMP" property="groupEndTime" />
     <result column="group_num" jdbcType="VARCHAR" property="groupNum" />
@@ -17,6 +17,10 @@
     <result column="control_group" jdbcType="TINYINT" property="controlGroup" />
     <result column="background" jdbcType="VARCHAR" property="background" />
     <result column="is_del" jdbcType="TINYINT" property="isDel" />
+  </resultMap>
+
+  <resultMap id="super" type="com.example.hospital.dto.SupGroups" extends="BaseResultMap">
+    <result column="dictionary_name" property="dictionaryName"></result>
   </resultMap>
   <sql id="Base_Column_List">
     group_id, group_name, group_principal, group_hospital_id, group_department_id, group_rank_id, 
@@ -210,4 +214,24 @@
       is_del = #{isDel,jdbcType=TINYINT}
     where group_id = #{groupId,jdbcType=INTEGER}
   </update>
+  <!--随访组管理查询-->
+  <select id="selectAllGroups" resultMap="super">
+      select group_name,group_num,group_principal,group_state,
+			group_department_id,group_start_time,dictionary_name
+	      from groups,dictionary
+	      where groups.group_department_id=dictionary.dictionary_id
+	      <if test="groupPrincipal!=null and groupPrincipal!=''">
+            AND groups.group_principal like CONCAT("%",#{groupPrincipal},"%")
+          </if>
+          <if test="dictionaryId!=null and dictionaryId!=''">
+            AND dictionary.dictionary_id = #{dictionaryId}
+          </if>
+          <if test="groupState!=null">
+            AND groups.group_state =#{groupState}
+          </if>
+          <if test="time1!=null and time1!=''">
+            AND groups.group_start_time between #{time1} and #{time2}
+          </if>
+
+    </select>
 </mapper>

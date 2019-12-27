@@ -88,5 +88,9 @@ public class IndexController {
     public String tempView(){
         return "template_overview";
     }
+    @RequestMapping("/followUpSetting")
+    public String followUpSetting(){
+        return "follow_up_rule_setting";
+    }
 
 }

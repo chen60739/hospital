@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>入组管理</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-table.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap-table.js"></script>
+    <script src="/js/bootstrap-table-zh-CN.js"></script>
+    <link rel="stylesheet" href="/css/hospital.css">
+    <link rel="stylesheet" href="/css/selectcheck.css">
+    <script src="/js/selectcheck.js"></script>
+    <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
+</head>
+<style>
+    .btnrow{
+        padding-top: 10px;
+        padding-left: 35px;
+    }
+    .btn-info{
+        width: 100px;
+    }
+    .btndian{
+        width: 30px;
+        height: 17px;
+        padding:0px;
+    }
+    .follow-btn{
+        margin-left: -9px;
+        margin-top: 10px
+    }
+</style>
+<body>
+<div th:replace="navigation :: nav"></div>
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-xs-12 col-md-12">
+            <div style="padding-top: 20px">
+                <a href="javascript:history.back(-1)"><span class="glyphicon glyphicon-arrow-left"></span>返回随访组</a>
+                <h3 align="center">随访规则设定</h3>
+                <hr>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-xs-2" id="btnContainer" style="border:1px #e1e1e1;border-right-style:solid">
+                <div class="btnrow">
+                    <button type="button" value="base" class="btn btn-info showPage">基线</button>
+                </div>
+                <div class="follow-btn">
+                    <button type="button" value="department" class="btn btn-default showPage">
+                        <div align="left">
+                        随访规则1<br>
+                        事件：本科室第一次手术<br>
+                        起始时间：事件后一月<br>
+                        间隔时间:1月，共6次<br>
+                        提前5天自动通知
+                        </div>
+                    </button>
+                </div>
+                <div class="btnrow">
+                    <button id="addPlan" type="button" class="btn btn-info"><i class="fa fa-plus"></i></button>
+                </div>
+            </div>
+            <div class="col-xs-9" style="border:1px #e1e1e1;border-left-style:solid">
+                <div class="col-xs-12" style="margin-top: 10px;margin-left: 50px;">
+                    <div class="row" style="margin-left: 100px">
+                        <label>节假日设定（节假日是否排期）：</label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="yesno" value="option1">是
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="yesno" value="option2">提前到上一工作日
+                        </label>
+                        <label class="checkbox-inline">
+                            <input type="radio" name="yesno" value="option2">顺延到下一工作日
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-12" id="planContainer">
+                    <div id="base" style="display: block">
+                        <div class="col-xs-6 col-xs-offset-5">
+                            <button class="btn btn-info" data-toggle="modal" data-target="#myModal">引用模板</button>
+                        </div>
+                    </div>
+                    <div id="department" style="display: none">
+                        <div style="padding-left: 30px"><h4>1.时点设置</h4></div>
+                        <div class="row">
+                            <div class="col-xs-12 col-xs-offset-1">
+                                <label>基准事件：</label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">门诊
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">入院
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">出院
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option3">手术
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option3">入ICU
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio6" value="option3">出ICU
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-xs-offset-1">
+                                <label>筛选条件：</label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="di" id="inlineRadio7" value="option1">本院
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="di" id="inlineRadio8" value="option2">本科室
+                                </label>
+                                <br>
+                                <label class="radio-inline" style="padding-left: 94px">
+                                    <input type="radio" name="ci" id="inlineRadio9" value="option3">首次
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="ci" id="inlineRadio10" value="option3">末次
+                                </label>
+                                <br>
+                                <label class="radio-inline" style="padding-left: 94px">
+                                    <input type="radio" name="y" id="inlineRadio11" value="option3">本就诊
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="y" id="inlineRadio12" value="option3">任意就诊
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-xs-offset-1">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">起始</div>
+                                        <input type="date" class="form-control" placeholder="请输入密码">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-xs-offset-1">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">间隔</div>
+                                        <input type="date" class="form-control" placeholder="请输入密码">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-xs-offset-1">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">持续</div>
+                                        <input type="number" class="form-control" placeholder="">
+                                        <div class="input-group-addon">次</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-xs-offset-1">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">提前</div>
+                                        <input type="number" class="form-control" placeholder="">
+                                        <div class="input-group-addon">天自动通知</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div style="padding-left: 30px"><h4>2.模板选择</h4></div>
+                        <div class="row">
+                            <div class="col-xs-4 col-xs-offset-1">
+                                <button class="btn btn-info" data-toggle="modal" data-target="#myModal" style="width: 120px">引用CRF模板</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div style="padding-left: 30px"><h4>3.提醒方式</h4></div>
+                        <div class="row">
+                            <div class="col-xs-4 col-xs-offset-1">
+                                <button class="btn btn-info" style="width: 150px">引用随访提醒模板</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-xs-offset-1">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">提醒方式：</div>
+                                        <select class="form-control">
+                                            <option>-请选择-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-xs-offset-1">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">发送至：</div>
+                                        <select class="form-control">
+                                            <option>-请选择-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-xs-offset-1">
+                                <button class="btn btn-info" style="width: 170px">引用数据项预警模板</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4 col-xs-offset-1">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">提醒方式：</div>
+                                        <select class="form-control">
+                                            <option>-请选择-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-xs-offset-1">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">发送至：</div>
+                                        <select class="form-control">
+                                            <option>-请选择-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-xs-offset-5">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-info">保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--通用模板选择弹出页面-->
+<div th:replace="template_selection :: temp"></div>
+</body>
+
+<script>
+    $(function () {
+
+        $(document).on("click",".showPage",function () {
+            showPage(this.value);
+        })
+
+        function showPage(name) {
+            var a = $("#planContainer").children("div");
+            a.each(function () {
+                if (this.id==name){
+                    $("#"+name+"").css("display","block");
+                }else {
+                    $("#"+this.id+"").css("display","none");
+                }
+            })
+        }
+
+    })
+
+</script>
+</html>
