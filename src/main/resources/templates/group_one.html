@@ -183,7 +183,7 @@
 
             window.operateEvents = {
                 'click .RoleOfA': function (e, value, row, index) {
-                    alert("A");
+                    window.location.href="/patient";
                 }
             };
 
@@ -198,8 +198,6 @@
             columns: tableColumns,  //表头
             url:'/findPatients',
             //data:data1, //通过ajax返回的数据
-            width:300,
-            height:400,
             method: 'get',
             pageNumber: 1,//初始化加载第一页
             cache: false,

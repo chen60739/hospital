@@ -25,6 +25,9 @@
     <link rel="stylesheet" href="/plugs/fullcalendar/packages/bootstrap/main.css">
     <script src="/plugs/fullcalendar/packages/bootstrap/main.js"></script>
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+
+    <script src="/js/bootstrap-toggle.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap-toggle.min.css">
 </head>
 <body>
 <div th:replace="navigation :: nav"></div>
@@ -129,6 +132,7 @@
 </div>
 </body>
 <script>
+
     $(function () {
         $("#listbtn").click(function () {
             $("#tu").css("display","none");
@@ -148,8 +152,13 @@
             {field: 'class', title: '年龄',align:'center', sortable: true},
             {field: 'creatTime', title: '入组时间',align:'center', sortable: true},
             {field: 'class', title: '下次随访日期',align:'center', sortable: true},
-            {field: 'class', title: '状态',align:'center', sortable: true},
-            {field: 'class', title: '预览',align:'center', sortable: true}];
+            {field: 'class', title: '状态',align:'center', formatter:function (value) {
+                    return '<input type="checkbox" class="toggle-demo" value="'+value+'" checked data-toggle="toggle" data-onstyle="info">'
+                }},
+            {field: 'operate', title: '预览',align:'center',formatter:function (value) {
+                    return '<button type="button" class="RoleOfA btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>'
+                }
+            }];
         var data1 = [{"name":"内分泌随访",
             "lv":"60%",
             "person":"张三",
@@ -166,17 +175,9 @@
 
         $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
 
-        /*$('#tableL01').bootstrapTable({
-            onClickCell: function(params){
-                alert(params);
-            }
-        });*/
-
         $('#tableL01').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
             data:data1, //通过ajax返回的数据
-            width:300,
-            height:268,
             method: 'get',
             pageNumber: 1,
             cache: false,
@@ -192,12 +193,26 @@
             toolbar:"#toolbar",
             // exportTypes: ['csv', 'txt', 'xml'],
             clickToSelect: true,
-            onClickCell: function(params){
+            /*onClickCell: function(params){
                 location.href="/one";
-            }
+            }*/
         });
 
     })
+
+    $(document).ready(function(){
+        $('.toggle-demo').bootstrapToggle({
+            on: '未随访',
+            off: '已随访'
+        });
+
+        $('.toggle-demo').change(function() {
+            var a = $(this).val();
+            alert(a);
+        })
+    })
+
+
 
     document.addEventListener('DOMContentLoaded', function() {
         var initialLocaleCode = 'en';
