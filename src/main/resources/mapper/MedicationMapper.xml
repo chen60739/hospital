@@ -9,15 +9,22 @@
   <sql id="Base_Column_List">
     m_id, medication_id, medication_dictionary_id
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from medication
     where m_id = #{mId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from medication
-    where m_id = #{mId,jdbcType=INTEGER}
+  <select id="selectMedication" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from medication
+    where medication_id=#{medicationId}
+  </select>
+  <delete id="deleteMedication" parameterType="java.lang.Integer">
+      delete from medication
+      where medication_id = #{medication_id}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Medication">
     insert into medication (m_id, medication_id, medication_dictionary_id
@@ -25,7 +32,7 @@
     values (#{mId,jdbcType=INTEGER}, #{medicationId,jdbcType=INTEGER}, #{medicationDictionaryId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.example.hospital.model.Medication">
+  <insert id="insertMedication" parameterType="com.example.hospital.model.Medication">
     insert into medication
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="mId != null">

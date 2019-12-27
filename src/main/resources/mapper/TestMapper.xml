@@ -15,9 +15,15 @@
     from test
     where t_id = #{tId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <select id="selectTest" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from test
+    where test_id=#{testId}
+  </select>
+  <delete id="deleteTest" parameterType="java.lang.Integer">
     delete from test
-    where t_id = #{tId,jdbcType=INTEGER}
+    where test_id = #{test_id}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Test">
     insert into test (t_id, test_id, test_dictionary_id
@@ -25,7 +31,7 @@
     values (#{tId,jdbcType=INTEGER}, #{testId,jdbcType=INTEGER}, #{testDictionaryId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.example.hospital.model.Test">
+  <insert id="insertTest" parameterType="com.example.hospital.model.Test">
     insert into test
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="tId != null">
