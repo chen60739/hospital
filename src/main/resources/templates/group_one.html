@@ -81,11 +81,12 @@
                                 <div class="input-group">
                                     <div class="input-group-addon">姓名</div>
                                     <input type="text" class="form-control" placeholder="请输入姓名" id="patientName">
+                                    <input type="hidden" id="groupId" th:value="${groupId}" >
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-3">
-                            <button type="reset" class="btn btn-info">清空</button>
+                            <button type="reset" class="btn btn-info" id="searchReset">清空</button>
                             <button type="submit" id="search"  class="btn btn-info">检索</button>
                             <a>高级检索</a>
                         </div>
@@ -197,7 +198,6 @@
         $('#tableL01').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
             url:'/findPatients',
-            //data:data1, //通过ajax返回的数据
             method: 'get',
             pageNumber: 1,//初始化加载第一页
             cache: false,
@@ -218,6 +218,7 @@
             //得到查询的参数
             queryParams:function queryParams(params) {
                 var param = {
+                   groupId:$('#groupId').val(),//小组Id
                     outpatientService:$('#outpatientService').val(),//门诊号
                     hospitalizationNumber:$('#hospitalizationNumber').val(),//住院号
                     patientSex: $('#sex').val(),//性别
@@ -231,6 +232,11 @@
 
         $(document).on('click','#search',function () {
             $('#tableL01').bootstrapTable('refresh');
+        })
+        $("#searchReset").click(function () {
+            $("input[type=text]").val('');
+            document.getElementById("sex").options.selectedIndex=0;
+            $("#sex").selectpicker('refresh');
         })
 </script>
 </html>

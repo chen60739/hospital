@@ -37,8 +37,8 @@
     <if test="superPatient.hospitalizationNumber !=null and superPatient.hospitalizationNumber !=''">
       and p.hospitalization_number like  CONCAT('%',#{superPatient.hospitalizationNumber},'%')
     </if>
-    <if test="superPatient.patientSex !=null and superPatient.patientSex !='' " >
-      and p.patient_sex = #{superPatient.patientSex}
+    <if test="superPatient.patientSex !=null " >
+      and p.patient_sex = ${superPatient.patientSex}
     </if>
     <if test="superPatient.patientName !=null and  superPatient.patientName !='' " >
       and p.patient_name like   CONCAT('%',#{superPatient.patientName},'%')

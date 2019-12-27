@@ -237,6 +237,7 @@
     $(function () {
         var tableColumns = [
             {checkbox: true},
+            {field: 'groupId',title:'编号',visible:false,align:'center', sortable: true},
             {field: 'groupName', title: '名称',align:'center', sortable: true},
             {field: 'groupNum', title: '入组率',align:'center', sortable: true},
             {field: 'groupPrincipal', title: '负责人',align:'center' ,sortable: true},
@@ -267,8 +268,9 @@
             showFooter: true,
             clickToSelect: true,
             toolbar:'#toolbar',
-            onClickCell: function(params){
-                location.href="/one";
+            onClickRow: function(params){
+                var groupId=params.groupId;
+                location.href="/one?groupId="+groupId;
             },
             queryParams: function queryParams(params){
                 var param = {
