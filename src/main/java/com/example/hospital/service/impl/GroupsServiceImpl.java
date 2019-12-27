@@ -1,4 +1,4 @@
-package com.example.hospital.service.Impl;
+package com.example.hospital.service.impl;
 
 import com.example.hospital.dao.DictionaryMapper;
 import com.example.hospital.dao.GroupsMapper;
@@ -8,9 +8,7 @@ import com.example.hospital.service.GroupsService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class GroupsServiceImpl implements GroupsService{
