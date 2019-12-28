@@ -1,6 +1,7 @@
 package com.example.hospital.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -31,7 +32,9 @@ public class IndexController {
     }
 
     @RequestMapping("/one")
-    public String one(){
+    public String one(Integer groupId, Model model){
+        model.addAttribute("groupId",groupId);
+
         return "group_one";
     }
 
@@ -79,6 +82,14 @@ public class IndexController {
     @RequestMapping("/tempView")
     public String tempView(){
         return "template_overview";
+    }
+    @RequestMapping("/followUpSetting")
+    public String followUpSetting(){
+        return "follow_up_rule_setting";
+    }
+    @RequestMapping("/patient")
+    public String patient(){
+        return "patient";
     }
 
 }
