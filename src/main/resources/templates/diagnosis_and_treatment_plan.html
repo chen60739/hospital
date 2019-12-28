@@ -58,6 +58,7 @@
                 <div id="list" style="display: block" >
                     <form action="savePlan">
                         <input id="pid" type="hidden" name="programmeId" >
+                        <input id="did" type="hidden" name="departmentId">
                         <table border="1" align="center">
                             <tr>
                                 <td colspan="2" align="center">
@@ -115,172 +116,180 @@
 </body>
 <script>
     $(function () {
+        var mmm = new Array();
+        var iii = new Array();
+        var chch = new Array();
         var departmentId=11509;
+        $.get("/findPlan",{},function (result) {
+            for (var i = 0; i <result.length ; i++) {
+                if(result[i].oneId==14000){
+                    mmm.push(result[i]);
+                }
+                if(result[i].oneId==15000){
+                    iii.push(result[i]);
+                }
+                if(result[i].oneId==16000){
+                    chch.push(result[i]);
+                }
+            }
+        });
         $.post("findAllProgramme",{"departmentId":departmentId},function (res) {
-            for (var i = 0; i <res.length ; i++) {
-                var count=res[i].programmeName;
-                var programmeId = res[i].programmeId;
+            var count;
+            var programmeId
+            for (var i = 0; i < res.length; i++) {
+                count = res[i].programmeName;
+                programmeId = res[i].programmeId;
                 var medication1 = res[0].medicationList;
                 var test1 = res[0].testList;
                 var checked1 = res[0].checkedList;
                 var treatment1 = res[0].treatment;
                 var operation1 = res[0].operation;
-                var notice1  = res[0].notice;
-                if(i==0){
+                var notice1 = res[0].notice;
+                if (i == 0) {
                     $("#programmeName").html(count);
                     $("#pid").val(programmeId);
-                    $("#fangan").attr("placeholder",count);
+                    $("#fangan").attr("placeholder", count);
                     $("#treatment").html(treatment1);
                     $("#operation").html(operation1);
                     $("#notice").html(notice1);
-                    $.get("/findPlan",{},function (result) {
-                        for (var i = 0; i <result.length ; i++) {
-                            if(result[i].oneId==14000){
-                                $(".medication").append("<option value='"+result[i].dictionaryId+"'>"+result[i].dictionaryName+"</option>")
-                                for (var j = 0; j <medication1.length ; j++) {
-                                    if (result[i].dictionaryId==medication1[j].medicationDictionaryId){
-                                        var medicationDictionaryId =result[i].dictionaryId;
-                                       $(".medication option[value='"+medicationDictionaryId+"']").attr("selected","selected");
-                                    }
-                                }
-                            }
-                            if(result[i].oneId==15000){
-                                $(".inspection").append("<option value='"+result[i].dictionaryId+"'>"+result[i].dictionaryName+"</option>")
-                                for (var k = 0; k <test1.length ; k++) {
-                                    if (result[i].dictionaryId==test1[k].testDictionaryId){
-                                        var testDictionaryId =result[i].dictionaryId;
-                                        $(".inspection option[value='"+testDictionaryId+"']").attr("selected","selected");
-                                    }
-                                }
-                            }
-                            if (result[i].oneId==16000){
-                                $(".check").append("<option value='"+result[i].dictionaryId+"'>"+result[i].dictionaryName+"</option>")
-                                for (var j = 0; j <checked1.length ; j++) {
-                                    if (result[i].dictionaryId==checked1[j].checkedDictionaryId){
-                                        var checkedDictionaryId =result[i].dictionaryId;
-                                        $(".check option[value='"+checkedDictionaryId+"']").attr("selected","selected");
-                                    }
-                                }
-                            }
+                    for (var j = 0; j < mmm.length; j++) {
+                        $(".medication").append("<option value='" + mmm[j].dictionaryId + "'>" + mmm[j].dictionaryName + "</option>")
+                        for (var k = 0; k < medication1.length; k++) {
+                            var medicationDictionaryId = medication1[k].medicationDictionaryId;
+                            $(".medication option[value='" + medicationDictionaryId + "']").attr("selected", "selected");
                         }
-                        $("#organId").fSelect();
-                        $("#inspection").fSelect();
-                        $("#check").fSelect();
-                    });
+                    }
+                    for (var j = 0; j < iii.length; j++) {
+                        $(".inspection").append("<option value='" + iii[j].dictionaryId + "'>" + iii[j].dictionaryName + "</option>")
+                        for (var k = 0; k < test1.length; k++) {
+                            var testDictionaryId = test1[k].testDictionaryId;
+                            $(".inspection option[value='" + testDictionaryId + "']").attr("selected", "selected");
+                        }
+                    }
+                    for (var j = 0; j < chch.length; j++) {
+                        $(".check").append("<option value='" + chch[j].dictionaryId + "'>" + chch[j].dictionaryName + "</option>")
+                        for (var k = 0; k < checked1.length; k++) {
+                            var checkedDictionaryId = checked1[k].checkedDictionaryId;
+                            $(".check option[value='" + checkedDictionaryId + "']").attr("selected", "selected");
 
-                }else{
+                        }
+                    }
+                    $("#organId").fSelect();
+                    $("#inspection").fSelect();
+                    $("#check").fSelect();
+                } else {
                     var medication = res[i].medicationList;
+                    console.log(medication);
                     var test = res[i].testList;
                     var checked = res[i].checkedList;
-
+                    /* var v = "";
+                    v+='"<div id=\'list"+count+"\' style=\\"display: block\\">';
+                    v+="<select>";
+                    if(){
+                        v+="<option selected></option>"
+                    }else{
+                        v+="<option></option>"
+                    }
+                    v+="</select>";
+                    v+="</div>"
+                    $("#planContainer").append(v);*/
                     $("#addPlan").parent().before("<div class=\"btnrow\">\n" +
-                        "                    <button type=\"button\" value='list"+count+"' class=\"btn btn-info planBtn\">"+count+"</button>\n" +
+                        "                    <button type=\"button\" value='list" + count + "' class=\"btn btn-info planBtn\">" + count + "</button>\n" +
                         "                </div>");
-                    $("#planContainer").append("<div id='list"+count+"' style=\"display: block\">\n" +
+                    $("#planContainer").append("<div id='list" + count + "' style=\"display: block\">\n" +
                         "                 <form action=\"savePlan\">\n" +
-                        "                    <iinput id='pid"+count+"' value='"+programmeId+"' type=\"hidden\" name=\"programmeId\">\n" +
+                        "                    <iinput id='pid" + count + "' value='" + programmeId + "' type=\"hidden\" name=\"programmeId\">\n" +
                         "                    <table border=\"1\" align=\"center\">\n" +
                         "                       <tr>\n" +
                         "                         <td colspan=\"2\" align=\"center\">\n" +
-                        "                            <input placeholder='"+count+"'   name=\"programmeName\">\n"+
+                        "                            <input placeholder='" + count + "'   name=\"programmeName\">\n" +
                         "                            <button type=\"submit\" class=\"btn btn-info btn-sm\">保存</button>\n" +
                         "                           </td>\n" +
                         "                        </tr>\n" +
                         "                        <tr style=\"height: 70px\">\n" +
                         "                            <td width=\"150px\">1.用药</td>\n" +
                         "                            <td width=\"400px\">\n" +
-                        "                                <select id='organId"+count+"' name=\"medicationDictionaryId\" multiple=\"multiple\" class='medication"+count+"'>\n" +
+                        "                                <select id='organId" + count + "' name=\"medicationDictionaryId\" multiple=\"multiple\" class='medication" + count + "'>\n" +
                         "                                </select>\n" +
                         "                            </td>\n" +
                         "                        </tr>\n" +
                         "                        <tr style=\"height: 70px\">\n" +
                         "                            <td>2.检验</td>\n" +
                         "                            <td>\n" +
-                        "                                <select id='inspection"+count+"'  name=\"testDictionaryId\" multiple=\"multiple\" class='inspection"+count+"'>\n" +
+                        "                                <select id='inspection" + count + "'  name=\"testDictionaryId\" multiple=\"multiple\" class='inspection" + count + "'>\n" +
                         "                                </select>\n" +
                         "                            </td>\n" +
                         "                        </tr>\n" +
                         "                        <tr style=\"height: 70px\">\n" +
                         "                            <td>3.检查</td>\n" +
                         "                            <td>\n" +
-                        "                                <select id='check"+count+"' name=\"checkedDictionaryId\" multiple=\"multiple\" class='check"+count+"'>\n" +
+                        "                                <select id='check" + count + "' name=\"checkedDictionaryId\" multiple=\"multiple\" class='check" + count + "'>\n" +
                         "                                </select>\n" +
                         "                            </td>\n" +
                         "                        </tr>\n" +
                         "                        <tr style=\"height: 100px\">\n" +
                         "                            <td>4.治疗</td>\n" +
                         "                            <td>\n" +
-                        "                                <textarea id='treatment"+count+"' name=\"treatment\"></textarea>\n" +
+                        "                                <textarea id='treatment" + count + "' name=\"treatment\"></textarea>\n" +
                         "                            </td>\n" +
                         "                        </tr>\n" +
                         "                        <tr style=\"height: 100px\">\n" +
                         "                            <td>5.手术</td>\n" +
                         "                            <td>\n" +
-                        "                                <textarea id='operation"+count+"' name=\"operation\"></textarea>\n" +
+                        "                                <textarea id='operation" + count + "' name=\"operation\"></textarea>\n" +
                         "                            </td>\n" +
                         "                        </tr>\n" +
                         "                        <tr style=\"height: 100px\">\n" +
                         "                            <td>6.通知</td>\n" +
                         "                            <td>\n" +
-                        "                                <textarea id='notice"+count+"'  name=\"notice\"></textarea>\n" +
+                        "                                <textarea id='notice" + count + "'  name=\"notice\"></textarea>\n" +
                         "                            </td>\n" +
                         "                        </tr>\n" +
                         "                    </table>\n" +
-                        "                  </form>\n"+
+                        "                  </form>\n" +
                         "                </div>");
                     var treatment = res[i].treatment;
                     var operation = res[i].operation;
-                    var notice  = res[i].notice;
-                    var tid = 'treatment'+count;
-                    var oid = 'operation'+count;
-                    var nid = 'notice'+count;
-                    $("#"+tid).html(treatment);
-                    $("#"+oid).html(operation);
-                    $("#"+nid).html(notice);
-
-                    $.get("/findPlan",{},function (result) {
-                        for (var i = 0; i <result.length ; i++) {
-                            if(result[i].oneId==14000){
-                                var aaaa= 'medication'+count;
-                                $("."+aaaa).append("<option value='"+result[i].dictionaryId+"'>"+result[i].dictionaryName+"</option>")
-                                for (var j = 0; j <medication.length ; j++) {
-                                    if (result[i].dictionaryId==medication[j].medicationDictionaryId){
-                                        var medicationDictionaryId =result[i].dictionaryId;
-                                        $(".medication"+count+" option[value='"+medicationDictionaryId+"']").attr("selected","selected");
-                                    }
-                                }
-                            }
-                            if(result[i].oneId==15000){
-                                var bbbb = 'inspection'+count;
-                                $("."+bbbb).append("<option value='"+result[i].dictionaryId+"'>"+result[i].dictionaryName+"</option>")
-                                for (var k = 0; k <test.length ; k++) {
-                                    if (result[i].dictionaryId==test[k].testDictionaryId){
-                                        var testDictionaryId =result[i].dictionaryId;
-                                        $(".inspection"+count+" option[value='"+testDictionaryId+"']").attr("selected","selected");
-                                    }
-                                }
-                            }
-                            if (result[i].oneId==16000){
-                                var cccc ='check'+count;
-                                $("."+cccc).append("<option value='"+result[i].dictionaryId+"'>"+result[i].dictionaryName+"</option>")
-                                for (var j = 0; j <checked.length ; j++) {
-                                    if (result[i].dictionaryId==checked[j].checkedDictionaryId){
-                                        var checkedDictionaryId =result[i].dictionaryId;
-                                        $(".check"+count+" option[value='"+checkedDictionaryId+"']").attr("selected","selected");
-                                    }
-                                }
-                            }
+                    var notice = res[i].notice;
+                    var tid = 'treatment' + count;
+                    var oid = 'operation' + count;
+                    var nid = 'notice' + count;
+                    $("#" + tid).html(treatment);
+                    $("#" + oid).html(operation);
+                    $("#" + nid).html(notice);
+                    var aaaa = 'medication' + count;
+                    var bbbb = 'inspection' + count;
+                    var cccc = 'check' + count;
+                    for (var j = 0; j < mmm.length; j++) {
+                        $("." + aaaa).append("<option value='" + mmm[j].dictionaryId + "'>" + mmm[j].dictionaryName + "</option>")
+                        for (var k = 0; k < medication.length; k++) {
+                            var medicationDictionaryId = medication[k].medicationDictionaryId;
+                            $("." + aaaa + "  option[value='" + medicationDictionaryId + "']").attr("selected", "selected");
                         }
-                        var organId = 'organId'+count;
-                        var inspectionId = 'inspection'+count;
-                        var checkId = 'check'+count;
-                        $("#" + organId).fSelect();
-                        $("#" + inspectionId).fSelect();
-                        $("#" + checkId).fSelect();
-                    });
-                    $("#list").css("display","none");
-                    var listname = 'list'+count;
-                    $("#listname").css("display","block");
+                    }
+                    for (var j = 0; j < iii.length; j++) {
+                        $("." + bbbb).append("<option value='" + iii[j].dictionaryId + "'>" + iii[j].dictionaryName + "</option>")
+                        for (var k = 0; k < test.length; k++) {
+                            var testDictionaryId = test[k].testDictionaryId;
+                            $("." + bbbb + " option[value='" + testDictionaryId + "']").attr("selected", "selected");
+                        }
+                    }
+                    for (var j = 0; j < chch.length; j++) {
+                        $("." + cccc).append("<option value='" + chch[j].dictionaryId + "'>" + chch[j].dictionaryName + "</option>")
+                        for (var k = 0; k < checked.length; k++) {
+                            var checkedDictionaryId = checked[k].checkedDictionaryId;
+                            $("." + cccc + " option[value='" + checkedDictionaryId + "']").attr("selected", "selected");
+                        }
+                    }
+                    var organId = 'organId' + count;
+                    var inspectionId = 'inspection' + count;
+                    var checkId = 'check' + count;
+                    $("#" + organId).fSelect();
+                    $("#" + inspectionId).fSelect();
+                    $("#" + checkId).fSelect();
+                    $("#list").css("display", "none");
+                    var listname = 'list' + count;
+                    $("#listname").css("display", "block");
                     showPlan(listname);
                 }
             }
@@ -297,7 +306,7 @@
             showPlan(this.value);
         })*/
 
-        var count = 1;
+        var count = 0;
         $("#addPlan").click(function () {
             $("#addPlan").parent().before("<div class=\"btnrow\">\n" +
                 "                    <button type=\"button\" value='list"+count+"' class=\"btn btn-info planBtn\">方案"+count+"</button>\n" +
@@ -354,30 +363,28 @@
                 "                  </form>\n"+
                 "                </div>");
 
-            $.get("/findPlan",{},function (result) {
-                for (var i = 0; i <result.length ; i++) {
-                    if(result[i].oneId==14000){
-                        $(".medication2").append("<option value='"+result[i].dictionaryId+"'>"+result[i].dictionaryName+"</option>")
-                    }
-                    if(result[i].oneId==15000){
-                        $(".inspection2").append("<option value='"+result[i].dictionaryId+"'>"+result[i].dictionaryName+"</option>")
-                    }
-                    if (result[i].oneId==16000){
-                        $(".check2").append("<option value='"+result[i].dictionaryId+"'>"+result[i].dictionaryName+"</option>")
-                    }
-                }
+
+            for (var i = 0; i < mmm.length; i++) {
+                $(".medication2").append("<option value='" + mmm[i].dictionaryId + "'>" + mmm[i].dictionaryName + "</option>")
+            }
+            for (var i = 0; i < iii.length; i++) {
+                $(".inspection2").append("<option value='" + iii[i].dictionaryId + "'>" + iii[i].dictionaryName + "</option>")
+            }
+            for (var i = 0; i < chch.length; i++) {
+                $(".check2").append("<option value='" + chch[i].dictionaryId + "'>" + chch[i].dictionaryName + "</option>")
+            }
                 var organId = 'organId'+count;
                 var inspectionId = 'inspection'+count;
                 var checkId = 'check'+count;
                 $("#" + organId).fSelect();
                 $("#" + inspectionId).fSelect();
                 $("#" + checkId).fSelect();
-                count++;
-            });
+
             $("#list").css("display","none");
             var listname = 'list'+count;
             $("#listname").css("display","block");
             showPlan(listname);
+            count++;
         });
 
         function showPlan(name) {

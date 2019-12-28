@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import java.rmi.ServerError;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author 周津锐
@@ -29,10 +31,32 @@ public class QueryController {
         return plans;
     }
 
+//    @RequestMapping("/findAllProgramme")
+//    @ResponseBody
+//    public Map<String,Object> findAllProgramme(Integer departmentId){
+//        Map<String,Object> map = new HashMap<>();
+//       List<SuperProgramme> programmeList = queryService.findProgrammeByDepartment(departmentId);
+//        for (int i = 0; i <programmeList.size() ; i++) {
+//            List<Medication> medicationList = queryService.findMedication(programmeList.get(i).getProgrammeId());
+//            List<Test> testList = queryService.findTest(programmeList.get(i).getProgrammeId());
+//            List<Checked> checkedList = queryService.findChecked(programmeList.get(i).getProgrammeId());
+//            if(medicationList!=null){ programmeList.get(i).setMedicationList(medicationList); }
+//            if(testList!=null){  programmeList.get(i).setTestList(testList); }
+//            if(checkedList!=null){ programmeList.get(i).setCheckedList(checkedList); }
+//        }
+//        List<Dictionary> plans = queryService.findProgramme();
+//
+//
+//        map.put("programmeList",programmeList);
+//
+//
+//        return map;
+//    }
     @RequestMapping("/findAllProgramme")
     @ResponseBody
     public List<SuperProgramme> findAllProgramme(Integer departmentId){
-       List<SuperProgramme> programmeList = queryService.findProgrammeByDepartment(departmentId);
+       // Map<String,Object> map = new HashMap<>();
+        List<SuperProgramme> programmeList = queryService.findProgrammeByDepartment(departmentId);
         for (int i = 0; i <programmeList.size() ; i++) {
             List<Medication> medicationList = queryService.findMedication(programmeList.get(i).getProgrammeId());
             List<Test> testList = queryService.findTest(programmeList.get(i).getProgrammeId());
@@ -41,6 +65,9 @@ public class QueryController {
             if(testList!=null){  programmeList.get(i).setTestList(testList); }
             if(checkedList!=null){ programmeList.get(i).setCheckedList(checkedList); }
         }
+        //List<Dictionary> plans = queryService.findProgramme();
+       // map.put("programmeList",programmeList);
+        System.err.println(programmeList);
         return programmeList;
     }
 
@@ -77,18 +104,20 @@ public class QueryController {
             }
         }else{
             queryService.addProgramme(Programme);
+            Integer ProgrammeId=Programme.getProgrammeId();
+            System.err.println(ProgrammeId);
             for (Integer integer : medicationDictionaryId) {
-                m.setMedicationId(Programme.getProgrammeId());
+                m.setMedicationId(ProgrammeId);
                 m.setMedicationDictionaryId(integer);
                 queryService.addMedication(m);
             }
             for (Integer integer : testDictionaryId) {
-                t.setTestId(Programme.getProgrammeId());
+                t.setTestId(ProgrammeId);
                 t.setTestDictionaryId(integer);
                 queryService.addTest(t);
             }
             for (Integer integer : checkedDictionaryId) {
-                c.setCheckedId(Programme.getProgrammeId());
+                c.setCheckedId(ProgrammeId);
                 c.setCheckedDictionaryId(integer);
                 queryService.addChecked(c);
             }
