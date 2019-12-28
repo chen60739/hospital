@@ -31,4 +31,6 @@ public interface GroupsService {
 
     //添加随访组列表
     int saveOne(Groups groups);
+
+    List<Groups> selectAllGroups();
 }

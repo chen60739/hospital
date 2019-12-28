@@ -34,4 +34,9 @@ public interface GroupsMapper {
     int insertOne(Groups groups);
 
 
+    /**
+     * 所有小组（随访进度管理回显）
+     * @return
+     */
+    List<Groups> selectAll();
 }

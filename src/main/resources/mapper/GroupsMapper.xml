@@ -233,6 +233,10 @@
           </if>
 
     </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT * FROM groups
+  </select>
   <!--批量删除-->
   <update id="deleteById">
     UPDATE groups SET is_del=1 WHERE group_id=#{ids}
