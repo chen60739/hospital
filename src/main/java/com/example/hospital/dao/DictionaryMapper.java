@@ -21,4 +21,8 @@ public interface DictionaryMapper {
 
     //查询科室
     List<Dictionary> selectAll();
+    //查询医院
+    List<Dictionary> selectAll1();
+    //查询级别
+    List<Dictionary> selectAll2();
 }

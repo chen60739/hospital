@@ -33,7 +33,7 @@ public class Groups implements Serializable,Cloneable{
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date groupStartTime ;
     /** 结束时间 */
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern="yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date groupEndTime ;
     /** 课题编号 */

@@ -216,10 +216,9 @@
   </update>
   <!--随访组管理查询-->
   <select id="selectAllGroups" resultMap="super">
-      select group_name,group_num,group_principal,group_state,
-			group_department_id,group_start_time,dictionary_name
-	      from groups,dictionary
+      select *from groups,dictionary
 	      where groups.group_department_id=dictionary.dictionary_id
+                AND groups.is_del=0
 	      <if test="groupPrincipal!=null and groupPrincipal!=''">
             AND groups.group_principal like CONCAT("%",#{groupPrincipal},"%")
           </if>
@@ -234,4 +233,15 @@
           </if>
 
     </select>
+  <!--批量删除-->
+  <update id="deleteById">
+    UPDATE groups SET is_del=1 WHERE group_id=#{ids}
+  </update>
+  <!--修改单条语句-->
+  <update id="updateOne">
+      UPDATE groups SET group_name=#{groupName},group_principal=#{groupPrincipal},group_hospital_id=#{groupHospitalId},group_department_id=#{groupDepartmentId},group_rank_id=#{groupRankId},
+        group_phone=#{groupPhone},group_state=#{groupState},group_start_time=#{groupStartTime},group_end_time=#{groupEndTime},group_num=#{groupNum},patient_num=#{patientNum},
+        control_group=#{controlGroup},background=#{background}
+        where group_id=#{groupId}
+  </update>
 </mapper>
