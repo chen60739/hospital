@@ -13,4 +13,6 @@ public interface GroupsService {
 
     //查询科室
     List<Dictionary> findAll();
+
+    List<Groups> selectAllGroups();
 }

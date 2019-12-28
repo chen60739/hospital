@@ -25,4 +25,9 @@ public interface GroupsMapper {
     List<Groups> selectAllGroups(@Param("groupPrincipal") String groupPrincipal, @Param("dictionaryId")String dictionaryId, @Param("groupState")Integer groupState, @Param("time1")String time1, @Param("time2")String time2);
 
 
+    /**
+     * 所有小组（随访进度管理回显）
+     * @return
+     */
+    List<Groups> selectAll();
 }

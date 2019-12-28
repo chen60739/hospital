@@ -25,6 +25,12 @@ public class GroupsServiceImpl implements GroupsService{
     }
 
     @Override
+    public List<Groups> selectAllGroups() {
+        List<Groups> groups = groupsMapper.selectAll();
+        return groups;
+    }
+
+    @Override
     public List<Dictionary> findAll() {
         return dictionaryMapper.selectAll();
     }

@@ -14,8 +14,8 @@ public class FollowUp implements Serializable,Cloneable{
     private Date followTime ;
     /** 随访组id */
     private Integer followGroupId ;
-    /** 科室id */
-    private Integer followDepartmentId ;
+    /** 患者id */
+    private Integer followPatientId ;
     /** 随访状态0未随访1已随访 */
     private Boolean followState ;
 
@@ -43,13 +43,13 @@ public class FollowUp implements Serializable,Cloneable{
     public void setFollowGroupId(Integer followGroupId){
         this.followGroupId = followGroupId;
     }
-    /** 科室id */
-    public Integer getFollowDepartmentId(){
-        return this.followDepartmentId;
+    /** 患者id */
+    public Integer getFollowPatientId(){
+        return this.followPatientId;
     }
-    /** 科室id */
-    public void setFollowDepartmentId(Integer followDepartmentId){
-        this.followDepartmentId = followDepartmentId;
+    /** 患者id */
+    public void setFollowPatientId(Integer followPatientId){
+        this.followPatientId = followPatientId;
     }
     /** 随访状态0未随访1已随访 */
     public Boolean getFollowState(){
@@ -66,7 +66,7 @@ public class FollowUp implements Serializable,Cloneable{
                 "followId=" + followId +
                 ", followTime=" + followTime +
                 ", followGroupId=" + followGroupId +
-                ", followDepartmentId=" + followDepartmentId +
+                ", followPatientId=" + followPatientId +
                 ", followState=" + followState +
                 '}';
     }

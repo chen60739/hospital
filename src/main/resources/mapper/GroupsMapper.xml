@@ -232,6 +232,9 @@
           <if test="time1!=null and time1!=''">
             AND groups.group_start_time between #{time1} and #{time2}
           </if>
-
     </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT * FROM groups
+  </select>
 </mapper>
