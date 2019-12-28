@@ -59,9 +59,15 @@ public class GroupsController {
         }
 
     }
+    //修改单条随访组列表
     @RequestMapping("changeOne")
     public int changeOne(Groups groups){
-        System.out.println(groups);
         return groupsService.changeOne(groups);
+    }
+    //新增随访组列表
+    @RequestMapping("saveOne")
+    public  int saveOne(Groups groups){
+        System.out.println(groups);
+        return groupsService.saveOne(groups);
     }
 }

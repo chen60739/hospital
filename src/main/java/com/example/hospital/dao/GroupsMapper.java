@@ -27,8 +27,11 @@ public interface GroupsMapper {
     //批量删除
     int deleteById(@Param("ids") String ids);
 
-    //修改
+    //修改随访组列表
     int updateOne(Groups groups);
+
+    //添加随访组列表
+    int insertOne(Groups groups);
 
 
 }

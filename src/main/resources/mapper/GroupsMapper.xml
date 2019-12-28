@@ -244,4 +244,16 @@
         control_group=#{controlGroup},background=#{background}
         where group_id=#{groupId}
   </update>
+  <!--添加单条语句-->
+  <insert id="insertOne">
+    INSERT INTO groups(group_id, group_name, group_principal,
+      group_hospital_id, group_department_id, group_rank_id,
+      group_phone, group_state, group_start_time,
+      group_end_time, group_num, patient_num,
+      control_group, background, is_del
+      ) VALUES (#{groupId}, #{groupName}, #{groupPrincipal}, #{groupHospitalId}, #{groupDepartmentId}, #{groupRankId},
+      #{groupPhone}, #{groupState}, #{groupStartTime},#{groupEndTime}, #{groupNum}, #{patientNum},
+      #{controlGroup}, #{background}, #{isDel}
+      )
+  </insert>
 </mapper>

@@ -26,6 +26,9 @@ public interface GroupsService {
     //批量删除
     int removeById(String ids);
 
-    //修改
+    //修改随访组列表
     int changeOne(Groups groups);
+
+    //添加随访组列表
+    int saveOne(Groups groups);
 }
