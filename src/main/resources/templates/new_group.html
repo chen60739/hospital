@@ -178,7 +178,7 @@
     </div>
     <div class="row">
         <div class="col-xs-7 col-lg-offset-5">
-            <button class="btn btn-info" style="width: 100px" onclick="save()">保存</button>
+            <button class="btn btn-info" style="width: 100px" onclick="save()" id="save">保存</button>
         </div>
     </div>
 </div>
@@ -242,26 +242,31 @@
         var patientNum=$("#number_patients").val();
         var controlGroup=$("#control_group").val();
         var background=$("#background").val();
-        $.get("saveOne",{
-            "groupHospitalId":groupHospitalId,
-            "groupDepartmentId":groupDepartmentId,
-            "groupPrincipal":groupPrincipal,
-            "groupRankId":groupRankId,
-            "groupName":groupName,
-            "groupPhone":groupPhone,
-            "groupState":groupState,
-            "groupStartTime":groupStartTime,
-            "groupEndTime":groupEndTime,
-            "groupNum":groupNum,
-            "patientNum":patientNum,
-            "controlGroup":controlGroup,
-            "background":background,
-            "isDel":0
-        },function(rs){
-            if(rs=1){
-                location.href="/login";
-            }
-        })
+        if (groupHospitalId=="" ||groupHospitalId==null || groupDepartmentId=="" ||groupDepartmentId==null ||groupPrincipal=="" ||groupPrincipal==null ||groupRankId=="" ||groupRankId==null ||groupName=="" ||groupName==null || groupPhone=="" ||groupPhone==null || groupState=="" ||groupState==null || groupStartTime=="" ||groupStartTime==null || groupEndTime=="" ||groupEndTime==null || groupNum=="" ||groupNum==null || patientNum=="" ||patientNum==null || controlGroup=="" ||controlGroup==null || background=="" ||background==null){
+            alert("请完整输入信息！")
+            return false;
+        }else{
+            $.get("saveOne",{
+                "groupHospitalId":groupHospitalId,
+                "groupDepartmentId":groupDepartmentId,
+                "groupPrincipal":groupPrincipal,
+                "groupRankId":groupRankId,
+                "groupName":groupName,
+                "groupPhone":groupPhone,
+                "groupState":groupState,
+                "groupStartTime":groupStartTime,
+                "groupEndTime":groupEndTime,
+                "groupNum":groupNum,
+                "patientNum":patientNum,
+                "controlGroup":controlGroup,
+                "background":background,
+                "isDel":0
+            },function(rs){
+                if(rs=1){
+                    location.href="/login";
+                }
+            })
+        }
     }
     //联系电话校验
     $("#phone").blur(function() {
@@ -270,6 +275,8 @@
         if (groupPhone == '' || groupPhone==null) //判断用户名不为空
         {
             $("#lxdh").append("<span style='color:red;'>♠不能为空</span>");
+
+            $("#save").attr('disabled',disabled);
             return false;
         }else if(groupPhone.length!=11){
             $("#lxdh").append("<span style='color:red;'>♠请输入正确的手机号</span>");
