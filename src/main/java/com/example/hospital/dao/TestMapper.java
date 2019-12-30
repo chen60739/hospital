@@ -3,13 +3,17 @@ package com.example.hospital.dao;
 import com.example.hospital.model.Test;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface TestMapper {
-    int deleteByPrimaryKey(Integer tId);
+    List<Test> selectTest(Integer testId);
+
+    int deleteTest(Integer testId);
 
     int insert(Test record);
 
-    int insertSelective(Test record);
+    int insertTest(Test record);
 
     Test selectByPrimaryKey(Integer tId);
 

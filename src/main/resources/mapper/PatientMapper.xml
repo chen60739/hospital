@@ -22,6 +22,16 @@
       <result column="in_group_time" jdbcType="TIMESTAMP" property="inGroupTime" />
     </association>
   </resultMap>
+
+  <resultMap id="followUpMap" type="com.example.hospital.dto.FollowUpPatient" extends="BaseResultMap">
+    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="in_group_time" jdbcType="TIMESTAMP" property="inGroupTime" />
+    <result column="follow_time" jdbcType="TIMESTAMP" property="followTime" />
+    <result column="follow_state" jdbcType="TINYINT" property="followState" />
+    <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+    <result column="group_department_id" jdbcType="INTEGER" property="groupDepartmentId" />
+  </resultMap>
   <sql id="Base_Column_List">
     patient_id, patient_name, patient_sex, patient_birthday, nation_id, outpatient_service, 
     hospitalization_number, disease_name, disease, result_level, is_del
@@ -30,15 +40,15 @@
   <select id="selectPatientsByGroupId" resultMap="SuperResultMap">
     select
     p.*,pg.in_group_time
-    from patient p,planning_group pg where p.patient_id=pg.p_patient_id and pg.p_group_id=#{group1}
+    from `patient` p,`planning_group` pg where p.patient_id=pg.p_patient_id and pg.p_group_id=#{group1}
     <if test="superPatient.outpatientService != null and superPatient.outpatientService != ''" >
     and p.outpatient_service like CONCAT('%',#{superPatient.outpatientService},'%')
     </if>
     <if test="superPatient.hospitalizationNumber !=null and superPatient.hospitalizationNumber !=''">
       and p.hospitalization_number like  CONCAT('%',#{superPatient.hospitalizationNumber},'%')
     </if>
-    <if test="superPatient.patientSex !=null and superPatient.patientSex !='' " >
-      and p.patient_sex = #{superPatient.patientSex}
+    <if test="superPatient.patientSex !=null " >
+      and p.patient_sex = ${superPatient.patientSex}
     </if>
     <if test="superPatient.patientName !=null and  superPatient.patientName !='' " >
       and p.patient_name like   CONCAT('%',#{superPatient.patientName},'%')
@@ -53,18 +63,85 @@
     and pg.in_group_time &gt;=  #{time1}
     </if>
   </select>
+
+  <!--随访进度管理页面查询语句-->
+  <select id="followUpManagementData" resultMap="followUpMap">
+              SELECT
+          p.outpatient_service,
+          p.hospitalization_number,
+          gg.group_name,
+          gg.group_id,
+          p.patient_name,
+          p.patient_sex,
+          p.patient_birthday,
+          g.in_group_time,
+          f.follow_state,
+          d.dictionary_name AS department_name,
+          gg.group_department_id,
+          n.follow_time AS follow_time
+      FROM
+          `planning_group` g,
+          `patient` p,
+          `follow_up_rule` r,
+          `groups` gg,
+          `follow_up` f,
+          `dictionary` d,
+            (
+                SELECT
+                    follow_time,
+                    follow_patient_id
+                FROM
+                    follow_up
+                WHERE
+                    follow_time > NOW()
+            ) AS n
+      WHERE
+          gg.group_department_id = d.dictionary_id
+      AND p.patient_id = n.follow_patient_id
+      AND g.p_patient_id = p.patient_id
+      AND g.p_group_id = gg.group_id
+      AND p.patient_id = f.follow_patient_id
+      <if test="startDate=='' and endDate=='' ">
+          AND f.follow_time BETWEEN CONCAT(CURDATE(), ' 00:00:00')
+          AND CONCAT(CURDATE(), ' 23:59:59')
+      </if>
+      <if test="startDate!='' and endDate!='' ">
+          AND f.follow_time BETWEEN CONCAT(#{startDate}, ' 00:00:00')
+          AND CONCAT(#{endDate}, ' 23:59:59')
+      </if>
+      <if test="followUpPatient.groupId != null">
+          AND gg.group_id=#{followUpPatient.groupId}
+      </if>
+      <if test="followUpPatient.groupDepartmentId != null">
+          AND gg.group_department_id=#{followUpPatient.groupDepartmentId}
+      </if>
+      <if test="followUpPatient.outpatientService != null and followUpPatient.outpatientService != '' ">
+          AND p.outpatient_service like CONCAT('%',#{followUpPatient.outpatientService},'%')
+      </if>
+      <if test="followUpPatient.hospitalizationNumber != null and followUpPatient.hospitalizationNumber != '' ">
+          AND p.hospitalization_number like CONCAT('%',#{followUpPatient.hospitalizationNumber},'%')
+      </if>
+      <if test="followUpPatient.patientName != null and followUpPatient.patientName != '' ">
+          AND p.patient_name like CONCAT('%',#{followUpPatient.patientName},'%')
+      </if>
+      <if test="followUpPatient.followState != null">
+        AND f.follow_state=#{followUpPatient.followState}
+      </if>
+      GROUP BY f.follow_id
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from patient
+    from `patient`
     where patient_id = #{patientId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from patient
+    delete from `patient`
     where patient_id = #{patientId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Patient">
-    insert into patient (patient_id, patient_name, patient_sex, 
+    insert into `patient` (patient_id, patient_name, patient_sex,
       patient_birthday, nation_id, outpatient_service, 
       hospitalization_number, disease_name, disease, 
       result_level, is_del)
@@ -74,7 +151,7 @@
       #{resultLevel,jdbcType=VARCHAR}, #{isDel,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.Patient">
-    insert into patient
+    insert into `patient`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="patientId != null">
         patient_id,
@@ -147,7 +224,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Patient">
-    update patient
+    update `patient`
     <set>
       <if test="patientName != null">
         patient_name = #{patientName,jdbcType=VARCHAR},
@@ -183,7 +260,7 @@
     where patient_id = #{patientId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Patient">
-    update patient
+    update `patient`
     set patient_name = #{patientName,jdbcType=VARCHAR},
       patient_sex = #{patientSex,jdbcType=VARCHAR},
       patient_birthday = #{patientBirthday,jdbcType=TIMESTAMP},

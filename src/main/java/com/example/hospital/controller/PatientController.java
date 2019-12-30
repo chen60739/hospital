@@ -2,7 +2,6 @@ package com.example.hospital.controller;
 
 
 import com.example.hospital.dto.SuperPatient;
-import com.example.hospital.model.Patient;
 import com.example.hospital.service.PatientService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +24,9 @@ public class PatientController {
 
     @RequestMapping("/findPatients")
     @ResponseBody
-    public List<SuperPatient> findPatients(SuperPatient superPatient,String preTime,String sufTime) throws ParseException {
-        int group1=1;
-        List<SuperPatient> list=patientService.findPatients(superPatient,preTime,sufTime,group1);
+    public List<SuperPatient> findPatients(SuperPatient superPatient,String preTime,String sufTime,Integer groupId) throws ParseException {
+        System.out.println("=性别");
+        List<SuperPatient> list=patientService.findPatients(superPatient,preTime,sufTime,groupId);
         return list;
     }
 }

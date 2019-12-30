@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 
@@ -34,7 +32,15 @@ public class PatientServiceImpl implements PatientService {
             time1 = preTime;
             time2 = sufTime;
         }
-        List list=patientMapper.selectPatientsByGroupId(group1,superPatient,time1,time2);
+        List<SuperPatient> list=patientMapper.selectPatientsByGroupId(group1,superPatient,time1,time2);
+        for (SuperPatient l:list) {
+            String hospitalizationNumber = l.getHospitalizationNumber();
+           //对门诊号和住院号进行拼接
+            if(hospitalizationNumber!=null){
+                String outpatientService = l.getOutpatientService()+"/"+hospitalizationNumber;
+                l.setOutpatientService(outpatientService);
+            }
+        }
         return list;
     }
 }

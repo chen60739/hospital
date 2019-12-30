@@ -1,12 +1,12 @@
 package com.example.hospital.controller;
 
-import com.example.hospital.model.User;
-import com.example.hospital.service.UserService;
+import com.example.hospital.model.Dictionary;
+import com.example.hospital.model.Groups;
+import com.example.hospital.service.impl.GroupsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -17,6 +17,8 @@ import java.util.List;
 @Controller
 public class IndexController {
 
+    @Autowired
+    private GroupsServiceImpl groupsService;
 
     @RequestMapping("/groupManagement")
     public String group(){
@@ -39,7 +41,8 @@ public class IndexController {
     }
 
     @RequestMapping("/one")
-    public String one(){
+    public String one(Integer groupId, Model model){
+        model.addAttribute("groupId",groupId);
         return "group_one";
     }
 
@@ -49,7 +52,11 @@ public class IndexController {
     }
 
     @RequestMapping("/followUp")
-    public String followUp(){
+    public String followUp(Model model){
+        List<Dictionary> departments = groupsService.findAll();
+        List<Groups> groups = groupsService.selectAllGroups();
+        model.addAttribute("departments",departments);
+        model.addAttribute("groups",groups);
         return "follow_up_management";
     }
 
@@ -57,10 +64,12 @@ public class IndexController {
     public String login(){
         return "main";
     }
+
     @RequestMapping("/templist")
     public String templist(){
         return "template_list";
     }
+
     @RequestMapping("/plan")
     public String plan(){
         return "diagnosis_and_treatment_plan";
@@ -91,6 +100,10 @@ public class IndexController {
     @RequestMapping("/followUpSetting")
     public String followUpSetting(){
         return "follow_up_rule_setting";
+    }
+    @RequestMapping("/patient")
+    public String patient(){
+        return "patient";
     }
 
 }

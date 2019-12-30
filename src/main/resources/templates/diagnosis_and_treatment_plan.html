@@ -27,10 +27,16 @@
     .btn-info{
         width: 100px;
     }
+    input::-ms-input-placeholder{
+        text-align: center;
+    }
+    input::-webkit-input-placeholder{
+        text-align: center;
+    }
 </style>
 <body>
 <div th:replace="navigation :: nav"></div>
-<div class="container-fluid main">
+<div class="container-fluid main" >
     <div class="row">
         <div class="col-xs-12 col-md-12">
             <div style="padding-top: 20px">
@@ -39,77 +45,66 @@
                 <hr>
             </div>
         </div>
-        <div class="col-xs-12 col-md-12">
-            <div class="col-xs-2" id="btnContainer" style="border-right-style: solid;border-color: #e1e1e1;height: 590px">
-                <div class="btnrow">
-                    <button type="button" value="list" class="btn btn-info planBtn">方案一</button>
+        <div class="col-xs-12 col-md-12" >
+            <div class="col-xs-2" id="btnContainer" style="border-right-style: solid;border-color: #e1e1e1;height: 590px" >
+                <div class="btnrow" >
+                    <button id="programmeName" type="button" value="list" class="btn btn-info planBtn"></button>
                 </div>
                 <div class="btnrow">
                     <button id="addPlan" type="button" class="btn btn-info"><i class="fa fa-plus"></i></button>
                 </div>
             </div>
-            <div class="col-xs-9" id="planContainer" style="height: 500px;margin-top: 20px">
-                <div id="list" style="display: block">
-                    <form action="#">
+            <div class="col-xs-9" id="planContainer" style="height: 500px;margin-top: 20px" >
+                <div id="list" style="display: block" >
+                    <form action="savePlan">
+                        <input id="pid" type="hidden" name="programmeId" >
+<!--                        <input id="did" type="hidden" name="departmentId">-->
                         <table border="1" align="center">
                             <tr>
                                 <td colspan="2" align="center">
-                                    <input placeholder="请输入方案名称">
-                                    <button type="submit" class="btn btn-info btn-sm">保存</button>
+                                    <input id="fangan" placeholder="" name="programmeName" >
+                                    <button id="baocun" type="submit" class="btn btn-info btn-sm">保存</button>
+                                    <span id="#jymz" ></span>
+
                                 </td>
                             </tr>
                             <tr style="height: 70px">
                                 <td width="150px">1.用药</td>
                                 <td width="400px">
-                                    <select id="organId" name="organId" multiple="multiple" >
-                                    　　　<option value="1">张</option>
-                                    　　　<option value="2">ab</option>
-                                    　　　<option value="3">c</option>
-                                    　　　<option value="4">d</option>
-                                    　　　<option value="5">a</option>
+                                    <select id="organId" name="medicationDictionaryId" multiple="multiple" class="medication">
                                     </select>
                                 </td>
                             </tr>
                             <tr style="height: 70px">
                                 <td>2.检验</td>
                                 <td>
-                                    <select id="inspection" name="organId" multiple="multiple" >
-                                        　　　<option value="1">张</option>
-                                        　　　<option value="2">ab</option>
-                                        　　　<option value="3">c</option>
-                                        　　　<option value="4">d</option>
-                                        　　　<option value="5">a</option>
+                                    <select id="inspection" name="testDictionaryId" multiple="multiple" class="inspection">
                                     </select>
                                 </td>
                             </tr>
                             <tr style="height: 70px">
                                 <td>3.检查</td>
                                 <td>
-                                    <select id="check" name="organId" multiple="multiple" >
-                                        　　　<option value="1">张</option>
-                                        　　　<option value="2">ab</option>
-                                        　　　<option value="3">c</option>
-                                        　　　<option value="4">d</option>
-                                        　　　<option value="5">a</option>
+                                    <select id="check" name="checkedDictionaryId" multiple="multiple" class="check">
                                     </select>
                                 </td>
                             </tr>
                             <tr style="height: 100px">
                                 <td>4.治疗</td>
                                 <td>
-                                    <textarea></textarea>
+                                    <textarea id="treatment" name="treatment"></textarea>
                                 </td>
                             </tr>
                             <tr style="height: 100px">
                                 <td>5.手术</td>
                                 <td>
-                                    <textarea>一一</textarea>
+                                    <textarea id="operation" name="operation"></textarea>
                                 </td>
                             </tr>
                             <tr style="height: 100px">
                                 <td>6.通知</td>
                                 <td>
-                                    <textarea></textarea>
+                                    <textarea id="notice" name="notice"></textarea>
                                 </td>
                             </tr>
                         </table>
@@ -122,19 +117,218 @@
 </div>
 </body>
 <script>
+        var old;
+        $("#fangan").on('focus', function () {
+            old = this.value;
+        }).change(function() {
+            var programmeName = $(this).val();
+            programmeName.trim();
+        if (old==programmeName){
+            $("#baocun").attr("disabled",false);
+        }else{
+            $.post("changeProgrammeName",{"programmeName":programmeName},function (message) {
+                alert(message);
+                if(message==true){
+                    $("#jymz").text("✔");
+                    $("#jymz").css("color","green");
+                    $("#baocun").attr("disabled",false);
+                }else {
+                    $("#jymz").text("方案名已被使用！");
+                    $("#jymz").css("color","red");
+                    $("#baocun").attr("disabled","true");
+                }
+            });
+        }
+    });
     $(function () {
+        var mmm = new Array();
+        var iii = new Array();
+        var chch = new Array();
+        var departmentId=11509;
+        $.get("/findPlan",{},function (result) {
+            for (var i = 0; i <result.length ; i++) {
+                if(result[i].oneId==14000){
+                    mmm.push(result[i]);
+                }
+                if(result[i].oneId==15000){
+                    iii.push(result[i]);
+                }
+                if(result[i].oneId==16000){
+                    chch.push(result[i]);
+                }
+            }
+        });
+        $.post("findAllProgramme",{"departmentId":departmentId},function (res) {
+            var count;
+            var programmeId
+            for (var i = 0; i < res.length; i++) {
+                count = res[i].programmeName;
+                programmeId = res[i].programmeId;
+                var medication1 = res[0].medicationList;
+                var test1 = res[0].testList;
+                var checked1 = res[0].checkedList;
+                var treatment1 = res[0].treatment;
+                var operation1 = res[0].operation;
+                var notice1 = res[0].notice;
+                if (i == 0) {
+                    $("#programmeName").html(count);
+                    $("#fangan").val(count);
+                    $("#pid").val(programmeId);
+                    $("#treatment").html(treatment1);
+                    $("#operation").html(operation1);
+                    $("#notice").html(notice1);
+                    for (var j = 0; j < mmm.length; j++) {
+                        $(".medication").append("<option value='" + mmm[j].dictionaryId + "'>" + mmm[j].dictionaryName + "</option>")
+                        for (var k = 0; k < medication1.length; k++) {
+                            var medicationDictionaryId = medication1[k].medicationDictionaryId;
+                            $(".medication option[value='" + medicationDictionaryId + "']").attr("selected", "selected");
+                        }
+                    }
+                    for (var j = 0; j < iii.length; j++) {
+                        $(".inspection").append("<option value='" + iii[j].dictionaryId + "'>" + iii[j].dictionaryName + "</option>")
+                        for (var k = 0; k < test1.length; k++) {
+                            var testDictionaryId = test1[k].testDictionaryId;
+                            $(".inspection option[value='" + testDictionaryId + "']").attr("selected", "selected");
+                        }
+                    }
+                    for (var j = 0; j < chch.length; j++) {
+                        $(".check").append("<option value='" + chch[j].dictionaryId + "'>" + chch[j].dictionaryName + "</option>")
+                        for (var k = 0; k < checked1.length; k++) {
+                            var checkedDictionaryId = checked1[k].checkedDictionaryId;
+                            $(".check option[value='" + checkedDictionaryId + "']").attr("selected", "selected");
+
+                        }
+                    }
+                    $("#organId").fSelect();
+                    $("#inspection").fSelect();
+                    $("#check").fSelect();
+                } else {
+                    var medication = res[i].medicationList;
+                    var test = res[i].testList;
+                    var checked = res[i].checkedList;
+                    /* var v = "";
+                    v+='"<div id=\'list"+count+"\' style=\\"display: block\\">';
+                    v+="<select>";
+                    if(){
+                        v+="<option selected></option>"
+                    }else{
+                        v+="<option></option>"
+                    }
+                    v+="</select>";
+                    v+="</div>"
+                    $("#planContainer").append(v);*/
+                    $("#addPlan").parent().before("<div class=\"btnrow\">\n" +
+                        "                    <button type=\"button\" value='list" + count + "' class=\"btn btn-info planBtn\">" + count + "</button>\n" +
+                        "                </div>");
+                    $("#planContainer").append("<div id='list" + count + "' style=\"display: block\">\n" +
+                        "                 <form action=\"savePlan\">\n" +
+                        "                    <input id='pid" + count + "' value='" + programmeId + "' type=\"hidden\" name=\"programmeId\">\n" +
+                        "                    <table border=\"1\" align=\"center\">\n" +
+                        "                       <tr>\n" +
+                        "                         <td colspan=\"2\" align=\"center\">\n" +
+                        "                            <input id=\"fangan\" placeholder=\"请输入方案名\" value='"+count+"'  name=\"programmeName\" >\n" +
+                        "                            <button type=\"submit\" class=\"btn btn-info btn-sm\">保存</button>\n" +
+                        "                           </td>\n" +
+                        "                        </tr>\n" +
+                        "                        <tr style=\"height: 70px\">\n" +
+                        "                            <td width=\"150px\">1.用药</td>\n" +
+                        "                            <td width=\"400px\">\n" +
+                        "                                <select id='organId" + count + "' name=\"medicationDictionaryId\" multiple=\"multiple\" class='medication" + count + "'>\n" +
+                        "                                </select>\n" +
+                        "                            </td>\n" +
+                        "                        </tr>\n" +
+                        "                        <tr style=\"height: 70px\">\n" +
+                        "                            <td>2.检验</td>\n" +
+                        "                            <td>\n" +
+                        "                                <select id='inspection" + count + "'  name=\"testDictionaryId\" multiple=\"multiple\" class='inspection" + count + "'>\n" +
+                        "                                </select>\n" +
+                        "                            </td>\n" +
+                        "                        </tr>\n" +
+                        "                        <tr style=\"height: 70px\">\n" +
+                        "                            <td>3.检查</td>\n" +
+                        "                            <td>\n" +
+                        "                                <select id='check" + count + "' name=\"checkedDictionaryId\" multiple=\"multiple\" class='check" + count + "'>\n" +
+                        "                                </select>\n" +
+                        "                            </td>\n" +
+                        "                        </tr>\n" +
+                        "                        <tr style=\"height: 100px\">\n" +
+                        "                            <td>4.治疗</td>\n" +
+                        "                            <td>\n" +
+                        "                                <textarea id='treatment" + count + "' name=\"treatment\"></textarea>\n" +
+                        "                            </td>\n" +
+                        "                        </tr>\n" +
+                        "                        <tr style=\"height: 100px\">\n" +
+                        "                            <td>5.手术</td>\n" +
+                        "                            <td>\n" +
+                        "                                <textarea id='operation" + count + "' name=\"operation\"></textarea>\n" +
+                        "                            </td>\n" +
+                        "                        </tr>\n" +
+                        "                        <tr style=\"height: 100px\">\n" +
+                        "                            <td>6.通知</td>\n" +
+                        "                            <td>\n" +
+                        "                                <textarea id='notice" + count + "'  name=\"notice\"></textarea>\n" +
+                        "                            </td>\n" +
+                        "                        </tr>\n" +
+                        "                    </table>\n" +
+                        "                  </form>\n" +
+                        "                </div>");
+                    var treatment = res[i].treatment;
+                    var operation = res[i].operation;
+                    var notice = res[i].notice;
+                    var tid = 'treatment' + count;
+                    var oid = 'operation' + count;
+                    var nid = 'notice' + count;
+                    $("#" + tid).html(treatment);
+                    $("#" + oid).html(operation);
+                    $("#" + nid).html(notice);
+                    var aaaa = 'medication' + count;
+                    var bbbb = 'inspection' + count;
+                    var cccc = 'check' + count;
+                    for (var j = 0; j < mmm.length; j++) {
+                        $("." + aaaa).append("<option value='" + mmm[j].dictionaryId + "'>" + mmm[j].dictionaryName + "</option>")
+                        for (var k = 0; k < medication.length; k++) {
+                            var medicationDictionaryId = medication[k].medicationDictionaryId;
+                            $("." + aaaa + "  option[value='" + medicationDictionaryId + "']").attr("selected", "selected");
+                        }
+                    }
+                    for (var j = 0; j < iii.length; j++) {
+                        $("." + bbbb).append("<option value='" + iii[j].dictionaryId + "'>" + iii[j].dictionaryName + "</option>")
+                        for (var k = 0; k < test.length; k++) {
+                            var testDictionaryId = test[k].testDictionaryId;
+                            $("." + bbbb + " option[value='" + testDictionaryId + "']").attr("selected", "selected");
+                        }
+                    }
+                    for (var j = 0; j < chch.length; j++) {
+                        $("." + cccc).append("<option value='" + chch[j].dictionaryId + "'>" + chch[j].dictionaryName + "</option>")
+                        for (var k = 0; k < checked.length; k++) {
+                            var checkedDictionaryId = checked[k].checkedDictionaryId;
+                            $("." + cccc + " option[value='" + checkedDictionaryId + "']").attr("selected", "selected");
+                        }
+                    }
+                    var organId = 'organId' + count;
+                    var inspectionId = 'inspection' + count;
+                    var checkId = 'check' + count;
+                    $("#" + organId).fSelect();
+                    $("#" + inspectionId).fSelect();
+                    $("#" + checkId).fSelect();
+                    $("#list").css("display", "none");
+                    var listname = 'list' + count;
+                    $("#listname").css("display", "block");
+                    showPlan(listname);
+                }
+            }
+        });
+
+
+
 
         $(document).on("click",".planBtn",function () {
             showPlan(this.value);
-        })
+        });
 
         /*$(".planBtn").click(function () {
             showPlan(this.value);
         })*/
-
-        $("#organId").fSelect();
-        $("#inspection").fSelect();
-        $("#check").fSelect();
 
         var count = 0;
         $("#addPlan").click(function () {
@@ -142,73 +336,78 @@
                 "                    <button type=\"button\" value='list"+count+"' class=\"btn btn-info planBtn\">方案"+count+"</button>\n" +
                 "                </div>");
             $("#planContainer").append("<div id='list"+count+"' style=\"display: block\">\n" +
+                "                 <form action=\"savePlan\">\n" +
+                "                    <input id='pid" + count + "' value='" + departmentId + "' type=\"hidden\" name=\"departmentId\">\n" +
                 "                    <table border=\"1\" align=\"center\">\n" +
+                "                       <tr>\n" +
+                "                         <td colspan=\"2\" align=\"center\">\n" +
+                "                            <input id=\"fangan\" placeholder=\"请输入方案名称\" name=\"programmeName\" >\n" +
+                "                            <button type=\"submit\" class=\"btn btn-info btn-sm\">保存</button>\n" +
+                "                           </td>\n" +
+                "                        </tr>\n" +
                 "                        <tr style=\"height: 70px\">\n" +
                 "                            <td width=\"150px\">1.用药</td>\n" +
                 "                            <td width=\"400px\">\n" +
-                "                                <select id='organId"+count+"' name=\"organId\" multiple=\"multiple\" >\n" +
-                "                                　　　<option value=\"1\">张</option>\n" +
-                "                                　　　<option value=\"2\">ab</option>\n" +
-                "                                　　　<option value=\"3\">c</option>\n" +
-                "                                　　　<option value=\"4\">d</option>\n" +
-                "                                　　　<option value=\"5\">a</option>\n" +
+                "                                <select id='organId"+count+"' name=\"medicationDictionaryId\" multiple=\"multiple\" class=\"medication2\">\n" +　　　
                 "                                </select>\n" +
                 "                            </td>\n" +
                 "                        </tr>\n" +
                 "                        <tr style=\"height: 70px\">\n" +
                 "                            <td>2.检验</td>\n" +
                 "                            <td>\n" +
-                "                                <select id='inspection"+count+"' name=\"organId\" multiple=\"multiple\" >\n" +
-                "                                    　　　<option value=\"1\">张</option>\n" +
-                "                                    　　　<option value=\"2\">ab</option>\n" +
-                "                                    　　　<option value=\"3\">c</option>\n" +
-                "                                    　　　<option value=\"4\">d</option>\n" +
-                "                                    　　　<option value=\"5\">a</option>\n" +
+                "                                <select id='inspection"+count+"' name=\"testDictionaryId\" multiple=\"multiple\" class=\"inspection2\">\n" +
                 "                                </select>\n" +
                 "                            </td>\n" +
                 "                        </tr>\n" +
                 "                        <tr style=\"height: 70px\">\n" +
                 "                            <td>3.检查</td>\n" +
                 "                            <td>\n" +
-                "                                <select id='check"+count+"' name=\"organId\" multiple=\"multiple\" >\n" +
-                "                                    　　　<option value=\"1\">张</option>\n" +
-                "                                    　　　<option value=\"2\">ab</option>\n" +
-                "                                    　　　<option value=\"3\">c</option>\n" +
-                "                                    　　　<option value=\"4\">d</option>\n" +
-                "                                    　　　<option value=\"5\">a</option>\n" +
+                "                                <select id='check"+count+"' name=\"checkedDictionaryId\" multiple=\"multiple\" class=\"check2\">\n" +
                 "                                </select>\n" +
                 "                            </td>\n" +
                 "                        </tr>\n" +
                 "                        <tr style=\"height: 100px\">\n" +
                 "                            <td>4.治疗</td>\n" +
                 "                            <td>\n" +
-                "                                <textarea></textarea>\n" +
+                "                                <textarea name=\"treatment\"></textarea>\n" +
                 "                            </td>\n" +
                 "                        </tr>\n" +
                 "                        <tr style=\"height: 100px\">\n" +
                 "                            <td>5.手术</td>\n" +
                 "                            <td>\n" +
-                "                                <textarea></textarea>\n" +
+                "                                <textarea name=\"operation\"></textarea>\n" +
                 "                            </td>\n" +
                 "                        </tr>\n" +
                 "                        <tr style=\"height: 100px\">\n" +
                 "                            <td>6.通知</td>\n" +
                 "                            <td>\n" +
-                "                                <textarea></textarea>\n" +
+                "                                <textarea name=\"notice\"></textarea>\n" +
                 "                            </td>\n" +
                 "                        </tr>\n" +
                 "                    </table>\n" +
+                "                  </form>\n"+
                 "                </div>");
+
+
+            for (var i = 0; i < mmm.length; i++) {
+                $(".medication2").append("<option value='" + mmm[i].dictionaryId + "'>" + mmm[i].dictionaryName + "</option>")
+            }
+            for (var i = 0; i < iii.length; i++) {
+                $(".inspection2").append("<option value='" + iii[i].dictionaryId + "'>" + iii[i].dictionaryName + "</option>")
+            }
+            for (var i = 0; i < chch.length; i++) {
+                $(".check2").append("<option value='" + chch[i].dictionaryId + "'>" + chch[i].dictionaryName + "</option>")
+            }
+                var organId = 'organId'+count;
+                var inspectionId = 'inspection'+count;
+                var checkId = 'check'+count;
+                $("#" + organId).fSelect();
+                $("#" + inspectionId).fSelect();
+                $("#" + checkId).fSelect();
+
             $("#list").css("display","none");
             var listname = 'list'+count;
             $("#listname").css("display","block");
-
-            var organId = 'organId'+count;
-            var inspectionId = 'inspection'+count;
-            var checkId = 'check'+count;
-            $("#" + organId + "").fSelect();
-            $("#" + inspectionId + "").fSelect();
-            $("#" + checkId + "").fSelect();
             showPlan(listname);
             count++;
         });

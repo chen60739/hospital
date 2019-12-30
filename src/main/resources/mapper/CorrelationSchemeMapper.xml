@@ -12,21 +12,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from correlation_scheme
+    from `correlation_scheme`
     where cs_id = #{csId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from correlation_scheme
+    delete from `correlation_scheme`
     where cs_id = #{csId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.CorrelationScheme">
-    insert into correlation_scheme (cs_id, programme_id, pat_id
+    insert into `correlation_scheme` (cs_id, programme_id, pat_id
       )
     values (#{csId,jdbcType=INTEGER}, #{programmeId,jdbcType=INTEGER}, #{patId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.CorrelationScheme">
-    insert into correlation_scheme
+    insert into `correlation_scheme`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="csId != null">
         cs_id,
@@ -51,7 +51,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.CorrelationScheme">
-    update correlation_scheme
+    update `correlation_scheme`
     <set>
       <if test="programmeId != null">
         programme_id = #{programmeId,jdbcType=INTEGER},
@@ -63,7 +63,7 @@
     where cs_id = #{csId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.CorrelationScheme">
-    update correlation_scheme
+    update `correlation_scheme`
     set programme_id = #{programmeId,jdbcType=INTEGER},
       pat_id = #{patId,jdbcType=INTEGER}
     where cs_id = #{csId,jdbcType=INTEGER}

@@ -9,12 +9,6 @@ import java.io.Serializable;
 public class Programme implements Serializable,Cloneable{
     /** 主键 */
     private Integer programmeId ;
-    /** 用药id */
-    private Integer medicationId ;
-    /** 检验id */
-    private Integer testId ;
-    /** 检查id */
-    private Integer checkedId ;
     /** 治疗 */
     private String treatment ;
     /** 手术 */
@@ -23,6 +17,8 @@ public class Programme implements Serializable,Cloneable{
     private String notice ;
     /** 科室id */
     private Integer departmentId ;
+    /** 方案名称*/
+    private String programmeName ;
 
     /** 主键 */
     public Integer getProgrammeId(){
@@ -33,29 +29,15 @@ public class Programme implements Serializable,Cloneable{
         this.programmeId = programmeId;
     }
     /** 用药id */
-    public Integer getMedicationId(){
-        return this.medicationId;
+
+    public String getProgrammeName() {
+        return programmeName;
     }
-    /** 用药id */
-    public void setMedicationId(Integer medicationId){
-        this.medicationId = medicationId;
+
+    public void setProgrammeName(String programmeName) {
+        this.programmeName = programmeName;
     }
-    /** 检验id */
-    public Integer getTestId(){
-        return this.testId;
-    }
-    /** 检验id */
-    public void setTestId(Integer testId){
-        this.testId = testId;
-    }
-    /** 检查id */
-    public Integer getCheckedId(){
-        return this.checkedId;
-    }
-    /** 检查id */
-    public void setCheckedId(Integer checkedId){
-        this.checkedId = checkedId;
-    }
+
     /** 治疗 */
     public String getTreatment(){
         return this.treatment;
@@ -93,13 +75,11 @@ public class Programme implements Serializable,Cloneable{
     public String toString() {
         return "Programme{" +
                 "programmeId=" + programmeId +
-                ", medicationId=" + medicationId +
-                ", testId=" + testId +
-                ", checkedId=" + checkedId +
                 ", treatment='" + treatment + '\'' +
                 ", operation='" + operation + '\'' +
                 ", notice='" + notice + '\'' +
                 ", departmentId=" + departmentId +
+                ", programmeName=" + programmeName +
                 '}';
     }
 }

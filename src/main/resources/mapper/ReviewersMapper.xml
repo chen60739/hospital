@@ -16,15 +16,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from reviewers
+    from `reviewers`
     where checked_id = #{checkedId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from reviewers
+    delete from `reviewers`
     where checked_id = #{checkedId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Reviewers">
-    insert into reviewers (checked_id, doubters_id, reviewer_id, 
+    insert into `reviewers` (checked_id, doubters_id, reviewer_id,
       reviewer_time, data_item, data_value, 
       reviewer_propose_time)
     values (#{checkedId,jdbcType=INTEGER}, #{doubtersId,jdbcType=INTEGER}, #{reviewerId,jdbcType=INTEGER}, 
@@ -32,7 +32,7 @@
       #{reviewerProposeTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.Reviewers">
-    insert into reviewers
+    insert into `reviewers`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="checkedId != null">
         checked_id,
@@ -81,7 +81,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Reviewers">
-    update reviewers
+    update `reviewers`
     <set>
       <if test="doubtersId != null">
         doubters_id = #{doubtersId,jdbcType=INTEGER},
@@ -105,7 +105,7 @@
     where checked_id = #{checkedId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Reviewers">
-    update reviewers
+    update `reviewers`
     set doubters_id = #{doubtersId,jdbcType=INTEGER},
       reviewer_id = #{reviewerId,jdbcType=INTEGER},
       reviewer_time = #{reviewerTime,jdbcType=TIMESTAMP},

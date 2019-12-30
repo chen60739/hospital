@@ -84,8 +84,8 @@
     </div>
 </div>
 <div id="toolbar">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">编辑</button>
-    <button type="button" class="btn btn-danger">删除</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="edit">编辑</button>
+    <button type="button" class="btn btn-danger" onclick="remove()">删除</button>
 </div>
 
 <!-- Modal -->
@@ -102,7 +102,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">责任医院</div>
-                                <select class="form-control">
+                                <select class="form-control" id="hospital1">
                                     <option value="">-请选择-</option>
                                 </select>
                             </div>
@@ -112,7 +112,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">责任科室</div>
-                                <select class="form-control">
+                                <select class="form-control" id="department1">
                                     <option value="">-请选择-</option>
                                 </select>
                             </div>
@@ -124,7 +124,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">负责人</div>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" id="head">
                             </div>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">级别</div>
-                                <select class="form-control">
+                                <select class="form-control" id="level1">
                                     <option value="">-请选择-</option>
                                 </select>
                             </div>
@@ -144,7 +144,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">名称</div>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" id="group_name">
                             </div>
                         </div>
                     </div>
@@ -154,7 +154,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">联系电话</div>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" id="phone">
                             </div>
                         </div>
                     </div>
@@ -162,8 +162,10 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">状态</div>
-                                <select class="form-control">
-                                    <option value="">-请选择-</option>
+                                <select class="form-control" id="state">
+                                    <option value="">请选择</option>
+                                    <option value="1">开放</option>
+                                    <option value="0">关闭</option>
                                 </select>
                             </div>
                         </div>
@@ -174,7 +176,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">开始日期</div>
-                                <input type="date" class="form-control">
+                                <input type="date" class="form-control" id="start_time">
                             </div>
                         </div>
                     </div>
@@ -182,7 +184,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">结束日期</div>
-                                <input type="date" class="form-control">
+                                <input type="date" class="form-control" id="end_time">
                             </div>
                         </div>
                     </div>
@@ -192,7 +194,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">课题编号</div>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" id="issue_number">
                             </div>
                         </div>
                     </div>
@@ -200,7 +202,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">患者数量</div>
-                                <input type="number" class="form-control">
+                                <input type="number" class="form-control" id="number_patients">
                             </div>
                         </div>
                     </div>
@@ -209,8 +211,12 @@
                     <div class="col-xs-10 col-xs-offset-1">
                         <div class="form-group">
                             <div class="input-group">
-                                <div class="input-group-addon">对照组</div>
-                                <input type="text" class="form-control">
+                                <div class="input-group-addon">类型</div>
+                                <select class="form-control" id="control_group">
+                                    <option value="">请选择</option>
+                                    <option value="1">实验组</option>
+                                    <option value="0">对照组</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -220,14 +226,14 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">背景</div>
-                                <textarea type="text" class="form-control"></textarea>
+                                <textarea type="text" class="form-control" id="background"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info">保存</button>
+                <button type="button" class="btn btn-info" id="save" data-toggle="modal" data-target="#myModal" onclick="save()">保存</button>
             </div>
         </div>
     </div>
@@ -235,8 +241,14 @@
 </body>
 <script>
     $(function () {
+        selectDiceionary();
+        selectHospital();
+        selectLevel1();
+        selectdepartment1();
+        edit();
         var tableColumns = [
             {checkbox: true},
+            {field: 'groupId',title:'编号',visible:false,align:'center', sortable: true},
             {field: 'groupName', title: '名称',align:'center', sortable: true},
             {field: 'groupNum', title: '入组率',align:'center', sortable: true},
             {field: 'groupPrincipal', title: '负责人',align:'center' ,sortable: true},
@@ -251,8 +263,6 @@
         $('#tableL01').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
             /*data:data1, //通过ajax返回的数据*/
-            width:300,
-            height:400,
             url:'findAllGroups',
             method: 'get',
             pageNumber: 1,
@@ -269,8 +279,9 @@
             showFooter: true,
             clickToSelect: true,
             toolbar:'#toolbar',
-            onClickCell: function(params){
-                location.href="/one";
+            onClickRow: function(params){
+                var groupId=params.groupId;
+                location.href="/one?groupId="+groupId;
             },
             queryParams: function queryParams(params){
                 var param = {
@@ -291,8 +302,8 @@
         $(document).on('click', "#search",function(){
             $('#tableL01').bootstrapTable('refresh');
         });
-        selectDiceionary();
     })
+    //科室查询
     function selectDiceionary(){
         $.get("findAllDepartment",{},function(rs){
             if(rs !=null){
@@ -302,16 +313,184 @@
                     aa.append(varoption);
                 }
             }
-
         })
     }
+    //搜索框清空
     function empty(){
         $("#groupPrincipal").val("");
         $("#dictionaryName").val("");
         $("#groupState").val("");
         $("#time1").val("");
         $("#time2").val("");
+        $("input[name='btSelectAll']").prop("checked",false);
+        $("input[name='btSelectItem']").prop("checked",false);
     }
+    //批量删除
+    function remove(){
+        if(!confirm("是否确认删除？"))
+            return ;
+        var  rows=$("#tableL01").bootstrapTable('getSelections')//要删除的数据
+        if(rows.length == 0){
+            alert("请选择要删除的记录！");
+            return ;
+        }else {
+            var ids="";
+            $(rows).each(function(){
+                ids+=this.groupId+",";
+            });
+            $.ajax({
+                url:"removeById",
+                data:{"ids":ids},
+                type:"post",
+                success:function(data){
+                    $("#tableL01").bootstrapTable('refresh', data);
+
+                }
+            })
+        }
+
+    }
+    //医院查询
+    function selectHospital(){
+        $.get("findAllHospital",{},function(rs){
+            if (rs !=null){
+                var hospital1=$("#hospital1");
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].dictionaryId  +">"+rs[i].dictionaryName+"</option>")
+                    hospital1.append(varoption);
+                }
+            }
+        })
+    }
+    //查询级别
+    function selectLevel1(){
+        $.get("findAllLeavl",{},function(rs){
+            if(rs!=null){
+                var leavel=$("#level1");
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].dictionaryId  +">"+rs[i].dictionaryName+"</option>")
+                    leavel.append(varoption);
+                }
+            }
+        })
+    }
+    //查询科室1
+    function selectdepartment1(){
+        $.get("findAllDepartment",{},function(rs){
+            if(rs !=null){
+                var departement=$("#department1");
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].dictionaryId+">"+rs[i].dictionaryName+"</option>");
+                    departement.append(varoption);
+                }
+            }
+        })
+    }
+    //编辑回显
+    function edit(){
+        var edit=$("#edit");
+        edit.click(function(){
+            var info =$('#tableL01').bootstrapTable('getSelections');
+            if(info.length!=1){
+                alert("请选择一条数据!")
+                location.href="/login";
+
+            }else{
+                $("#head").val(info[0].groupPrincipal);
+                $("#group_name").val(info[0].groupName);
+                $("#phone").val(info[0].groupPhone);
+                $("#issue_number").val(info[0].groupNum);
+                $("#number_patients").val(info[0].patientNum);
+                $("#background").val(info[0].background);
+                $("#start_time").val(info[0].groupStartTime);
+                $("#end_time").val(info[0].groupEndTime);
+                $(function(){
+                    var depement=info[0].groupDepartmentId;
+                    var hospital1=info[0].groupHospitalId;
+                    var level1=info[0].groupRankId;
+                    var groupState=info[0].groupState;
+                    var controlGroup=info[0].controlGroup;
+                    //科室选中
+                    $("#department1").children("option").each(function(){
+                        var text=$(this).val();
+                        if(depement==text){
+                            $(this).attr("selected","selected");
+                        }
+                    })
+                    //医院选中
+                    $("#hospital1").children("option").each(function(){
+                        var text=$(this).val();
+                        if (hospital1==text){
+                            $(this).attr("selected","selected");
+                        }
+                    })
+                    //级别选中
+                    $("#level1").children("option").each(function(){
+                        var text=$(this).val();
+                        if (level1==text){
+                            $(this).attr("selected","selected");
+                        }
+                    })
+                    //状态选中
+                    $("#state").children("option").each(function(){
+                        var text=$(this).val();
+                        if (groupState==text){
+                            $(this).attr("selected","selected");
+                        }
+                    })
+                    //类型选中
+                    $("#control_group").children("option").each(function(){
+                        var text=$(this).val();
+                        if (controlGroup==text){
+                            $(this).attr("selected","selected");
+                        }
+                    })
+                })
+            }
+
+
+        })
+    }
+    //保存修改
+    function save(){
+        var info =$('#tableL01').bootstrapTable('getSelections')[0];
+        var groupId=info.groupId;
+        var groupHospitalId=$("#hospital1").val();
+        var groupDepartmentId=$("#department1").val();
+        var groupPrincipal=$("#head").val();
+        var groupRankId=$("#level1").val();
+        var groupName=$("#group_name").val();
+        var groupPhone=$("#phone").val();
+        var groupState=$("#state").val();
+        var groupStartTime=$("#start_time").val();
+        var groupEndTime=$("#end_time").val();
+        var groupNum=$("#issue_number").val();
+        var patientNum=$("#number_patients").val();
+        var controlGroup=$("#control_group").val();
+        var background=$("#background").val();
+        $.get("changeOne",{
+            "groupId":groupId,
+            "groupHospitalId":groupHospitalId,
+            "groupDepartmentId":groupDepartmentId,
+            "groupPrincipal":groupPrincipal,
+            "groupRankId":groupRankId,
+            "groupName":groupName,
+            "groupPhone":groupPhone,
+            "groupState":groupState,
+            "groupStartTime":groupStartTime,
+            "groupEndTime":groupEndTime,
+            "groupNum":groupNum,
+            "patientNum":patientNum,
+            "controlGroup":controlGroup,
+            "background":background,
+        },function(rs){
+            if(rs=1){
+                $("#myModal").modal('hide')//取消模态框
+                $("#tableL01").bootstrapTable('refresh', rs);
+            }
+        })
+    }
+
 </script>
 
 </html>

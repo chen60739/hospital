@@ -13,21 +13,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from reminders
+    from `reminders`
     where rem_id = #{remId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from reminders
+    delete from `reminders`
     where rem_id = #{remId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Reminders">
-    insert into reminders (rem_id, reminders_id, reminders_dictionary_id, 
+    insert into `reminders` (rem_id, reminders_id, reminders_dictionary_id,
       reminders_occupation_id)
     values (#{remId,jdbcType=INTEGER}, #{remindersId,jdbcType=INTEGER}, #{remindersDictionaryId,jdbcType=INTEGER}, 
       #{remindersOccupationId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.Reminders">
-    insert into reminders
+    insert into `reminders`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="remId != null">
         rem_id,
@@ -58,7 +58,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Reminders">
-    update reminders
+    update `reminders`
     <set>
       <if test="remindersId != null">
         reminders_id = #{remindersId,jdbcType=INTEGER},
@@ -73,7 +73,7 @@
     where rem_id = #{remId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Reminders">
-    update reminders
+    update `reminders`
     set reminders_id = #{remindersId,jdbcType=INTEGER},
       reminders_dictionary_id = #{remindersDictionaryId,jdbcType=INTEGER},
       reminders_occupation_id = #{remindersOccupationId,jdbcType=INTEGER}

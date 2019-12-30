@@ -12,21 +12,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from baseline
+    from `baseline`
     where baseline_id = #{baselineId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from baseline
+    delete from `baseline`
     where baseline_id = #{baselineId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Baseline">
-    insert into baseline (baseline_id, rule_id, baseline_pat_id
+    insert into `baseline` (baseline_id, rule_id, baseline_pat_id
       )
     values (#{baselineId,jdbcType=INTEGER}, #{ruleId,jdbcType=INTEGER}, #{baselinePatId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.Baseline">
-    insert into baseline
+    insert into `baseline`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="baselineId != null">
         baseline_id,
@@ -51,7 +51,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Baseline">
-    update baseline
+    update `baseline`
     <set>
       <if test="ruleId != null">
         rule_id = #{ruleId,jdbcType=INTEGER},
@@ -63,7 +63,7 @@
     where baseline_id = #{baselineId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Baseline">
-    update baseline
+    update `baseline`
     set rule_id = #{ruleId,jdbcType=INTEGER},
       baseline_pat_id = #{baselinePatId,jdbcType=INTEGER}
     where baseline_id = #{baselineId,jdbcType=INTEGER}

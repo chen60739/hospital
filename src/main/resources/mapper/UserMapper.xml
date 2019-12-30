@@ -27,7 +27,7 @@
 </sql>
 
   <select id="getUser" resultMap="super">
-    SELECT user_id, user_name,dictionary_name FROM user ,dictionary
+    SELECT user_id, user_name,dictionary_name FROM `user` ,`dictionary`
     <where>
       department_id=dictionary_id
       <if test="dictionaryName!= null and dictionaryName != ''">
@@ -41,7 +41,7 @@
   </select>
   <!-- 查询单条回显数据-->
   <select id="selectOne" resultMap="super">
-    SELECT user_id, user_name,dictionary_name FROM user ,dictionary
+    SELECT user_id, user_name,dictionary_name FROM `user` ,`dictionary`
     <where>
       department_id=dictionary_id
       <if test="userName!= null and userName != ''">
@@ -54,11 +54,11 @@
 
 <!--查询医生-->
   <select id="selectUser" resultMap="BaseResultMap">
-    SELECT *FROM  user
+    SELECT *FROM  `user`
   </select>
 <!--已经在科室的人-->
   <select id="getUserByName" resultMap="super">
-    SELECT  user_name,dictionary_name FROM user ,dictionary
+    SELECT  user_name,dictionary_name FROM `user` ,`dictionary`
     <where>
       department_id=dictionary_id
       <if test="dictionaryName!= null and dictionaryName != ''">
@@ -73,28 +73,28 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user
+    from `user`
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user
+    delete from `user`
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
 
   <insert id="insert" parameterType="com.example.hospital.model.User">
-    insert into user (user_id, user_name, user_pwd,
+    insert into `user` (user_id, user_name, user_pwd,
       user_sex, user_phone, user_email, 
       department_id, role_id, create_time, 
       modified_time, is_del, grade_id, 
       group_id, occupation_id)
-    values (null, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR},
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
       #{userSex,jdbcType=TINYINT}, #{userPhone,jdbcType=CHAR}, #{userEmail,jdbcType=VARCHAR}, 
       #{departmentId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{modifiedTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=TINYINT}, #{gradeId,jdbcType=INTEGER}, 
       #{groupId,jdbcType=INTEGER}, #{occupationId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.User">
-    insert into user
+    insert into `user`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userId != null">
         user_id,
@@ -185,7 +185,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySe" parameterType="com.example.hospital.model.User">
-    update user
+    update `user`
     <set>
       <if test="userName != null">
         user_name = #{userName,jdbcType=VARCHAR},
@@ -230,7 +230,7 @@
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.User">
-    update user
+    update `user`
     set department_id = #{departmentId,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>

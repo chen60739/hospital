@@ -3,13 +3,17 @@ package com.example.hospital.dao;
 import com.example.hospital.model.Checked;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface CheckedMapper {
-    int deleteByPrimaryKey(Integer cId);
+    List<Checked>   selectChecked(Integer checkedId);
+
+    int deleteChecked(Integer checkedId);
 
     int insert(Checked record);
 
-    int insertSelective(Checked record);
+    int insertChecked(Checked record);
 
     Checked selectByPrimaryKey(Integer cId);
 

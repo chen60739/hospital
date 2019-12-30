@@ -24,5 +24,19 @@ public interface GroupsMapper {
     //随访组管理查询
     List<Groups> selectAllGroups(@Param("groupPrincipal") String groupPrincipal, @Param("dictionaryId")String dictionaryId, @Param("groupState")Integer groupState, @Param("time1")String time1, @Param("time2")String time2);
 
+    //批量删除
+    int deleteById(@Param("ids") String ids);
 
+    //修改随访组列表
+    int updateOne(Groups groups);
+
+    //添加随访组列表
+    int insertOne(Groups groups);
+
+
+    /**
+     * 所有小组（随访进度管理回显）
+     * @return
+     */
+    List<Groups> selectAll();
 }

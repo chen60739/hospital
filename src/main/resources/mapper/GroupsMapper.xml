@@ -30,15 +30,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from groups
+    from `groups`
     where group_id = #{groupId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from groups
+    delete from `groups`
     where group_id = #{groupId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Groups">
-    insert into groups (group_id, group_name, group_principal, 
+    insert into `groups` (group_id, group_name, group_principal,
       group_hospital_id, group_department_id, group_rank_id, 
       group_phone, group_state, group_start_time, 
       group_end_time, group_num, patient_num, 
@@ -52,7 +52,7 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.Groups">
-    insert into groups
+    insert into `groups`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="groupId != null">
         group_id,
@@ -149,7 +149,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Groups">
-    update groups
+    update `groups`
     <set>
       <if test="groupName != null">
         group_name = #{groupName,jdbcType=VARCHAR},
@@ -197,7 +197,7 @@
     where group_id = #{groupId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Groups">
-    update groups
+    update `groups`
     set group_name = #{groupName,jdbcType=VARCHAR},
       group_principal = #{groupPrincipal,jdbcType=VARCHAR},
       group_hospital_id = #{groupHospitalId,jdbcType=INTEGER},
@@ -216,10 +216,9 @@
   </update>
   <!--随访组管理查询-->
   <select id="selectAllGroups" resultMap="super">
-      select group_name,group_num,group_principal,group_state,
-			group_department_id,group_start_time,dictionary_name
-	      from groups,dictionary
+      select * from `groups`,`dictionary`
 	      where groups.group_department_id=dictionary.dictionary_id
+                AND groups.is_del=0
 	      <if test="groupPrincipal!=null and groupPrincipal!=''">
             AND groups.group_principal like CONCAT("%",#{groupPrincipal},"%")
           </if>
@@ -232,6 +231,32 @@
           <if test="time1!=null and time1!=''">
             AND groups.group_start_time between #{time1} and #{time2}
           </if>
-
     </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT * FROM `groups`
+  </select>
+  <!--批量删除-->
+  <update id="deleteById">
+    UPDATE `groups` SET is_del=1 WHERE group_id=#{ids}
+  </update>
+  <!--修改单条语句-->
+  <update id="updateOne">
+      UPDATE `groups` SET group_name=#{groupName},group_principal=#{groupPrincipal},group_hospital_id=#{groupHospitalId},group_department_id=#{groupDepartmentId},group_rank_id=#{groupRankId},
+        group_phone=#{groupPhone},group_state=#{groupState},group_start_time=#{groupStartTime},group_end_time=#{groupEndTime},group_num=#{groupNum},patient_num=#{patientNum},
+        control_group=#{controlGroup},background=#{background}
+        where group_id=#{groupId}
+  </update>
+  <!--添加单条语句-->
+  <insert id="insertOne">
+    INSERT INTO `groups`(group_id, group_name, group_principal,
+      group_hospital_id, group_department_id, group_rank_id,
+      group_phone, group_state, group_start_time,
+      group_end_time, group_num, patient_num,
+      control_group, background, is_del
+      ) VALUES (#{groupId}, #{groupName}, #{groupPrincipal}, #{groupHospitalId}, #{groupDepartmentId}, #{groupRankId},
+      #{groupPhone}, #{groupState}, #{groupStartTime},#{groupEndTime}, #{groupNum}, #{patientNum},
+      #{controlGroup}, #{background}, #{isDel}
+      )
+  </insert>
 </mapper>
