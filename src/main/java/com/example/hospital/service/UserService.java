@@ -12,9 +12,11 @@ public interface UserService {
 
     int deleteByPrimaryKey(Integer userId);
 
-    List<User> selectUser();//插入查询
+    List<User> selectUser();//查询
 
-    int insert(User record);
+    int updateByPrimaryKeySelective(User record);
 
-    List<User> getUserByNUll();
+    User selectByPrimaryKey(Integer userId);//查询单条
+
+    User selectOne(Integer userId);//查询单条
 }
