@@ -242,8 +242,12 @@
         var patientNum=$("#number_patients").val();
         var controlGroup=$("#control_group").val();
         var background=$("#background").val();
+        if (patientNum<=0){
+            alert("患者不能为空或负数");
+            return false;
+        }
         if (groupHospitalId=="" ||groupHospitalId==null || groupDepartmentId=="" ||groupDepartmentId==null ||groupPrincipal=="" ||groupPrincipal==null ||groupRankId=="" ||groupRankId==null ||groupName=="" ||groupName==null || groupPhone=="" ||groupPhone==null || groupState=="" ||groupState==null || groupStartTime=="" ||groupStartTime==null || groupEndTime=="" ||groupEndTime==null || groupNum=="" ||groupNum==null || patientNum=="" ||patientNum==null || controlGroup=="" ||controlGroup==null || background=="" ||background==null){
-            alert("请完整输入信息！")
+            alert("请完整输入信息！");
             return false;
         }else{
             $.get("saveOne",{
@@ -436,6 +440,10 @@
             $("#hzsl").append("<span style='color:red;'>♠不能为空</span>");
             return false;
         }else {
+            if (patientNum<=0){
+                $("#hzsl").append("<span style='color:red;'>♠不能为负数或0</span>");
+                return false;
+            }
             $("#hzsl").append("<span style='color:green; font-size:28px;'>☺</span>");
             return true;
         }
