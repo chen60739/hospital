@@ -12,27 +12,27 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from test
+    from `test`
     where t_id = #{tId,jdbcType=INTEGER}
   </select>
   <select id="selectTest" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from test
+    from `test`
     where test_id=#{testId}
   </select>
   <delete id="deleteTest" parameterType="java.lang.Integer">
-    delete from test
+    delete from `test`
     where test_id = #{test_id}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Test">
-    insert into test (t_id, test_id, test_dictionary_id
+    insert into `test` (t_id, test_id, test_dictionary_id
       )
     values (#{tId,jdbcType=INTEGER}, #{testId,jdbcType=INTEGER}, #{testDictionaryId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertTest" parameterType="com.example.hospital.model.Test">
-    insert into test
+    insert into `test`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="tId != null">
         t_id,
@@ -57,7 +57,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Test">
-    update test
+    update `test`
     <set>
       <if test="testId != null">
         test_id = #{testId,jdbcType=INTEGER},
@@ -69,7 +69,7 @@
     where t_id = #{tId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Test">
-    update test
+    update `test`
     set test_id = #{testId,jdbcType=INTEGER},
       test_dictionary_id = #{testDictionaryId,jdbcType=INTEGER}
     where t_id = #{tId,jdbcType=INTEGER}

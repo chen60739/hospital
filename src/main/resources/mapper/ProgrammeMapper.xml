@@ -35,14 +35,14 @@
     select
 --     p.programme_id,p.treatment,p.operation,p.notice
         *
-    from programme
+    from `programme`
     where department_id=#{departmentId}
   </select>
   <select id="selectProgrammeName" resultMap="BaseResultMap" parameterType="java.lang.String">
     select
 --     p.programme_id,p.treatment,p.operation,p.notice
         *
-    from programme
+    from `programme`
     where programme_name=#{programmeName}
   </select>
 
@@ -53,16 +53,16 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from programme
+    from `programme`
     where programme_id = #{programmeId,jdbcType=INTEGER}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from programme
+    delete from `programme`
     where programme_id = #{programmeId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Programme">
-    insert into programme (programme_id, treatment,
+    insert into `programme` (programme_id, treatment,
       operation, notice, department_id,
       programme_name)
     values (#{programmeId,jdbcType=INTEGER},  #{treatment,jdbcType=VARCHAR},
@@ -70,7 +70,7 @@
       #{programmeName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertProgramme" parameterType="com.example.hospital.model.Programme"  useGeneratedKeys="true" keyProperty="programmeId">
-    insert into programme
+    insert into `programme`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="treatment != null">
         treatment,
@@ -107,7 +107,7 @@
     </trim>
   </insert>
   <update id="updateProgramme" parameterType="com.example.hospital.model.Programme">
-    update programme
+    update `programme`
     <set>
       <if test="treatment != null">
         treatment = #{treatment,jdbcType=VARCHAR},
@@ -128,7 +128,7 @@
     where programme_id = #{programmeId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Programme">
-    update programme
+    update `programme`
     set
       treatment = #{treatment,jdbcType=VARCHAR},
       operation = #{operation,jdbcType=VARCHAR},

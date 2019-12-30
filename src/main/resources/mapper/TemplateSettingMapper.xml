@@ -19,15 +19,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from template_setting
+    from `template_setting`
     where template_setting_id = #{templateSettingId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from template_setting
+    delete from `template_setting`
     where template_setting_id = #{templateSettingId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.TemplateSetting">
-    insert into template_setting (template_setting_id, t_id, update_time, 
+    insert into `template_setting` (template_setting_id, t_id, update_time,
       template_setting_create_time, update_people, 
       create_people, template_setting_version, template_setting_state, 
       template_name)
@@ -37,7 +37,7 @@
       #{templateName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.TemplateSetting">
-    insert into template_setting
+    insert into `template_setting`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="templateSettingId != null">
         template_setting_id,
@@ -98,7 +98,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.TemplateSetting">
-    update template_setting
+    update `template_setting`
     <set>
       <if test="tId != null">
         t_id = #{tId,jdbcType=INTEGER},
@@ -128,7 +128,7 @@
     where template_setting_id = #{templateSettingId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.TemplateSetting">
-    update template_setting
+    update `template_setting`
     set t_id = #{tId,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       template_setting_create_time = #{templateSettingCreateTime,jdbcType=TIMESTAMP},

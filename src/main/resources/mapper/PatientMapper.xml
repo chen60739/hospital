@@ -40,7 +40,7 @@
   <select id="selectPatientsByGroupId" resultMap="SuperResultMap">
     select
     p.*,pg.in_group_time
-    from patient p,planning_group pg where p.patient_id=pg.p_patient_id and pg.p_group_id=#{group1}
+    from `patient` p,`planning_group` pg where p.patient_id=pg.p_patient_id and pg.p_group_id=#{group1}
     <if test="superPatient.outpatientService != null and superPatient.outpatientService != ''" >
     and p.outpatient_service like CONCAT('%',#{superPatient.outpatientService},'%')
     </if>
@@ -80,12 +80,12 @@
           gg.group_department_id,
           n.follow_time AS follow_time
       FROM
-          planning_group g,
-          patient p,
-          follow_up_rule r,
-          groups gg,
-          follow_up f,
-          dictionary d,
+          `planning_group` g,
+          `patient` p,
+          `follow_up_rule` r,
+          `groups` gg,
+          `follow_up` f,
+          `dictionary` d,
             (
                 SELECT
                     follow_time,
@@ -133,15 +133,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from patient
+    from `patient`
     where patient_id = #{patientId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from patient
+    delete from `patient`
     where patient_id = #{patientId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Patient">
-    insert into patient (patient_id, patient_name, patient_sex, 
+    insert into `patient` (patient_id, patient_name, patient_sex,
       patient_birthday, nation_id, outpatient_service, 
       hospitalization_number, disease_name, disease, 
       result_level, is_del)
@@ -151,7 +151,7 @@
       #{resultLevel,jdbcType=VARCHAR}, #{isDel,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.Patient">
-    insert into patient
+    insert into `patient`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="patientId != null">
         patient_id,
@@ -224,7 +224,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Patient">
-    update patient
+    update `patient`
     <set>
       <if test="patientName != null">
         patient_name = #{patientName,jdbcType=VARCHAR},
@@ -260,7 +260,7 @@
     where patient_id = #{patientId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Patient">
-    update patient
+    update `patient`
     set patient_name = #{patientName,jdbcType=VARCHAR},
       patient_sex = #{patientSex,jdbcType=VARCHAR},
       patient_birthday = #{patientBirthday,jdbcType=TIMESTAMP},

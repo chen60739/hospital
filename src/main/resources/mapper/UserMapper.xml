@@ -27,7 +27,7 @@
 </sql>
 
   <select id="getUser" resultMap="super">
-    SELECT user_id, user_name,dictionary_name FROM user ,dictionary
+    SELECT user_id, user_name,dictionary_name FROM `user` ,`dictionary`
     <where>
       department_id=dictionary_id
       <if test="dictionaryName!= null and dictionaryName != ''">
@@ -40,7 +40,7 @@
   </select>
 
   <select id="selectUser" resultMap="super">
-    SELECT user_name,dictionary_name FROM user ,dictionary
+    SELECT user_name,dictionary_name FROM `user` ,`dictionary`
     <where>
       department_id=dictionary_id
       <if test="dictionaryName!= null and dictionaryName != ''">
@@ -53,7 +53,7 @@
   </select>
 <!--已经在科室的人-->
   <select id="getUserByName" resultMap="super">
-    SELECT  user_name,dictionary_name FROM user ,dictionary
+    SELECT  user_name,dictionary_name FROM `user` ,`dictionary`
     <where>
       department_id=dictionary_id
       <if test="dictionaryName!= null and dictionaryName != ''">
@@ -65,8 +65,8 @@
     </where>
   </select>
  <!-- 没在科室的人-->
-  <select id="getUserByNUll" resultMap="super">
-    SELECT  user_name FROM user where
+  <select id="getUserByNull" resultMap="super">
+    SELECT  user_name FROM `user` where
       department_id = null
   </select>
 

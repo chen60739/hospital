@@ -13,21 +13,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from select_role
+    from `select_role`
     where select_role_id = #{selectRoleId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from select_role
+    delete from `select_role`
     where select_role_id = #{selectRoleId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.SelectRole">
-    insert into select_role (select_role_id, role_id, menu_name, 
+    insert into `select_role` (select_role_id, role_id, menu_name,
       menu)
     values (#{selectRoleId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, 
       #{menu,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.SelectRole">
-    insert into select_role
+    insert into `select_role`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="selectRoleId != null">
         select_role_id,
@@ -58,7 +58,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.SelectRole">
-    update select_role
+    update `select_role`
     <set>
       <if test="roleId != null">
         role_id = #{roleId,jdbcType=INTEGER},
@@ -73,7 +73,7 @@
     where select_role_id = #{selectRoleId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.SelectRole">
-    update select_role
+    update `select_role`
     set role_id = #{roleId,jdbcType=INTEGER},
       menu_name = #{menuName,jdbcType=VARCHAR},
       menu = #{menu,jdbcType=VARCHAR}
