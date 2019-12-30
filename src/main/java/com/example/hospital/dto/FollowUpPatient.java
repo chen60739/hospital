@@ -31,6 +31,8 @@ public class FollowUpPatient extends Patient {
     private String departmentName ;
     /** 负责科室Id */
     private Integer groupDepartmentId ;
+    /** 随访计划主键 */
+    private Integer followId ;
 
     public String getGroupName() {
         return groupName;
@@ -88,6 +90,14 @@ public class FollowUpPatient extends Patient {
         this.groupDepartmentId = groupDepartmentId;
     }
 
+    public Integer getFollowId() {
+        return followId;
+    }
+
+    public void setFollowId(Integer followId) {
+        this.followId = followId;
+    }
+
     @Override
     public String toString() {
         return "FollowUpPatient{" +
@@ -98,6 +108,7 @@ public class FollowUpPatient extends Patient {
                 ", followState=" + followState +
                 ", departmentName='" + departmentName + '\'' +
                 ", groupDepartmentId=" + groupDepartmentId +
+                ", followId=" + followId +
                 '}';
     }
 }
