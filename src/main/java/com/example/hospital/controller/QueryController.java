@@ -122,6 +122,13 @@ public class QueryController {
                 queryService.addChecked(c);
             }
         }
-        return "diagnosis_and_treatment_plan";
+        return "redirect:/plan";
+    }
+    @RequestMapping("/changeProgrammeName")
+    @ResponseBody
+    public  boolean changeProgrammeName(String programmeName){
+        System.err.println(programmeName);
+        Programme pg= queryService.getByProgrammeName(programmeName);
+        if(pg!=null){ return false; }else{  return true; }
     }
 }

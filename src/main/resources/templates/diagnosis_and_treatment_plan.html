@@ -58,12 +58,14 @@
                 <div id="list" style="display: block" >
                     <form action="savePlan">
                         <input id="pid" type="hidden" name="programmeId" >
-                        <input id="did" type="hidden" name="departmentId">
+<!--                        <input id="did" type="hidden" name="departmentId">-->
                         <table border="1" align="center">
                             <tr>
                                 <td colspan="2" align="center">
-                                    <input id="fangan" placeholder="" name="programmeName">
-                                    <button type="submit" class="btn btn-info btn-sm">保存</button>
+                                    <input id="fangan" placeholder="" name="programmeName" >
+                                    <button id="baocun" type="submit" class="btn btn-info btn-sm">保存</button>
+                                    <span id="#jymz" ></span>
+
                                 </td>
                             </tr>
                             <tr style="height: 70px">
@@ -115,6 +117,29 @@
 </div>
 </body>
 <script>
+        var old;
+        $("#fangan").on('focus', function () {
+            old = this.value;
+        }).change(function() {
+            var programmeName = $(this).val();
+            programmeName.trim();
+        if (old==programmeName){
+            $("#baocun").attr("disabled",false);
+        }else{
+            $.post("changeProgrammeName",{"programmeName":programmeName},function (message) {
+                alert(message);
+                if(message==true){
+                    $("#jymz").text("✔");
+                    $("#jymz").css("color","green");
+                    $("#baocun").attr("disabled",false);
+                }else {
+                    $("#jymz").text("方案名已被使用！");
+                    $("#jymz").css("color","red");
+                    $("#baocun").attr("disabled","true");
+                }
+            });
+        }
+    });
     $(function () {
         var mmm = new Array();
         var iii = new Array();
@@ -147,8 +172,8 @@
                 var notice1 = res[0].notice;
                 if (i == 0) {
                     $("#programmeName").html(count);
+                    $("#fangan").val(count);
                     $("#pid").val(programmeId);
-                    $("#fangan").attr("placeholder", count);
                     $("#treatment").html(treatment1);
                     $("#operation").html(operation1);
                     $("#notice").html(notice1);
@@ -179,7 +204,6 @@
                     $("#check").fSelect();
                 } else {
                     var medication = res[i].medicationList;
-                    console.log(medication);
                     var test = res[i].testList;
                     var checked = res[i].checkedList;
                     /* var v = "";
@@ -198,11 +222,11 @@
                         "                </div>");
                     $("#planContainer").append("<div id='list" + count + "' style=\"display: block\">\n" +
                         "                 <form action=\"savePlan\">\n" +
-                        "                    <iinput id='pid" + count + "' value='" + programmeId + "' type=\"hidden\" name=\"programmeId\">\n" +
+                        "                    <input id='pid" + count + "' value='" + programmeId + "' type=\"hidden\" name=\"programmeId\">\n" +
                         "                    <table border=\"1\" align=\"center\">\n" +
                         "                       <tr>\n" +
                         "                         <td colspan=\"2\" align=\"center\">\n" +
-                        "                            <input placeholder='" + count + "'   name=\"programmeName\">\n" +
+                        "                            <input id=\"fangan\" placeholder=\"请输入方案名\" value='"+count+"'  name=\"programmeName\" >\n" +
                         "                            <button type=\"submit\" class=\"btn btn-info btn-sm\">保存</button>\n" +
                         "                           </td>\n" +
                         "                        </tr>\n" +
@@ -313,10 +337,11 @@
                 "                </div>");
             $("#planContainer").append("<div id='list"+count+"' style=\"display: block\">\n" +
                 "                 <form action=\"savePlan\">\n" +
+                "                    <input id='pid" + count + "' value='" + departmentId + "' type=\"hidden\" name=\"departmentId\">\n" +
                 "                    <table border=\"1\" align=\"center\">\n" +
                 "                       <tr>\n" +
                 "                         <td colspan=\"2\" align=\"center\">\n" +
-                "                            <input placeholder=\"请输入方案名称\" name=\"programmeName\">\n" +
+                "                            <input id=\"fangan\" placeholder=\"请输入方案名称\" name=\"programmeName\" >\n" +
                 "                            <button type=\"submit\" class=\"btn btn-info btn-sm\">保存</button>\n" +
                 "                           </td>\n" +
                 "                        </tr>\n" +
