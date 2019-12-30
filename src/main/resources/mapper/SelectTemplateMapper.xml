@@ -13,21 +13,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from select_template
+    from `select_template`
     where st_id = #{stId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from select_template
+    delete from `select_template`
     where st_id = #{stId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.SelectTemplate">
-    insert into select_template (st_id, select_template_id, select_rule_id, 
+    insert into `select_template` (st_id, select_template_id, select_rule_id,
       template_id)
     values (#{stId,jdbcType=INTEGER}, #{selectTemplateId,jdbcType=INTEGER}, #{selectRuleId,jdbcType=INTEGER}, 
       #{templateId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.SelectTemplate">
-    insert into select_template
+    insert into `select_template`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="stId != null">
         st_id,
@@ -58,7 +58,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.SelectTemplate">
-    update select_template
+    update `select_template`
     <set>
       <if test="selectTemplateId != null">
         select_template_id = #{selectTemplateId,jdbcType=INTEGER},
@@ -73,7 +73,7 @@
     where st_id = #{stId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.SelectTemplate">
-    update select_template
+    update `select_template`
     set select_template_id = #{selectTemplateId,jdbcType=INTEGER},
       select_rule_id = #{selectRuleId,jdbcType=INTEGER},
       template_id = #{templateId,jdbcType=INTEGER}

@@ -13,21 +13,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from template
+    from `template`
     where template_id = #{templateId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from template
+    delete from `template`
     where template_id = #{templateId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Template">
-    insert into template (template_id, template_value, l_id, 
+    insert into `template` (template_id, template_value, l_id,
       template_name_id)
     values (#{templateId,jdbcType=INTEGER}, #{templateValue,jdbcType=VARCHAR}, #{lId,jdbcType=INTEGER}, 
       #{templateNameId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.Template">
-    insert into template
+    insert into `template`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="templateId != null">
         template_id,
@@ -58,7 +58,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Template">
-    update template
+    update `template`
     <set>
       <if test="templateValue != null">
         template_value = #{templateValue,jdbcType=VARCHAR},
@@ -73,7 +73,7 @@
     where template_id = #{templateId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Template">
-    update template
+    update `template`
     set template_value = #{templateValue,jdbcType=VARCHAR},
       l_id = #{lId,jdbcType=INTEGER},
       template_name_id = #{templateNameId,jdbcType=INTEGER}

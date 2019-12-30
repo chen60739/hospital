@@ -12,21 +12,27 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from checked
+    from `checked`
     where c_id = #{cId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from checked
-    where c_id = #{cId,jdbcType=INTEGER}
+  <select id="selectChecked" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `checked`
+    where checked_id=#{checkedId}
+  </select>
+  <delete id="deleteChecked" parameterType="java.lang.Integer">
+    delete from `checked`
+    where checked_id = #{checked_id}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Checked">
-    insert into checked (c_id, checked_id, checked_dictionary_id
+    insert into `checked` (c_id, checked_id, checked_dictionary_id
       )
     values (#{cId,jdbcType=INTEGER}, #{checkedId,jdbcType=INTEGER}, #{checkedDictionaryId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.example.hospital.model.Checked">
-    insert into checked
+  <insert id="insertChecked" parameterType="com.example.hospital.model.Checked">
+    insert into `checked`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="cId != null">
         c_id,
@@ -51,7 +57,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Checked">
-    update checked
+    update `checked`
     <set>
       <if test="checkedId != null">
         checked_id = #{checkedId,jdbcType=INTEGER},
@@ -63,7 +69,7 @@
     where c_id = #{cId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Checked">
-    update checked
+    update `checked`
     set checked_id = #{checkedId,jdbcType=INTEGER},
       checked_dictionary_id = #{checkedDictionaryId,jdbcType=INTEGER}
     where c_id = #{cId,jdbcType=INTEGER}

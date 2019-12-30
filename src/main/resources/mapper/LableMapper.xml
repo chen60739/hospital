@@ -13,21 +13,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from lable
+    from `lable`
     where lable_id = #{lableId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from lable
+    delete from `lable`
     where lable_id = #{lableId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Lable">
-    insert into lable (lable_id, lable_name, lable_type, 
+    insert into `lable` (lable_id, lable_name, lable_type,
       conditions)
     values (#{lableId,jdbcType=INTEGER}, #{lableName,jdbcType=VARCHAR}, #{lableType,jdbcType=VARCHAR}, 
       #{conditions,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.Lable">
-    insert into lable
+    insert into `lable`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="lableId != null">
         lable_id,
@@ -58,7 +58,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Lable">
-    update lable
+    update `lable`
     <set>
       <if test="lableName != null">
         lable_name = #{lableName,jdbcType=VARCHAR},
@@ -73,7 +73,7 @@
     where lable_id = #{lableId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Lable">
-    update lable
+    update `lable`
     set lable_name = #{lableName,jdbcType=VARCHAR},
       lable_type = #{lableType,jdbcType=VARCHAR},
       conditions = #{conditions,jdbcType=VARCHAR}

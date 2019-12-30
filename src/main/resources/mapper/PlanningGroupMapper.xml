@@ -13,21 +13,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from planning_group
+    from `planning_group`
     where planning_id = #{planningId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from planning_group
+    delete from `planning_group`
     where planning_id = #{planningId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.PlanningGroup">
-    insert into planning_group (planning_id, p_group_id, p_patient_id, 
+    insert into `planning_group` (planning_id, p_group_id, p_patient_id,
       in_group_time)
     values (#{planningId,jdbcType=INTEGER}, #{pGroupId,jdbcType=INTEGER}, #{pPatientId,jdbcType=INTEGER}, 
       #{inGroupTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.PlanningGroup">
-    insert into planning_group
+    insert into `planning_group`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="planningId != null">
         planning_id,
@@ -58,7 +58,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.PlanningGroup">
-    update planning_group
+    update `planning_group`
     <set>
       <if test="pGroupId != null">
         p_group_id = #{pGroupId,jdbcType=INTEGER},
@@ -73,7 +73,7 @@
     where planning_id = #{planningId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.PlanningGroup">
-    update planning_group
+    update `planning_group`
     set p_group_id = #{pGroupId,jdbcType=INTEGER},
       p_patient_id = #{pPatientId,jdbcType=INTEGER},
       in_group_time = #{inGroupTime,jdbcType=TIMESTAMP}

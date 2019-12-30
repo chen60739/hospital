@@ -14,21 +14,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from complications
+    from `complications`
     where complications_id = #{complicationsId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from complications
+    delete from `complications`
     where complications_id = #{complicationsId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Complications">
-    insert into complications (complications_id, pat_id, complications_name_id, 
+    insert into `complications`(complications_id, pat_id, complications_name_id,
       visiting_time, visiting_doctor)
     values (#{complicationsId,jdbcType=INTEGER}, #{patId,jdbcType=INTEGER}, #{complicationsNameId,jdbcType=INTEGER}, 
       #{visitingTime,jdbcType=TIMESTAMP}, #{visitingDoctor,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.Complications">
-    insert into complications
+    insert into `complications`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="complicationsId != null">
         complications_id,
@@ -65,7 +65,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Complications">
-    update complications
+    update `complications`
     <set>
       <if test="patId != null">
         pat_id = #{patId,jdbcType=INTEGER},
@@ -83,7 +83,7 @@
     where complications_id = #{complicationsId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Complications">
-    update complications
+    update `complications`
     set pat_id = #{patId,jdbcType=INTEGER},
       complications_name_id = #{complicationsNameId,jdbcType=INTEGER},
       visiting_time = #{visitingTime,jdbcType=TIMESTAMP},

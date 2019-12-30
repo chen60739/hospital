@@ -2,6 +2,7 @@ package com.example.hospital.dao;
 
 import com.example.hospital.model.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import javax.jws.soap.SOAPBinding;
@@ -21,11 +22,12 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    List<User> getUser(String dictionaryName,String userName);
+    List<User> getUser(@Param("dictionaryName") String dictionaryName,@Param("userName") String userName);
 
     List<User> getUserByName(String dictionaryName,String userName);
 
     List<User> selectUser();
 
-    List<User> getUserByNull();
+    User selectOne(Integer userId);//查询单条
+
 }

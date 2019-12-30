@@ -34,7 +34,7 @@
             create: function() {
                 var multiple = this.$select.is('[multiple]') ? ' multiple' : '';
                 this.$select.wrap('<div class="fs-wrap' + multiple + '"></div>');
-                this.$select.before('<div class="fs-label-wrap"><div class="fs-label">' + this.settings.placeholder + '</div><span class="fs-arrow"></span></div>');
+                this.$select.before('<div class="fs-label-wrap"><div class="fs-label" >' + this.settings.placeholder + '</div><span class="fs-arrow"></span></div>');
                 this.$select.before('<div class="fs-dropdown hidden"><div class="fs-options"></div></div>');
                 // this.$select.addClass('hidden');
                 this.$select.addClass('visibility-hidden');
