@@ -84,7 +84,7 @@
     </div>
 </div>
 <div id="toolbar">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" id="edit">编辑</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal"  id="edit">编辑</button>
     <button type="button" class="btn btn-danger" onclick="remove()">删除</button>
 </div>
 
@@ -393,9 +393,8 @@
             var info =$('#tableL01').bootstrapTable('getSelections');
             if(info.length!=1){
                 alert("请选择一条数据!")
-                location.href="/login";
-
             }else{
+                $('#myModal').modal('toggle');
                 $("#head").val(info[0].groupPrincipal);
                 $("#group_name").val(info[0].groupName);
                 $("#phone").val(info[0].groupPhone);
