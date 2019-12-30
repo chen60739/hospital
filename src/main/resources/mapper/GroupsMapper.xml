@@ -9,7 +9,7 @@
     <result column="group_department_id" jdbcType="INTEGER" property="groupDepartmentId" />
     <result column="group_rank_id" jdbcType="INTEGER" property="groupRankId" />
     <result column="group_phone" jdbcType="CHAR" property="groupPhone" />
-    <result column="group_state" jdbcType="VARCHAR" property="groupState" />
+    <result column="group_state" jdbcType="INTEGER" property="groupState" />
     <result column="group_start_time" jdbcType="TIMESTAMP" property="groupStartTime" />
     <result column="group_end_time" jdbcType="TIMESTAMP" property="groupEndTime" />
     <result column="group_num" jdbcType="VARCHAR" property="groupNum" />
@@ -17,6 +17,10 @@
     <result column="control_group" jdbcType="TINYINT" property="controlGroup" />
     <result column="background" jdbcType="VARCHAR" property="background" />
     <result column="is_del" jdbcType="TINYINT" property="isDel" />
+  </resultMap>
+
+  <resultMap id="super" type="com.example.hospital.dto.SupGroups" extends="BaseResultMap">
+    <result column="dictionary_name" property="dictionaryName"></result>
   </resultMap>
   <sql id="Base_Column_List">
     group_id, group_name, group_principal, group_hospital_id, group_department_id, group_rank_id, 
@@ -210,4 +214,50 @@
       is_del = #{isDel,jdbcType=TINYINT}
     where group_id = #{groupId,jdbcType=INTEGER}
   </update>
+  <!--随访组管理查询-->
+  <select id="selectAllGroups" resultMap="super">
+      select *from groups,dictionary
+	      where groups.group_department_id=dictionary.dictionary_id
+                AND groups.is_del=0
+	      <if test="groupPrincipal!=null and groupPrincipal!=''">
+            AND groups.group_principal like CONCAT("%",#{groupPrincipal},"%")
+          </if>
+          <if test="dictionaryId!=null and dictionaryId!=''">
+            AND dictionary.dictionary_id = #{dictionaryId}
+          </if>
+          <if test="groupState!=null">
+            AND groups.group_state =#{groupState}
+          </if>
+          <if test="time1!=null and time1!=''">
+            AND groups.group_start_time between #{time1} and #{time2}
+          </if>
+
+    </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT * FROM groups
+  </select>
+  <!--批量删除-->
+  <update id="deleteById">
+    UPDATE groups SET is_del=1 WHERE group_id=#{ids}
+  </update>
+  <!--修改单条语句-->
+  <update id="updateOne">
+      UPDATE groups SET group_name=#{groupName},group_principal=#{groupPrincipal},group_hospital_id=#{groupHospitalId},group_department_id=#{groupDepartmentId},group_rank_id=#{groupRankId},
+        group_phone=#{groupPhone},group_state=#{groupState},group_start_time=#{groupStartTime},group_end_time=#{groupEndTime},group_num=#{groupNum},patient_num=#{patientNum},
+        control_group=#{controlGroup},background=#{background}
+        where group_id=#{groupId}
+  </update>
+  <!--添加单条语句-->
+  <insert id="insertOne">
+    INSERT INTO groups(group_id, group_name, group_principal,
+      group_hospital_id, group_department_id, group_rank_id,
+      group_phone, group_state, group_start_time,
+      group_end_time, group_num, patient_num,
+      control_group, background, is_del
+      ) VALUES (#{groupId}, #{groupName}, #{groupPrincipal}, #{groupHospitalId}, #{groupDepartmentId}, #{groupRankId},
+      #{groupPhone}, #{groupState}, #{groupStartTime},#{groupEndTime}, #{groupNum}, #{patientNum},
+      #{controlGroup}, #{background}, #{isDel}
+      )
+  </insert>
 </mapper>

@@ -85,4 +85,16 @@
       two_id = #{twoId,jdbcType=INTEGER}
     where dictionary_id = #{dictionaryId,jdbcType=INTEGER}
   </update>
+  <!--查询科室-->
+  <select id="selectAll" resultMap="BaseResultMap">
+      select dictionary_name,dictionary_id from dictionary where two_id IN('11100','11200','11300','11400','11500','11600','11700','11800','11900')
+  </select>
+  <!--查询医院-->
+  <select id="selectAll1" resultMap="BaseResultMap">
+    select dictionary_name,dictionary_id from dictionary where one_id=19000
+  </select>
+  <!--查询级别-->
+  <select id="selectAll2" resultMap="BaseResultMap">
+    select dictionary_name,dictionary_id from dictionary where one_id=21000
+  </select>
 </mapper>

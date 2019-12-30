@@ -4,13 +4,19 @@
     <title>新建随访组</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/community.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/bootstrap-table.css">
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/bootstrap-table.js"></script>
     <script src="/js/bootstrap-table-zh-CN.js"></script>
+    <link rel="stylesheet" href="/css/hospital.css">
+
+    <style>
+        span{
+            float:right;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="navigation :: nav"></div>
@@ -24,11 +30,429 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-xs-3 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">责任医院</div>
+                    <select class="form-control" id="hospital1">
+                        <option value="">-请选择-</option>
+                    </select>
+                </div>
+                <div class="zryy"><span id="zryy"></span></div>
+            </div>
+        </div>
+        <div class="col-xs-3 col-lg-offset-1">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">责任科室</div>
+                    <select class="form-control" id="department1" >
+                        <option value="">-请选择-</option>
+                    </select>
+                </div>
+                <span id="zrks"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">负责人</div>
+                    <input type="text" class="form-control" id="head">
+                </div>
+                <span id="fzr"></span>
+            </div>
+        </div>
+        <div class="col-xs-3 col-lg-offset-1">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">级别</div>
+                    <select class="form-control" id="level1" >
+                        <option value="">-请选择-</option>
+                    </select>
+                </div>
+                <span id="jb"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-7 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">名称</div>
+                    <input type="text" class="form-control" id="group_name" ><!--required="required"-->
+                </div>
+                <span id="mc"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">联系电话</div>
+                    <input type="text" class="form-control" id="phone">
+                </div>
+                <span id="lxdh"></span>
+            </div>
+        </div>
+        <div class="col-xs-3 col-lg-offset-1">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">状态</div>
+                    <select class="form-control" id="state">
+                        <option value="">-请选择-</option>
+                        <option value="1">-开放-</option>
+                        <option value="0">-关闭-</option>
+                    </select>
+                </div>
+                <span id="zt"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">开始日期</div>
+                    <input type="date" class="form-control" id="start_time">
+                </div>
+                <span id="kssj"></span>
+            </div>
+        </div>
+        <div class="col-xs-3 col-lg-offset-1">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">结束日期</div>
+                    <input type="date" class="form-control" id="end_time">
+                </div>
+                <span id="jssj"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">课题编号</div>
+                    <input type="text" class="form-control" id="issue_number">
+                </div>
+                <span id="ktbh"></span>
+            </div>
+        </div>
+        <div class="col-xs-3 col-lg-offset-1">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">患者数量</div>
+                    <input type="number" class="form-control" id="number_patients">
+                </div>
+                <span id="hzsl"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-7 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">类型</div>
+                    <select class="form-control" id="control_group">
+                        <option value="">请选择</option>
+                        <option value="1">实验组</option>
+                        <option value="0">对照组</option>
+                    </select>
+                </div>
+                <span id="lx"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-7 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">背景</div>
+                    <textarea type="text" class="form-control" id="background"></textarea>
+                    <span id="bj"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-7 col-lg-offset-5">
+            <button class="btn btn-info" style="width: 100px" onclick="save()" id="save">保存</button>
+        </div>
     </div>
 </div>
 
 </body>
 <script>
+    $(function(){
+        selectHospital();
+        selectLevel1();
+        selectdepartment1();
+    })
+    //医院查询
+    function selectHospital(){
+        $.get("findAllHospital",{},function(rs){
+            if (rs !=null){
+                var hospital1=$("#hospital1");
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].dictionaryId  +">"+rs[i].dictionaryName+"</option>")
+                    hospital1.append(varoption);
+                }
+            }
+        })
+    }
+    //查询级别
+    function selectLevel1(){
+        $.get("findAllLeavl",{},function(rs){
+            if(rs!=null){
+                var leavel=$("#level1");
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].dictionaryId  +">"+rs[i].dictionaryName+"</option>")
+                    leavel.append(varoption);
+                }
+            }
+        })
+    }
+    //查询科室1
+    function selectdepartment1(){
+        $.get("findAllDepartment",{},function(rs){
+            if(rs !=null){
+                var departement=$("#department1");
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].dictionaryId+">"+rs[i].dictionaryName+"</option>");
+                    departement.append(varoption);
+                }
+            }
+        })
+    }
+
+    //单击保存添加
+    function save(){
+        var groupHospitalId=$("#hospital1").val();
+        var groupDepartmentId=$("#department1").val();
+        var groupPrincipal=$("#head").val();
+        var groupRankId=$("#level1").val();
+        var groupName=$("#group_name").val();
+        var groupPhone=$("#phone").val();
+        var groupState=$("#state").val();
+        var groupStartTime=$("#start_time").val();
+        var groupEndTime=$("#end_time").val();
+        var groupNum=$("#issue_number").val();
+        var patientNum=$("#number_patients").val();
+        var controlGroup=$("#control_group").val();
+        var background=$("#background").val();
+        if (groupHospitalId=="" ||groupHospitalId==null || groupDepartmentId=="" ||groupDepartmentId==null ||groupPrincipal=="" ||groupPrincipal==null ||groupRankId=="" ||groupRankId==null ||groupName=="" ||groupName==null || groupPhone=="" ||groupPhone==null || groupState=="" ||groupState==null || groupStartTime=="" ||groupStartTime==null || groupEndTime=="" ||groupEndTime==null || groupNum=="" ||groupNum==null || patientNum=="" ||patientNum==null || controlGroup=="" ||controlGroup==null || background=="" ||background==null){
+            alert("请完整输入信息！")
+            return false;
+        }else{
+            $.get("saveOne",{
+                "groupHospitalId":groupHospitalId,
+                "groupDepartmentId":groupDepartmentId,
+                "groupPrincipal":groupPrincipal,
+                "groupRankId":groupRankId,
+                "groupName":groupName,
+                "groupPhone":groupPhone,
+                "groupState":groupState,
+                "groupStartTime":groupStartTime,
+                "groupEndTime":groupEndTime,
+                "groupNum":groupNum,
+                "patientNum":patientNum,
+                "controlGroup":controlGroup,
+                "background":background,
+                "isDel":0
+            },function(rs){
+                if(rs=1){
+                    location.href="/login";
+                }
+            })
+        }
+    }
+    //联系电话校验
+    $("#phone").blur(function() {
+        var groupPhone=$("#phone").val();
+        $("#lxdh").empty();
+        if (groupPhone == '' || groupPhone==null) //判断用户名不为空
+        {
+            $("#lxdh").append("<span style='color:red;'>♠不能为空</span>");
+
+            $("#save").attr('disabled',disabled);
+            return false;
+        }else if(groupPhone.length!=11){
+            $("#lxdh").append("<span style='color:red;'>♠请输入正确的手机号</span>");
+            return false;
+        }else
+        {
+            $("#lxdh").append("<span style='color:green; font-size:28px;'>☺</span>");
+            return true;
+        }
+    })
+    //名称校验
+    $("#group_name").blur(function() {
+        var groupName=$("#group_name").val();
+        $("#mc").empty();
+        if (groupName == '' || groupName==null) //判断用户名不为空
+        {
+            $("#mc").append("<span style='color:red;'>♠不能为空</span>");
+            return false;
+        }else
+        {
+            $("#mc").append("<span style='color:green; font-size:28px;'>☺</span>");
+            return true;
+        }
+    })
+    //负责人校验
+    $("#head").blur(function() {
+        var groupPrincipal=$("#head").val();
+        $("#fzr").empty();
+        if (groupPrincipal == '' || groupPrincipal==null) //判断用户名不为空
+        {
+            $("#fzr").append("<span style='color:red;'>♠不能为空</span>");
+            return false;
+        }else
+        {
+            $("#fzr").append("<span style='color:green; font-size:28px;'>☺</span>");
+            return true;
+        }
+    })
+    //课题编号校验
+    $("#issue_number").blur(function() {
+        var groupNum=$("#issue_number").val();
+        $("#ktbh").empty();
+        if (groupNum == '' || groupNum==null) //判断用户名不为空
+        {
+            $("#ktbh").append("<span style='color:red;'>♠不能为空</span>");
+            return false;
+        }else
+        {
+            $("#ktbh").append("<span style='color:green; font-size:28px;'>☺</span>");
+            return true;
+        }
+    })
+    //背景校验
+    $("#background").blur(function() {
+        var background=$("#background").val();
+        $("#bj").empty();
+        if (background == '' || background==null) //判断用户名不为空
+        {
+            $("#bj").append("<span style='color:red;'>♠不能为空</span>");
+            return false;
+        }else
+        {
+            $("#bj").append("<span style='color:green; font-size:28px;'>☺</span>");
+            return true;
+        }
+    })
+    //责任医院校验
+    $("#hospital1").blur(function() {
+        var groupHospitalId=$("#hospital1").val();
+        $("#zryy").empty();
+        if (groupHospitalId == '' || groupHospitalId==null) //判断用户名不为空
+        {
+            $("#zryy").append("<span style='color:red;'>♠不能为空</span>");
+            return false;
+        }else
+        {
+            $("#zryy").append("<span style='color:green; font-size:28px;'>☺</span>");
+            return true;
+        }
+    })
+    //责任科室校验
+    $("#department1").blur(function() {
+        var groupDepartmentId=$("#department1").val();
+        $("#zrks").empty();
+        if (groupDepartmentId == '' || groupDepartmentId==null) //判断用户名不为空
+        {
+            $("#zrks").append("<span style='color:red;'>♠不能为空</span>");
+            return false;
+        }else
+        {
+            $("#zrks").append("<span style='color:green; font-size:28px;'>☺</span>");
+            return true;
+        }
+    })
+    //级别校验
+    $("#level1").blur(function() {
+        var groupRankId=$("#level1").val();
+        $("#jb").empty();
+        if (groupRankId == '' || groupRankId==null) //判断用户名不为空
+        {
+            $("#jb").append("<span style='color:red;'>♠不能为空</span>");
+            return false;
+        }else
+        {
+            $("#jb").append("<span style='color:green; font-size:28px;'>☺</span>");
+            return true;
+        }
+    })
+    //状态校验
+    $("#state").blur(function() {
+        var groupState=$("#state").val();
+        $("#zt").empty();
+        if (groupState == '' || groupState==null) //判断用户名不为空
+        {
+            $("#zt").append("<span style='color:red;'>♠不能为空</span>");
+            return false;
+        }else
+        {
+            $("#zt").append("<span style='color:green; font-size:28px;'>☺</span>");
+            return true;
+        }
+    })
+    //开始时间校验
+    $("#start_time").blur(function() {
+        var groupStartTime=$("#start_time").val();
+        $("#kssj").empty();
+        if (groupStartTime == '' || groupStartTime==null) //判断用户名不为空
+        {
+            $("#kssj").append("<span style='color:red;'>♠不能为空</span>");
+            return false;
+        }else
+        {
+            $("#kssj").append("<span style='color:green; font-size:28px;'>☺</span>");
+            return true;
+        }
+    })
+    //结束时间校验
+    $("#end_time").blur(function() {
+        var groupEndTime=$("#end_time").val();
+        $("#jssj").empty();
+        if (groupEndTime == '' || groupEndTime==null) //判断用户名不为空
+        {
+            $("#jssj").append("<span style='color:red;'>♠不能为空</span>");
+            return false;
+        }else
+        {
+            $("#jssj").append("<span style='color:green; font-size:28px;'>☺</span>");
+            return true;
+        }
+    })
+    //患者数量校验
+    $("#number_patients").blur(function() {
+        var patientNum=$("#number_patients").val();
+        $("#hzsl").empty();
+        if (patientNum == '' || patientNum==null) //判断用户名不为空
+        {
+            $("#hzsl").append("<span style='color:red;'>♠不能为空</span>");
+            return false;
+        }else {
+            $("#hzsl").append("<span style='color:green; font-size:28px;'>☺</span>");
+            return true;
+        }
+    })
+    //类型校验
+    $("#control_group").blur(function() {
+        var controlGroup=$("#control_group").val();
+        $("#lx").empty();
+        if (controlGroup == '' || controlGroup==null) //判断用户名不为空
+        {
+            $("#lx").append("<span style='color:red;'>♠不能为空</span>");
+            return false;
+        }else {
+            $("#lx").append("<span style='color:green; font-size:28px;'>☺</span>");
+            return true;
+        }
+    })
 
 </script>
 

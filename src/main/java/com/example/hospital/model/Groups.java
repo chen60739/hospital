@@ -1,5 +1,8 @@
 package com.example.hospital.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -25,8 +28,13 @@ public class Groups implements Serializable,Cloneable{
     /** 状态 */
     private Boolean groupState ;
     /** 开始时间 */
+
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date groupStartTime ;
     /** 结束时间 */
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date groupEndTime ;
     /** 课题编号 */
     private String groupNum ;
