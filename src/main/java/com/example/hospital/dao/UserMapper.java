@@ -21,7 +21,6 @@ public interface UserMapper {
 
     int updateByPrimaryKeySelective(User record);
 
-    int updateByPrimaryKey(User record);
 
     List<User> getUser(@Param("dictionaryName") String dictionaryName,@Param("userName") String userName);
 
@@ -31,7 +30,6 @@ public interface UserMapper {
 
     User selectOne(Integer userId);//查询单条
 
-    List<User> getUserByNull();
 
     //权限管理页面--查询
     List<SuperUser> selectAllUser(@Param("occupationId") String occupationId);

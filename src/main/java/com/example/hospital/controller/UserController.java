@@ -1,5 +1,6 @@
 package com.example.hospital.controller;
 
+import com.example.hospital.dto.SuperUser;
 import com.example.hospital.model.User;
 import com.example.hospital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

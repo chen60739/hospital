@@ -81,11 +81,7 @@
       </if>
     </where>
   </select>
- <!-- 没在科室的人-->
-  <select id="getUserByNull" resultMap="super">
-    SELECT  user_name FROM user where
-      department_id = null
-  </select>
+
 
 
 

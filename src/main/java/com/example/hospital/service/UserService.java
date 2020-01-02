@@ -18,7 +18,6 @@ public interface UserService {
 
     int updateByPrimaryKeySelective(User record);
 
-    List<User> getUserByNUll();
 
     //权限管理页面--查询
     List<SuperUser> findAllUser(String occupationId);
