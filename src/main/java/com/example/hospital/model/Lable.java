@@ -13,39 +13,49 @@ public class Lable implements Serializable,Cloneable{
     private String lableName ;
     /** 标签属性 */
     private String lableType ;
+    /** 标签父级id */
+    private Integer lableUpperId ;
     /** 限制条件  正在建设中 */
     private String conditions ;
 
-    /** 标签id */
-    public Integer getLableId(){
-        return this.lableId;
+
+    public Integer getLableId() {
+        return lableId;
     }
-    /** 标签id */
-    public void setLableId(Integer lableId){
+
+    public void setLableId(Integer lableId) {
         this.lableId = lableId;
     }
-    /** 标签名字 */
-    public String getLableName(){
-        return this.lableName;
+
+    public String getLableName() {
+        return lableName;
     }
-    /** 标签名字 */
-    public void setLableName(String lableName){
+
+    public void setLableName(String lableName) {
         this.lableName = lableName;
     }
-    /** 标签属性 */
-    public String getLableType(){
-        return this.lableType;
+
+    public String getLableType() {
+        return lableType;
     }
-    /** 标签属性 */
-    public void setLableType(String lableType){
+
+    public void setLableType(String lableType) {
         this.lableType = lableType;
     }
-    /** 限制条件  正在建设中 */
-    public String getConditions(){
-        return this.conditions;
+
+    public Integer getLableUpperId() {
+        return lableUpperId;
     }
-    /** 限制条件  正在建设中 */
-    public void setConditions(String conditions){
+
+    public void setLableUpperId(Integer lableUpperId) {
+        this.lableUpperId = lableUpperId;
+    }
+
+    public String getConditions() {
+        return conditions;
+    }
+
+    public void setConditions(String conditions) {
         this.conditions = conditions;
     }
 
@@ -55,6 +65,7 @@ public class Lable implements Serializable,Cloneable{
                 "lableId=" + lableId +
                 ", lableName='" + lableName + '\'' +
                 ", lableType='" + lableType + '\'' +
+                ", lableUpperId=" + lableUpperId +
                 ", conditions='" + conditions + '\'' +
                 '}';
     }

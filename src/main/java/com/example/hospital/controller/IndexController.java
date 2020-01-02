@@ -2,11 +2,14 @@ package com.example.hospital.controller;
 
 import com.example.hospital.model.Dictionary;
 import com.example.hospital.model.Groups;
+import com.example.hospital.model.Lable;
 import com.example.hospital.service.impl.GroupsServiceImpl;
+import com.example.hospital.service.impl.TemplateServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -19,6 +22,8 @@ public class IndexController {
 
     @Autowired
     private GroupsServiceImpl groupsService;
+    @Autowired
+    private TemplateServiceImpl templateService;
 
     @RequestMapping("/groupManagement")
     public String group(){
@@ -109,6 +114,17 @@ public class IndexController {
     @RequestMapping("/dataReview")
     public String dataReview(){
         return "data_review";
+    }
+    @RequestMapping("/term")
+    public String term(){
+        return "term_management";
+    }
+
+    @RequestMapping("/getLableTree")
+    @ResponseBody
+    public List<Lable> getLableTree(){
+        List<Lable> treeData = templateService.getTreeData();
+        return treeData;
     }
 
 }
