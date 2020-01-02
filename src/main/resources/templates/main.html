@@ -483,6 +483,7 @@
             "controlGroup":controlGroup,
             "background":background,
         },function(rs){
+            console.log(rs)
             if(rs=1){
                 $("#myModal").modal('hide')//取消模态框
                 $("#tableL01").bootstrapTable('refresh', rs);

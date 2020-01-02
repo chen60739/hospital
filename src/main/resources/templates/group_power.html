@@ -41,7 +41,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">角色名称</div>
-                                    <input type="email" class="form-control" placeholder="请输入角色名称">
+                                    <input type="email" class="form-control" placeholder="请输入角色名称" id="name">
                                 </div>
                             </div>
                         </div>
@@ -49,13 +49,13 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">备注</div>
-                                    <input type="email" class="form-control" placeholder="请输入备注">
+                                    <input type="email" class="form-control" placeholder="请输入备注" id="remark">
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-4 col-lg-offset-1">
-                            <button type="reset" class="btn btn-info">清空</button>
-                            <button type="submit" class="btn btn-info">检索</button>
+                            <button type="reset" class="btn btn-info" id="empty" onclick="empty()">清空</button>
+                            <button type="submit" class="btn btn-info" id="search">检索</button>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
 </div>
 <div id="toolbar">
     <button type="button" class="btn btn-info">新增</button>
-    <button type="button" class="btn btn-danger">删除</button>
+    <button type="button" class="btn btn-danger" onclick="remove()">删除</button>
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -207,17 +207,17 @@
     $(function () {
         var tableColumns = [
             {checkbox:true},
-            {field: 'name', title: '角色级别',align:'center', sortable: true},
-            {field: 'class', title: '角色名称',align:'center', sortable: true},
+            {field: 'selectRole.menuName', title: '角色级别',align:'center', sortable: true},
+            {field: 'd1', title: '角色名称',align:'center', sortable: true},
             {field: 'power', title: '权限及用户设定',align:'center',
                 formatter: function(){
                     return '<button type="button" data-toggle="modal" data-target="#myModal" class="RoleOfPower btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-gear"></i></button>';
                 }},
-            {field: 'class', title: '用户',align:'center', sortable: true},
-            {field: 'class', title: '权限',align:'center', sortable: true},
+            {field: 'userName', title: '用户',align:'center', sortable: true},
+            {field: 'd2', title: '权限',align:'center', sortable: true},
             {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
         ];
-        var data1 = [{"name":"内分泌随访",
+        /*var data1 = [{"name":"内分泌随访",
             "lv":"60%",
             "person":"张三",
             "state":"开放",
@@ -229,14 +229,33 @@
                 "state":"开放",
                 "class":"内分泌科",
                 "creatTime":"2018-11-12"
-            }];
+            }];*/
 
         window.operateEvents = {
             'click .RoleOfEdit': function (e, value, row, index) {
                 alert("A");
             },
             'click .RoleOfDel': function (e, value, row, index) {
-                alert("B");
+                var  rows=$("#tableL01").bootstrapTable('getSelections')//要删除的数据
+                if(rows.length == 0){
+                    alert("请选择要删除的记录！");
+                    return ;
+                }else {
+                    confirm("是否确认删除？")
+                    var ids="";
+                    $(rows).each(function(){
+                        ids+=this.userId+",";
+                    });
+                    $.ajax({
+                        url:"removeById1",
+                        data:{"ids":ids},
+                        type:"post",
+                        success:function(data){
+                            $("#tableL01").bootstrapTable('refresh', data);
+
+                        }
+                    })
+                }
             }
         };
 
@@ -249,37 +268,98 @@
         }
 
 
-        $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
-
-        $('#tableL01').bootstrapTable({//表格初始化
-            columns: tableColumns,  //表头
-            data:data1, //通过ajax返回的数据
-            width:300,
-            height:268,
-            method: 'get',
-            pageNumber: 1,
-            cache: false,
-            striped: true,
-            pagination: true,
-            sidePagination: 'client',
-            pageSize: 5,//单页记录数
-            pageList: [5, 10, 20, 30],//可选择单页记录数
-            search: false,
-            theadClasses: "thead-blue",
-            showRefresh: false,
-            showExport: false,
-            showFooter: true,
-            // exportTypes: ['csv', 'txt', 'xml'],
-            clickToSelect: true,
-            toolbar:"#toolbar",
-            /*onClickCell: function(params){
-                location.href="/one";
-            }*/
-        });
 
 
-
+        /*$.get("findAllUser",function (data) {*/
+            $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格+
+            $('#tableL01').bootstrapTable({//表格初始化
+                columns: tableColumns,  //表头
+                /* data:data1, //通过ajax返回的数据*/
+                width:300,
+                height:268,
+                url:"findAllUser",
+                method: 'get',
+                pageNumber: 1,
+                cache: false,
+                striped: true,
+                pagination: true,
+                sidePagination: 'client',
+                pageSize: 5,//单页记录数
+                pageList: [5, 10, 20, 30],//可选择单页记录数
+                search: false,
+                theadClasses: "thead-blue",
+                showRefresh: false,
+                showExport: false,
+                showFooter: true,
+                // exportTypes: ['csv', 'txt', 'xml'],
+                clickToSelect: true,
+                toolbar:"#toolbar",
+                /*data:formatData(data),*/
+                /*onClickCell: function(params){
+                    location.href="/one";
+                }*/
+                queryParams: function queryParams(params){
+                    var param = {
+                        occupationId:$("#name").val()
+                    };
+                    return param;
+                },
+            });
+            $(document).on('click', "#search",function(){
+                $('#tableL01').bootstrapTable('refresh');
+            });
+        /*})*/
+        // 格式化数据
+        /*var formatData = function (data) {
+            var l = [];
+            var d;
+            for (var i = 0; i < data.superUsers.length && data.superUsers1.length; i++) {
+                var m = data.superUsers[i]
+                var mm=data.superUsers1[i]
+                    d = {
+                   "menuName":m.selectRole.menuName,    //角色级别
+                    "dictionaryName":m.dictionaryName,  //角色名称
+                    "userName":m.userName,              //用户
+                         "dictionaryName1":mm.dictionaryName,//权限
+                }
+                l.push(d)
+            }
+            return l
+        };*/
     })
+
+    //清空
+    function empty(){
+        $("#name").val("");
+        $("#remark").val("");
+        $("input[name='btSelectAll']").prop("checked",false);
+        $("input[name='btSelectItem']").prop("checked",false);
+    }
+
+    //批量删除
+    function remove(){
+        var  rows=$("#tableL01").bootstrapTable('getSelections')//要删除的数据
+        if(rows.length == 0){
+            alert("请选择要删除的记录！");
+            return ;
+        }else {
+            confirm("是否确认删除？")
+            var ids="";
+            $(rows).each(function(){
+                ids+=this.userId+",";
+            });
+            $.ajax({
+                url:"removeById1",
+                data:{"ids":ids},
+                type:"post",
+                success:function(data){
+                    $("#tableL01").bootstrapTable('refresh', data);
+
+                }
+            })
+        }
+
+    }
 
 </script>
 
