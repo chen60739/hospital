@@ -32,40 +32,45 @@
     </association>
   </resultMap>
 
-  
+
   <sql id="Base_Column_List">
   user_id, user_name, user_pwd, user_sex, user_phone, user_email, department_id, role_id,
   create_time, modified_time, is_del, grade_id, group_id, occupation_id
 </sql>
 
   <select id="getUser" resultMap="super">
-    SELECT user_id, user_name,dictionary_name FROM user ,dictionary
+    SELECT user_id, user_name,dictionary_name FROM `user` ,`dictionary`
     <where>
       department_id=dictionary_id
       <if test="dictionaryName!= null and dictionaryName != ''">
-        and dictionary_name = #{dictionaryName}
+        and dictionary_id = #{dictionaryName}
       </if>
       <if test="userName!= null and userName != ''">
-        and user_name = #{userName}
+      and user_id = #{userName}
       </if>
+
+    </where>
+  </select>
+  <!-- 查询单条回显数据-->
+  <select id="selectOne" resultMap="super">
+    SELECT user_id, user_name,dictionary_name FROM `user` ,`dictionary`
+    <where>
+      department_id=dictionary_id
+      <if test="userName!= null and userName != ''">
+        and user_id = #{userId}
+      </if>
+
     </where>
   </select>
 
-  <select id="selectUser" resultMap="super">
-    SELECT user_name,dictionary_name FROM user ,dictionary
-    <where>
-      department_id=dictionary_id
-      <if test="dictionaryName!= null and dictionaryName != ''">
-        and dictionary_name = #{dictionaryName}
-      </if>
-      <if test="userName!= null and userName != ''">
-        and user_name = #{userName}
-      </if>
-    </where>
+
+<!--查询医生-->
+  <select id="selectUser" resultMap="BaseResultMap">
+    SELECT *FROM  `user`
   </select>
 <!--已经在科室的人-->
   <select id="getUserByName" resultMap="super">
-    SELECT  user_name,dictionary_name FROM user ,dictionary
+    SELECT  user_name,dictionary_name FROM `user` ,`dictionary`
     <where>
       department_id=dictionary_id
       <if test="dictionaryName!= null and dictionaryName != ''">
@@ -87,16 +92,16 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user
+    from `user`
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user
+    delete from `user`
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
 
   <insert id="insert" parameterType="com.example.hospital.model.User">
-    insert into user (user_id, user_name, user_pwd, 
+    insert into `user` (user_id, user_name, user_pwd,
       user_sex, user_phone, user_email, 
       department_id, role_id, create_time, 
       modified_time, is_del, grade_id, 
@@ -108,7 +113,7 @@
       #{groupId,jdbcType=INTEGER}, #{occupationId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.User">
-    insert into user
+    insert into `user`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userId != null">
         user_id,
@@ -198,8 +203,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.User">
-    update user
+  <update id="updateByPrimaryKeySe" parameterType="com.example.hospital.model.User">
+    update `user`
     <set>
       <if test="userName != null">
         user_name = #{userName,jdbcType=VARCHAR},
@@ -243,21 +248,9 @@
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.User">
-    update user
-    set user_name = #{userName,jdbcType=VARCHAR},
-      user_pwd = #{userPwd,jdbcType=VARCHAR},
-      user_sex = #{userSex,jdbcType=TINYINT},
-      user_phone = #{userPhone,jdbcType=CHAR},
-      user_email = #{userEmail,jdbcType=VARCHAR},
-      department_id = #{departmentId,jdbcType=INTEGER},
-      role_id = #{roleId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
-      is_del = #{isDel,jdbcType=TINYINT},
-      grade_id = #{gradeId,jdbcType=INTEGER},
-      group_id = #{groupId,jdbcType=INTEGER},
-      occupation_id = #{occupationId,jdbcType=INTEGER}
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.User">
+    update `user`
+    set department_id = #{departmentId,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
   <!--权限管理页面   查询-->

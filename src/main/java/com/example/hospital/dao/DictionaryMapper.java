@@ -7,6 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface DictionaryMapper {
+    List<Dictionary> selectProgramme();
+
     int deleteByPrimaryKey(Integer dictionaryId);
 
     int insert(Dictionary record);

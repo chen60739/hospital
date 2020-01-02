@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>随访组管理</title>
+    <title>数据复核</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
@@ -11,31 +11,21 @@
     <script src="/js/bootstrap-table.js"></script>
     <script src="/js/bootstrap-table-zh-CN.js"></script>
     <link rel="stylesheet" href="/css/hospital.css">
+    <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
 </head>
 <body>
 <div th:replace="navigation :: nav"></div>
 <div class="container-fluid main">
     <div class="row">
         <div class="col-xs-12 col-md-12">
-            <h3>随访组管理      <small><a href="/newGroup">新建随访组</a></small></h3>
-
-            <hr>
             <div class="col-xs-12 col-md-12" style="background-color: #e0f3f8">
                 <div  style="padding: 10px">
                     <div class="row">
                         <div class="col-xs-3">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <div class="input-group-addon">负责人</div>
-                                    <input type="text" class="form-control" id="groupPrincipal" placeholder="Amount">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-3 col-lg-offset-1">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-addon">科室</div>
-                                    <select class="form-control" id="dictionaryName">
+                                    <div class="input-group-addon">随访组名称</div>
+                                    <select class="form-control" id="control_group">
                                         <option value="">请选择</option>
                                     </select>
                                 </div>
@@ -44,29 +34,74 @@
                         <div class="col-xs-3 col-lg-offset-1">
                             <div class="form-group">
                                 <div class="input-group">
-                                    <div class="input-group-addon">状态</div>
-                                    <select class="form-control" id="groupState">
-                                        <option value="">请选择</option>
-                                        <option value="1">开放</option>
-                                        <option value="0">关闭</option>
-                                    </select>
+                                    <div class="input-group-addon">患者</div>
+                                    <input type="text" class="form-control" placeholder="Amount">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3 col-lg-offset-1">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">数据项</div>
+                                    <input type="text" class="form-control" placeholder="Amount">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row" style="padding-top: 20px">
-                        <div class="col-xs-6">
+                        <div class="col-xs-3">
                             <div class="form-group">
                                 <div class="input-group">
-
-                                    <div class="input-group-addon">创建时间</div>
-                                    <input type="date" class="form-control" id="time1" placeholder="Amount">
-                                    <div class="input-group-addon">~</div>
-                                    <input type="date" class="form-control" id="time2" placeholder="Amount">
+                                    <div class="input-group-addon">质疑者</div>
+                                    <input type="text" class="form-control" placeholder="Amount">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xs-6" style="padding-left: 400px">
+                        <div class="col-xs-3 col-lg-offset-1">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">复核者</div>
+                                    <input type="text" class="form-control" placeholder="Amount">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3 col-lg-offset-1">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">复核时间</div>
+                                    <input type="text" class="form-control" placeholder="Amount">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top: 20px">
+                        <div class="col-xs-3">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">表单名称</div>
+                                    <select class="form-control">
+                                        <option value="">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3 col-lg-offset-1">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <label>状态:</label>
+                                    <label class="checkbox-inline">
+                                        <input type="radio" name="state" value="1">待复核
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="radio" name="state" value="0">已修正
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="radio" name="state" value="" checked>撤回
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-3 col-lg-offset-1" style="padding-left: 170px;">
                             <button type="reset" class="btn btn-info" onclick="empty()">清空</button>
                             <button type="submit" class="btn btn-info" id="search">检索</button>
                         </div>
@@ -83,10 +118,6 @@
         </div>
     </div>
 </div>
-<div id="toolbar">
-    <button type="button" class="btn btn-primary" data-toggle="modal"  id="edit">编辑</button>
-    <button type="button" class="btn btn-danger" onclick="remove()">删除</button>
-</div>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -94,146 +125,50 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">随访组编辑</h4>
+                <h4 class="modal-title" id="myModalLabel">复核明细</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-xs-5 col-xs-offset-1">
+                    <div class="col-xs-5">
                         <div class="form-group">
                             <div class="input-group">
-                                <div class="input-group-addon">责任医院</div>
-                                <select class="form-control" id="hospital1">
-                                    <option value="">-请选择-</option>
-                                </select>
+                                <div class="input-group-addon">提出人</div>
+                                <input type="text" class="form-control"  placeholder="Amount">
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-5">
                         <div class="form-group">
                             <div class="input-group">
-                                <div class="input-group-addon">责任科室</div>
-                                <select class="form-control" id="department1">
-                                    <option value="">-请选择-</option>
-                                </select>
+                                <div class="input-group-addon">提出时间</div>
+                                <input type="date" class="form-control"  placeholder="Amount">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-5 col-xs-offset-1">
+                    <div class="col-xs-11">
                         <div class="form-group">
                             <div class="input-group">
-                                <div class="input-group-addon">负责人</div>
-                                <input type="text" class="form-control" id="head">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-5">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">级别</div>
-                                <select class="form-control" id="level1">
-                                    <option value="">-请选择-</option>
-                                </select>
+                                <div class="input-group-addon">修改为</div>
+                                <input type="text" class="form-control" placeholder="Amount">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-10 col-xs-offset-1">
+                    <div class="col-xs-11">
                         <div class="form-group">
                             <div class="input-group">
-                                <div class="input-group-addon">名称</div>
-                                <input type="text" class="form-control" id="group_name">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-5 col-xs-offset-1">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">联系电话</div>
-                                <input type="text" class="form-control" id="phone">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-5">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">状态</div>
-                                <select class="form-control" id="state">
-                                    <option value="">请选择</option>
-                                    <option value="1">开放</option>
-                                    <option value="0">关闭</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-5 col-xs-offset-1">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">开始日期</div>
-                                <input type="date" class="form-control" id="start_time">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-5">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">结束日期</div>
-                                <input type="date" class="form-control" id="end_time">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-5 col-xs-offset-1">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">课题编号</div>
-                                <input type="text" class="form-control" id="issue_number">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-5">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">患者数量</div>
-                                <input type="number" class="form-control" id="number_patients">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-10 col-xs-offset-1">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">类型</div>
-                                <select class="form-control" id="control_group">
-                                    <option value="">请选择</option>
-                                    <option value="1">实验组</option>
-                                    <option value="0">对照组</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-10 col-xs-offset-1">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">背景</div>
-                                <textarea type="text" class="form-control" id="background"></textarea>
+                                <div class="input-group-addon">修改意见</div>
+                                <textarea type="text" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" id="save" data-toggle="modal" data-target="#myModal" onclick="save()">保存</button>
+                <button type="button" class="btn btn-info">保存</button>
             </div>
         </div>
     </div>
@@ -248,15 +183,18 @@
         edit();
         var tableColumns = [
             {checkbox: true},
-            {field: 'groupId',title:'编号',visible:false,align:'center', sortable: true},
-            {field: 'groupName', title: '名称',align:'center', sortable: true},
-            {field: 'groupNum', title: '入组率',align:'center', sortable: true},
-            {field: 'groupPrincipal', title: '负责人',align:'center' ,sortable: true},
-            {field: 'groupState', title: '状态',align:'center', sortable: true ,formatter : function (value, row, index) {
-                    return value==true||value=='true' ? '开放' : '关闭';
-                }},
-            {field: 'dictionaryName', title: '科室',align:'center', sortable: true},
-            {field: 'groupStartTime', title: '创建时间',align:'center', sortable: true}];
+            {field: 'groupId',title:'随访组名称',visible:false,align:'center', sortable: true},
+            {field: 'groupName', title: '表单',align:'center', sortable: true},
+            {field: 'groupNum', title: '数据项',align:'center', sortable: true},
+            {field: 'groupPrincipal', title: '患者',align:'center' ,sortable: true},
+            {field: 'groupState', title: '值',align:'center', sortable: true},
+            {field: 'dictionaryName', title: '质疑者',align:'center', sortable: true},
+            {field: 'dictionaryName', title: '复核者',align:'center', sortable: true},
+            {field: 'dictionaryName', title: '状态',align:'center', sortable: true},
+            {field: 'dictionaryName', title: '复核时间',align:'center', sortable: true},
+            {field: 'groupStartTime', title: '复核',align:'center',formatter:function () {
+                    return '<button type="button" class="RoleOfA btn btn-default btn-sm" data-toggle="modal" data-target="#myModal""><i class="fa fa-search"></i></button>';
+                }}];
 
         $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
 
@@ -279,16 +217,12 @@
             showFooter: true,
             clickToSelect: true,
             toolbar:'#toolbar',
-            onClickRow: function(params){
+            /*onClickRow: function(params){
                 var groupId=params.groupId;
                 location.href="/one?groupId="+groupId;
-            },
+            },*/
             queryParams: function queryParams(params){
                 var param = {
-                    pageNumber: params.pageNumber,
-                    pageSize: params.pageSize,
-                    sortName: params.sortName,
-                    sortOrder: params.sortOrder,
                     groupPrincipal:$("#groupPrincipal").val(),
                     dictionaryId:$("#dictionaryName").val(),
                     groupState:$("#groupState").val(),
@@ -483,7 +417,6 @@
             "controlGroup":controlGroup,
             "background":background,
         },function(rs){
-            console.log(rs)
             if(rs=1){
                 $("#myModal").modal('hide')//取消模态框
                 $("#tableL01").bootstrapTable('refresh', rs);

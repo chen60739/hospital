@@ -23,11 +23,13 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-    List<User> getUser(String dictionaryName,String userName);
+    List<User> getUser(@Param("dictionaryName") String dictionaryName,@Param("userName") String userName);
 
     List<User> getUserByName(String dictionaryName,String userName);
 
     List<User> selectUser();
+
+    User selectOne(Integer userId);//查询单条
 
     List<User> getUserByNull();
 

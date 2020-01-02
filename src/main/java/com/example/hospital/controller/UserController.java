@@ -1,6 +1,5 @@
 package com.example.hospital.controller;
 
-import com.example.hospital.dto.SuperUser;
 import com.example.hospital.model.User;
 import com.example.hospital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,8 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/getUser")
     public List<User> getUser(String dictionaryName,String userName){
+        System.out.println("123");
+        System.out.println(dictionaryName+" "+userName);
         List<User> users =userService.getUser(dictionaryName,userName);
         return users;
     }
@@ -33,12 +34,6 @@ public class UserController {
         return list;
     }
 
-    @RequestMapping("/getUserByNull")
-    public String getUserByNull(ModelMap map){
-        List<User> user =userService.getUserByNUll();
-        map.put("userss",user);
-        return "power";
-    }
 
     @RequestMapping("/deleteUser")
     public String deleteUser(@RequestParam("userId")Integer userId){
@@ -46,16 +41,28 @@ public class UserController {
         return "redirect:power";
     }
 
+    @ResponseBody
     @RequestMapping("/selectUser")
-    public String selectUser(ModelMap map){
+    public List<User> selectUser(){
        List<User> users= userService.selectUser();
-       map.put("usered",users);
-        return "power";
+        return users;
     }
 
-    @RequestMapping("/insertUser")
-    public String insertUser(User user){
-       userService.insert(user);
+    @RequestMapping("/updateInsert")
+    public String updateInsert(User user){
+        userService.updateByPrimaryKeySelective(user);
+        return "redirect:power";
+    }
+
+    @RequestMapping("/selectByKey")
+    public String selectByKey(Integer userId){
+        userService.selectByPrimaryKey(userId);
+        return "redirect:power";
+    }
+
+    @RequestMapping("/selectOne")
+    public String selectOne(Integer userId){
+        userService.selectOne(userId);
         return "redirect:power";
     }
     @RequestMapping("findAllUser")
@@ -82,4 +89,6 @@ public class UserController {
         }
 
     }
+
+
 }

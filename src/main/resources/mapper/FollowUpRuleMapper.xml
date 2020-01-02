@@ -24,15 +24,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from follow_up_rule
+    from `follow_up_rule`
     where rule_id = #{ruleId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from follow_up_rule
+    delete from `follow_up_rule`
     where rule_id = #{ruleId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.FollowUpRule">
-    insert into follow_up_rule (rule_id, benchmark_event, is_in_hospital, 
+    insert into `follow_up_rule` (rule_id, benchmark_event, is_in_hospital,
       is_first, that_visit, begin_time, 
       interval_time, baseline_count, advance_notice, 
       rule_template_id, rule_reminders_id, is_scheduling, 
@@ -44,7 +44,7 @@
       #{isPostpone,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.FollowUpRule">
-    insert into follow_up_rule
+    insert into `follow_up_rule`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="ruleId != null">
         rule_id,
@@ -129,7 +129,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.FollowUpRule">
-    update follow_up_rule
+    update `follow_up_rule`
     <set>
       <if test="benchmarkEvent != null">
         benchmark_event = #{benchmarkEvent,jdbcType=INTEGER},
@@ -171,7 +171,7 @@
     where rule_id = #{ruleId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.FollowUpRule">
-    update follow_up_rule
+    update `follow_up_rule`
     set benchmark_event = #{benchmarkEvent,jdbcType=INTEGER},
       is_in_hospital = #{isInHospital,jdbcType=TINYINT},
       is_first = #{isFirst,jdbcType=TINYINT},

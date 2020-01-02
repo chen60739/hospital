@@ -14,21 +14,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from inspection_report
+    from `inspection_report`
     where Inspection_id = #{inspectionId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from inspection_report
+    delete from `inspection_report`
     where Inspection_id = #{inspectionId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.InspectionReport">
-    insert into inspection_report (Inspection_id, pat_id, Inspection_content, 
+    insert into `inspection_report` (Inspection_id, pat_id, Inspection_content,
       Inspection_time, examiner)
     values (#{inspectionId,jdbcType=INTEGER}, #{patId,jdbcType=INTEGER}, #{inspectionContent,jdbcType=VARCHAR}, 
       #{inspectionTime,jdbcType=TIMESTAMP}, #{examiner,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.InspectionReport">
-    insert into inspection_report
+    insert into `inspection_report`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="inspectionId != null">
         Inspection_id,
@@ -65,7 +65,7 @@
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.InspectionReport">
-    update inspection_report
+    update `inspection_report`
     <set>
       <if test="patId != null">
         pat_id = #{patId,jdbcType=INTEGER},
@@ -83,7 +83,7 @@
     where Inspection_id = #{inspectionId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.InspectionReport">
-    update inspection_report
+    update `inspection_report`
     set pat_id = #{patId,jdbcType=INTEGER},
       Inspection_content = #{inspectionContent,jdbcType=VARCHAR},
       Inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},

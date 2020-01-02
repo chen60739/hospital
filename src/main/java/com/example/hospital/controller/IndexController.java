@@ -64,10 +64,12 @@ public class IndexController {
     public String login(){
         return "main";
     }
+
     @RequestMapping("/templist")
     public String templist(){
         return "template_list";
     }
+
     @RequestMapping("/plan")
     public String plan(){
         return "diagnosis_and_treatment_plan";
@@ -102,6 +104,11 @@ public class IndexController {
     @RequestMapping("/patient")
     public String patient(){
         return "patient";
+    }
+
+    @RequestMapping("/dataReview")
+    public String dataReview(){
+        return "data_review";
     }
 
 }
