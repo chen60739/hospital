@@ -106,4 +106,9 @@ public class IndexController {
         return "patient";
     }
 
+    @RequestMapping("/dataReview")
+    public String dataReview(){
+        return "data_review";
+    }
+
 }
