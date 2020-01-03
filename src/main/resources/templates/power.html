@@ -135,20 +135,27 @@
         };
         window.operateEvents = {
             'click .RoleOfUpdate': function (e, value, row, index) {
-                alert(row.userId)
-                if(confirm("确定要修改？")){
+                $.get("selectOne?userId="+row.userId,{},function(rs) {
+                    $("#keshi option").each(function () {
+                        if(rs[0].dictionaryName==$(this).text()){
+                            $(this).prop("selected",true);
+                        }
+                    })
+                    $("#renyuan option").each(function () {
+                        if(rs[0].userName==$(this).text()){
+                            $(this).prop("selected",true);
+                        }
+                    })
+                })
 
-                    location.href="selectOne?userId="+row.userId;
-                }
             }
-
         };
 
 
         function operateFormatter(value, row, index) {
 
             return [
-                '<button type="button" data-toggle="modal" data-target="#myModal" class="RoleOfUpdate btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
+                '<button type="button" id="edit"  data-toggle="modal" data-target="#myModal" class="RoleOfUpdate btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
                 '<button type="button" class="RoleOfDel btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-trash"></i></button>'
             ].join('');
         }
@@ -187,10 +194,7 @@
                 };
                 return param;
             }
-
-
         });
-
 
         $(document).on('click', "#search",function(){
             $('#tableL01').bootstrapTable('refresh');
@@ -198,6 +202,7 @@
 
         selectDiceionary();
         selectUser();
+        edit();
 
     })
     function selectDiceionary(){
@@ -239,22 +244,17 @@
     }
 
     function bb() {//清空选择框
-        if(confirm("确定要清空？")){
-            $("select:first option:first").prop("selected",true  );
-        }
+            //$("select:first option:first").prop("selected",true );
+           $("#dictionaryName").val("");
+           $("#userName").val("");
     }
-
+//插入数据
     function bao() {
        var userId= $("#renyuan").val();
         var keshi= $("#keshi").val();
         location.href="updateInsert?userId="+userId+"&departmentId="+keshi;
     }
 
-    function update() {
-        var userId= $("#renyuan").val();
-        alert(1)
-         //location.href="selectByKey?userId="+userId;
-    }
 
 </script>
 

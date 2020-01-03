@@ -22,8 +22,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/getUser")
     public List<User> getUser(String dictionaryName,String userName){
-        System.out.println("123");
-        System.out.println(dictionaryName+" "+userName);
+        System.out.println(dictionaryName);
         List<User> users =userService.getUser(dictionaryName,userName);
         return users;
     }
@@ -61,10 +60,30 @@ public class UserController {
         return "redirect:power";
     }
 
+    @ResponseBody
     @RequestMapping("/selectOne")
-    public String selectOne(Integer userId){
-        userService.selectOne(userId);
-        return "redirect:power";
+    public List<User> selectOne(Integer userId){
+        List<User> list =userService.selectOne(userId);
+        return list;
+    }
+
+    @ResponseBody
+    @RequestMapping("/getUserAll")
+    public List<User> getUserAll(Integer userId,String userName,Integer userSex,
+                                 String userPhone,String userEmail,
+                                 String dictionaryName){
+
+        List<User> userAll =userService.getUserAll(userId, userName, userSex,
+                userPhone, userEmail, dictionaryName);
+        System.out.println(dictionaryName);
+        return userAll;
+    }
+
+    @RequestMapping("/updateUser")
+    public String updateUser(User user){
+        System.out.println(user);
+        userService.updateUser(user);
+        return "redirect:user";
     }
     @RequestMapping("findAllUser")
     @ResponseBody
@@ -91,5 +110,11 @@ public class UserController {
 
     }
 
+    @ResponseBody
+    @RequestMapping("/selectUserOne")
+    public List<User> selectUserOne(Integer userId){
+        List<User> list=userService.getUserOne(userId);
+        return list;
+    }
 
 }

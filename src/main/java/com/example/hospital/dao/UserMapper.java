@@ -2,9 +2,11 @@ package com.example.hospital.dao;
 
 import com.example.hospital.dto.SuperUser;
 import com.example.hospital.model.User;
+import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.jws.soap.SOAPBinding;
 import java.util.List;
@@ -28,8 +30,14 @@ public interface UserMapper {
 
     List<User> selectUser();
 
-    User selectOne(Integer userId);//查询单条
+    List<User> selectOne(Integer userId);//查询单条
 
+    List<User> getUserAll(@Param("userId") Integer userId, @Param("userName") String userName, @Param("userSex") Integer userSex,
+                          @Param("userPhone") String userPhone, @Param("userEmail") String userEmail, @Param("dictionaryName") String dictionaryName);
+
+    int updateUser(User record);
+
+    List<User> getUserOne(Integer userId);
 
     //权限管理页面--查询
     List<SuperUser> selectAllUser(@Param("occupationId") String occupationId);
