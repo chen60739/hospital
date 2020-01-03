@@ -40,10 +40,10 @@ public class IndexController {
         return "new_group";
     }
 
-    @RequestMapping("/design")
+    /*@RequestMapping("/design")
     public String tz(){
         return "template_design";
-    }
+    }*/
 
     @RequestMapping("/one")
     public String one(Integer groupId, Model model){

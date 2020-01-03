@@ -16,10 +16,27 @@
     <script src="/plugs/zTree/js/jquery.ztree.exhide.js"></script>
     <script src="/plugs/zTree/js/fuzzysearch.js"></script>
     <script src="/plugs/zTree/js/jquery.ztree.excheck.js"></script>
+    <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
 </head>
 <style>
     .ztree * {
         font-size: 18px;
+    }
+     .btnrow{
+         padding-top: 10px;
+         padding-left: 35px;
+     }
+    .btn-info{
+        width: 100px;
+    }
+    .btndian{
+        width: 30px;
+        height: 17px;
+        padding:0px;
+    }
+    .follow-btn{
+        margin-left: -9px;
+        margin-top: 10px
     }
 </style>
 <body>
@@ -32,9 +49,9 @@
                 <h3 align="center">模板设计</h3>
                 <hr>
                 <div class="row">
-                    <div class="col-xs-12 col-md-12" style="padding-bottom: 20px;padding-top: 20px">
-                        <button type="button" class="btn btn-primary">引用模板</button>
-                        <button type="button" class="btn btn-info" style="float: right;margin-right: 10px">保存</button>
+                    <div class="col-xs-12 col-md-12">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">引用模板</button>
+                        <button type="button" id="save" class="btn btn-info" style="float: right;margin-right: 10px">保存</button>
                         <button type="button" class="btn btn-info" style="float: right;margin-right: 10px">发布</button>
                         <button type="button" class="btn btn-info" style="float: right;margin-right: 10px">取消</button>
                         <button type="button" class="btn btn-info" style="float: right;margin-right: 10px">规则设定</button>
@@ -51,7 +68,7 @@
                     <ul id="treeDemo" class="ztree"></ul>
                 </div>
             </div>
-            <div class="col-xs-9" style="border-style: dashed;border-color: #e1e1e1;height: 590px">
+            <div class="col-xs-9" style="border-style: dashed;border-color: #e1e1e1;height: 590px;overflow: auto">
                 <form style="margin: 30px">
                     <div class="row form-body form-horizontal m-t">
                         <div class="col-md-12 droppable sortable ui-droppable ui-sortable">
@@ -64,8 +81,31 @@
         </div>
     </div>
 </div>
+
+<!--通用模板选择弹出页面-->
+<div th:replace="template_selection :: temp"></div>
 </body>
-<script>
+<script th:inline="javascript">
+
+    //保存模板
+    $('#save').click(function () {
+        var name=prompt("请输入模板名称","");
+        if (name!=null && name!=""){
+            var lableId = '';
+            $(".sortable").find('div [class=input-group]').each(function (index, element) {
+                console.log($(element).find('span').text()+$(element).find('span').attr('id'));
+                if (index==0){
+                    lableId += $(element).find('span').attr('id');
+                }else {
+                    lableId += ',' + $(element).find('span').attr('id');
+                }
+            })
+            $.getJSON('/saveTemp',{'tempName':name,'lableId':lableId},function () {
+
+            })
+        }
+    })
+
     var zTreeObj;
     // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
     var setting = {
@@ -106,16 +146,21 @@
 
 
     function zTreeOnClick(event, treeId, treeNode) {
-        //alert(treeNode.tId + ", " + treeNode.name);
         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        var parent = treeNode.getParentNode();
+        if(!parent.checked){
+            $(tableList(parent.lableType,parent.lableName,parent.lableId)).appendTo($(".sortable"));
+        }
         if (treeNode.checked){
             treeObj.checkNode(treeNode,false, true);
+            if(!parent.checked){
+                removeTitle(parent.lableName);
+            }
             removeLable(treeNode.lableName);
-            //$("#info").remove();
-            //$(".sortable").children('div:last-child').remove();
         }else {
             treeObj.checkNode(treeNode,true, true);
-            $(tableList(treeNode.lableType,treeNode.lableName)).appendTo($(".sortable"));
+            var a = treeNode.getParentNode().checked;
+            $(tableList(treeNode.lableType,treeNode.lableName,treeNode.lableId)).appendTo($(".sortable"));
         }
     }
 
@@ -123,9 +168,18 @@
         $.getJSON('/getLableTree',function (data) {
             zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, data);
             fuzzySearch('treeDemo','#key',null,true); //初始化模糊搜索方法
+            var lables = [[${lables}]];
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            for (var i=0;i<lables.length;i++){
+                var nodes = treeObj.getNodesByParam("lableId",lables[i].lableId);
+                treeObj.checkNode(nodes[0],true, true);
+                treeObj.selectNode(nodes[0]);
+                $(tableList(nodes[0].lableType,nodes[0].lableName,nodes[0].lableId)).appendTo($(".sortable"));
+            }
         })
     });
-    
+
+    //移除控件
     function removeLable(name) {
         $(".sortable").find("span").each(function (index,element) {
             if($(element).text()==name){
@@ -133,30 +187,37 @@
             }
         })
     }
-    
-    function tableList(id,name){
+    function removeTitle(name) {
+        $(".sortable").find("h5").each(function (index,element) {
+            if($(element).text()==name){
+                $(this).parent().parent().parent().remove();
+            }
+        })
+    }
+
+    function tableList(type,name,id){
         var content = "";
         var tou = '<div class="form-group draggable ui-draggable dropped" id="info"><div class="row"><div class="col-sm-7">';
-        switch (id) {
+        switch (type) {
             case "title":
-                var title = '<h5>基本信息</h5><hr>';
+                var title = '<h5>'+name+'</h5><hr>';
                 content = tou + title + '</div>';
                 break;
             case "date":
-                var title = '<div class="input-group"><span class="input-group-addon" id="basic-addon1">日期</span><input type="date" class="form-control"></div>';
-                content = tou + title + '</div><p class="tools col-sm-3"><button type="button" class="btn btn-default edit" name="date">';
+                var title = '<div class="input-group"><span class="input-group-addon" id="'+id+'">'+name+'</span><input type="date" class="form-control"></div>';
+                content = tou + title + '</div></div>';
                 break;
             case "input":
-                var title = '<div class="input-group"><span class="input-group-addon" id="basic-addon1">'+name+'</span><input type="text" class="form-control" placeholder="请输入"></div>';
+                var title = '<div class="input-group"><span class="input-group-addon" id="'+id+'">'+name+'</span><input type="text" class="form-control" placeholder="请输入"></div>';
                 content = tou + title + '</div></div> ';
                 break;
             case "select":
-                var title = '<div class="input-group"><span class="input-group-addon" id="basic-addon1">下拉单选</span><select class="form-control"><option>请选择</option></select></div>';
-                content = tou + title + '</div><p class="tools col-sm-3"><button type="button" class="btn btn-default edit" name="select">';
+                var title = '<div class="input-group"><span class="input-group-addon" id="'+id+'">'+name+'</span><select class="form-control"><option>请选择</option></select></div>';
+                content = tou + title + '</div></div>';
                 break;
             case "number":
-                var title = '<div class="input-group"><span class="input-group-addon" id="basic-addon1">数值</span><input type="text" class="form-control" placeholder="请输入"></div>';
-                content = '<div class="form-group draggable ui-draggable dropped"><div class="col-sm-7">' + title + '</div><p class="tools col-sm-3"><button type="button" class="btn btn-default edit" name="number">';
+                var title = '<div class="input-group"><span class="input-group-addon" id="basic-addon1">'+name+'</span><input type="number" class="form-control" placeholder="请输入"></div>';
+                content = tou + title + '</div></div>';
                 break;
             case "textarea":
                 //多行文本

@@ -1,6 +1,8 @@
 package com.example.hospital.service;
 
 import com.example.hospital.model.Lable;
+import com.example.hospital.model.Template;
+import com.example.hospital.model.TemplateSet;
 
 import java.util.List;
 
@@ -11,4 +13,10 @@ import java.util.List;
 public interface TemplateService {
 
     List<Lable> getTreeData();
+
+    void saveTemplate(String tempName, String lableId);
+
+    List<Template> getTemplateList();
+
+    List<TemplateSet> getLablesByTempId(Integer tempId);
 }
