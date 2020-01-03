@@ -1,5 +1,6 @@
 package com.example.hospital.dao;
 
+import com.example.hospital.dto.SuperUser;
 import com.example.hospital.model.User;
 import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
 import org.apache.ibatis.annotations.Mapper;
@@ -22,7 +23,6 @@ public interface UserMapper {
 
     int updateByPrimaryKeySelective(User record);
 
-    int updateByPrimaryKey(User record);
 
     List<User> getUser(@Param("dictionaryName") String dictionaryName,@Param("userName") String userName);
 
@@ -38,4 +38,12 @@ public interface UserMapper {
     int updateUser(User record);
 
     List<User> getUserOne(Integer userId);
+
+    //权限管理页面--查询
+    List<SuperUser> selectAllUser(@Param("occupationId") String occupationId);
+    /*List<SuperUser> selectAllUser1();*/
+
+    //批量删除
+    int deleteById(@Param("ids") String ids);
+
 }

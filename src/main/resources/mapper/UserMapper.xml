@@ -20,6 +20,16 @@
   </resultMap>
   <resultMap id="super" type="com.example.hospital.dto.SuperUser" extends="BaseResultMap">
     <result column="dictionary_name" jdbcType="VARCHAR" property="dictionaryName" />
+    <result column="dname" property="d1"></result>
+    <result column="dname2" property="d2"></result>
+
+
+    <association property="selectRole" javaType="com.example.hospital.model.SelectRole">
+      <id column="select_role_id" jdbcType="INTEGER" property="selectRoleId" />
+      <result column="role_id" jdbcType="INTEGER" property="roleId" />
+      <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+      <result column="menu" jdbcType="VARCHAR" property="menu" />
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
   user_id, user_name, user_pwd, user_sex, user_phone, user_email, department_id, role_id,
@@ -95,6 +105,9 @@
       </if>
     </where>
   </select>
+
+
+
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -283,4 +296,28 @@
 
     </where>
   </select>
+  <!--权限管理页面   查询-->
+  <select id="selectAllUser" resultMap="super">
+    select d.dictionary_name as dname,d2.dictionary_name as dname2 ,user.user_name,select_role.menu_name,user.user_id
+    from user,dictionary d,select_role,dictionary d2
+    where user.occupation_id=d.dictionary_id
+    AND user.grade_id=select_role.role_id
+    AND user.role_id =d2.dictionary_id
+    AND user.is_del=0
+    <if test="occupationId!=null and occupationId!=''">
+      AND d.dictionary_name = #{occupationId}
+    </if>
+  </select>
+
+  <!--批量删除-->
+  <update id="deleteById">
+    UPDATE user SET is_del=1 WHERE user_id=#{ids}
+  </update>
+  <!--<select id="selectAllUser1" resultMap="super">
+    select dictionary_name
+       from user,dictionary
+        where user.role_id=dictionary.dictionary_id
+        AND user.is_del=0
+
+  </select>-->
 </mapper>

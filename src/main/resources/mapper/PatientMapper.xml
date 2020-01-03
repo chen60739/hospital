@@ -31,6 +31,7 @@
     <result column="follow_state" jdbcType="TINYINT" property="followState" />
     <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
     <result column="group_department_id" jdbcType="INTEGER" property="groupDepartmentId" />
+    <result column="follow_id" jdbcType="INTEGER" property="followId" />
   </resultMap>
   <sql id="Base_Column_List">
     patient_id, patient_name, patient_sex, patient_birthday, nation_id, outpatient_service, 
@@ -78,7 +79,8 @@
           f.follow_state,
           d.dictionary_name AS department_name,
           gg.group_department_id,
-          n.follow_time AS follow_time
+          n.follow_time,
+          f.follow_id
       FROM
           `planning_group` g,
           `patient` p,

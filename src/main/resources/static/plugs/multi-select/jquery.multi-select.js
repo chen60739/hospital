@@ -64,11 +64,11 @@
         }
 
         that.$container.append(that.$selectableContainer);
-        that.$container.append('<div class="btndiv col-xs-1">\n' +
-            '        <div class="row">\n' +
+        that.$container.append('<div class="btndiv col-xs-1" style="padding-left: 0px">\n' +
+            '        <div class="row" style="margin-left: 0px">\n' +
             '            <button id="select-all" class="btn btn-info"><i class="fa fa-angle-double-right"></i></button>\n' +
             '        </div>\n' +
-            '        <div class="row" style="margin-top: 10px">\n' +
+            '        <div class="row" style="margin-left: 0px;margin-top: 10px">\n' +
             '            <button id="deselect-all" class="btn btn-info"><i class="fa fa-angle-double-left"></i></button>\n' +
             '        </div>\n' +
             '    </div>');

@@ -25,7 +25,7 @@
                 <hr>
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
-                        <button type="button" class="btn btn-info"><a href="/design" style="color: white">创建模板</a></button>
+                        <button type="button" class="btn btn-info"><a href="/design?tempId=" style="color: white">创建模板</a></button>
                     </div>
                     <hr>
                 </div>
@@ -45,32 +45,35 @@
 <script>
     $(function () {
         var tableColumns = [
-            {field: 'name', title: '模板名称',align:'center'},
-            {field: 'lv', title: '更新日期',align:'center'},
-            {field: 'person', title: '更新者',align:'center'},
-            {field: 'class', title: '版本号',align:'center'},
-            {field: 'creatTime', title: '创建日期',align:'center'},
-            {field: 'state', title: '状态',align:'center'},
-            {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
+            {field: 'templateName', title: '模板名称',align:'center'},
+            {field: 'updateTime', title: '更新日期',align:'center'},
+            {field: 'updatePeople', title: '更新者',align:'center'},
+            {field: 'templateSettingVersion', title: '版本号',align:'center'},
+            {field: 'templateSettingCreateTime', title: '创建日期',align:'center'},
+            {field: 'templateSettingState', title: '状态',align:'center',formatter:function (value) {
+                    switch (value) {
+                        case 0:
+                            return "当前版本";
+                        case 1:
+                            return "未发布";
+                        case 2:
+                            return "历史版本";
+                    }
+                }},
+            {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: function (value) {
+                    return [
+                        '<button type="button" class="RoleOfLook btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>',
+                        '<button type="button" class="RoleOfB btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
+                        '<button type="button" class="RoleOfC btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-plus"></i></button>',
+                        '<button type="button" class="RoleOfD btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-close"></i></button>'
+                    ].join('');
+                }}
         ];
 
-        var data1 = [{"name":"内分泌随访",
-            "lv":"60%",
-            "person":"张三",
-            "state":"开放",
-            "class":"内分泌科",
-            "creatTime":"2018-11-12"},
-            {"name":"内分泌随访",
-                "lv":"40%",
-                "person":"xx",
-                "state":"开放",
-                "class":"内分泌科",
-                "creatTime":"2018-11-12"
-            }];
 
         window.operateEvents = {
             'click .RoleOfLook': function (e, value, row, index) {
-                window.location.href="/design";
+                window.location.href="/design?tempId="+row.templateId;
             },
             'click .RoleOfB': function (e, value, row, index) {
                 alert("B");
@@ -83,24 +86,15 @@
             }
         };
 
-
-        function operateFormatter(value, row, index) {
-            return [
-                '<button type="button" class="RoleOfLook btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>',
-                '<button type="button" class="RoleOfB btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
-                '<button type="button" class="RoleOfC btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-plus"></i></button>',
-                '<button type="button" class="RoleOfD btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-close"></i></button>'
-            ].join('');
-        }
-
         $('#table').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
 
         $('#table').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
-            data:data1, //通过ajax返回的数据
+            //data:data1, //通过ajax返回的数据
             width:300,
             height:268,
             method: 'get',
+            url:"/tempListDate",
             pageNumber: 1,
             theadClasses: "thead-blue",
             cache: false,

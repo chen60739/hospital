@@ -1,11 +1,14 @@
 package com.example.hospital.service.impl;
 
 import com.example.hospital.dao.UserMapper;
+import com.example.hospital.dto.SuperUser;
 import com.example.hospital.model.User;
 import com.example.hospital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,5 +69,15 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserOne(userId);
     }
 
+    @Override
+    public List<SuperUser> findAllUser(String occupationId) {
+        System.out.println(occupationId);
+        return userMapper.selectAllUser(occupationId);
+    }
+
+    @Override
+    public int removeById(String ids) {
+        return userMapper.deleteById(ids);
+    }
 
 }

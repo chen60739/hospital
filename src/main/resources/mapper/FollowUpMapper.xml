@@ -90,4 +90,33 @@
       follow_state = #{followState,jdbcType=TINYINT}
     where follow_id = #{followId,jdbcType=INTEGER}
   </update>
+  
+  <update id="changeFollowState">
+    update follow_up
+    set follow_state = #{followState,jdbcType=TINYINT}
+    where follow_id = #{followId,jdbcType=INTEGER}
+  </update>
+  
+  <resultMap id="calendarMap" type="com.example.hospital.dto.CalendarFollowUp" extends="BaseResultMap">
+    <result column="patient_name" property="patientName" jdbcType="VARCHAR"></result>
+  </resultMap>
+  
+  <select id="calendarData" resultMap="calendarMap">
+          SELECT
+          f.*, p.patient_name
+      FROM
+          follow_up f,
+          patient p
+      WHERE
+          f.follow_patient_id = p.patient_id
+  </select>
+  
+  <select id="getDistinctFollowTime" resultType="date">
+    SELECT DISTINCT f.follow_time
+      FROM
+          follow_up f,
+          patient p
+      WHERE
+          f.follow_patient_id = p.patient_id
+  </select>
 </mapper>
