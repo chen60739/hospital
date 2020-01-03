@@ -43,4 +43,9 @@ public class PatientServiceImpl implements PatientService {
         }
         return list;
     }
+
+    @Override
+    public int delById(String ids) {
+        return patientMapper.deleteById(ids);
+    }
 }

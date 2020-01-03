@@ -11,4 +11,8 @@ import java.util.List;
 public interface PatientService {
 
     List<SuperPatient> findPatients(SuperPatient superPatient, String preTime, String sufTime, int group1) throws ParseException;
+
+    //批量删除
+    int delById(String ids);
+
 }

@@ -29,4 +29,26 @@ public class PatientController {
         List<SuperPatient> list=patientService.findPatients(superPatient,preTime,sufTime,groupId);
         return list;
     }
+    //患者批量删除
+    @RequestMapping("delById")
+    public String  removeById(String ids){
+        String substring = ids.substring(0, ids.length() - 1);
+        String[] split = substring.split(",");
+        try{
+            for (int i=0;i<split.length;i++){
+                patientService.delById(split[i]);
+            }
+            return "success";
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+            return "error";
+        }
+
+    }
+    //添加新的患者
+    @RequestMapping("patientAdd")
+    public  String patientAdd(String outpatientService2,String pName,String Number,String birthday,Integer groupId){
+
+        return null;
+    }
 }
