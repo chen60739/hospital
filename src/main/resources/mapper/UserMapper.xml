@@ -50,6 +50,32 @@
 
     </where>
   </select>
+<!--用户界面查询-->
+  <select id="getUserAll" resultMap="super">
+    SELECT user_id, user_name,user_sex,user_phone,user_email,dictionary_name FROM `user` ,`dictionary`
+    <where>
+      department_id=dictionary_id and is_del=0
+      <if test="userId!= null and userId != ''">
+        and user_id = #{userId}
+      </if>
+      <if test="userName!= null and userName != ''">
+        and user_name like concat('%',#{userName},'%')
+      </if>
+      <if test="userSex!= null ">
+        and user_sex = #{userSex}
+      </if>
+      <if test="userPhone!= null and userPhone != ''">
+        and user_phone like concat('%', #{userPhone},'%')
+      </if>
+      <if test="userEmail!= null and userEmail != ''">
+        and user_email like concat('%', #{userEmail},'%')
+      </if>
+      <if test="dictionaryName!= null and dictionaryName != ''">
+        and dictionary_id = #{dictionaryName}
+      </if>
+
+    </where>
+  </select>
 
 
 <!--查询医生-->
@@ -234,4 +260,27 @@
     set department_id = #{departmentId,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+
+<update id="updateUser" parameterType="com.example.hospital.model.User">
+    update `user` set
+    user_id = #{userId,jdbcType=INTEGER} ,
+    user_name = #{userName,jdbcType=VARCHAR},
+    user_sex = #{userSex,jdbcType=TINYINT},
+    user_phone = #{userPhone,jdbcType=CHAR},
+    user_email = #{userEmail,jdbcType=VARCHAR},
+    department_id = #{departmentId,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <!--用户界面查询-->
+  <select id="getUserOne" resultMap="super">
+    SELECT user_id, user_name,user_sex,user_phone,user_email,dictionary_name FROM `user` ,`dictionary`
+    <where>
+      department_id=dictionary_id and is_del=0
+      <if test="userId!= null and userId != ''">
+        and user_id = #{userId}
+      </if>
+
+    </where>
+  </select>
 </mapper>
