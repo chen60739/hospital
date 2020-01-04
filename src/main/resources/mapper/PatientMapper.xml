@@ -128,7 +128,10 @@
       WHERE follow_time > NOW()
       ) AS n ON a.patient_id = n.follow_patient_id
   </select>
-
+    <!--批量删除-->
+    <update id="deleteById">
+        update 'patient' set  is_del=1 where patient_id=${ids}
+    </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
