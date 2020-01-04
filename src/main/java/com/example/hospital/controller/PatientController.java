@@ -31,6 +31,7 @@ public class PatientController {
     }
     //患者批量删除
     @RequestMapping("delById")
+    @ResponseBody
     public String  removeById(String ids){
         String substring = ids.substring(0, ids.length() - 1);
         String[] split = substring.split(",");

@@ -41,7 +41,11 @@
   <select id="selectPatientsByGroupId" resultMap="SuperResultMap">
     select
     p.*,pg.in_group_time
-    from `patient` p,`planning_group` pg where p.patient_id=pg.p_patient_id and pg.p_group_id=#{group1}
+    from `patient` p,`planning_group` pg
+      where
+      p.patient_id=pg.p_patient_id
+      and p.is_del=0
+      and pg.p_group_id=#{group1}
     <if test="superPatient.outpatientService != null and superPatient.outpatientService != ''" >
     and p.outpatient_service like CONCAT('%',#{superPatient.outpatientService},'%')
     </if>
@@ -130,7 +134,7 @@
   </select>
     <!--批量删除-->
     <update id="deleteById">
-        update 'patient' set  is_del=1 where patient_id=${ids}
+        update `patient` set  is_del=1 where patient_id=#{ids}
     </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 

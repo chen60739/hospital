@@ -14,6 +14,12 @@
     <link rel="stylesheet" href="/css/selectcheck.css">
     <script src="/js/selectcheck.js"></script>
     <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
+    <link rel="stylesheet" href="/plugs/zTree/css/zTreeStyle/zTreeStyle.css">
+    <script src="/plugs/zTree/js/jquery.ztree.core.js"></script>
+    <script src="/plugs/zTree/js/jquery.ztree.exhide.js"></script>
+    <script src="/plugs/zTree/js/fuzzysearch.js"></script>
+    <script src="/plugs/zTree/js/jquery.ztree.excheck.js"></script>
+    <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
 </head>
 <style>
     .btnrow{
@@ -63,9 +69,9 @@
                             <div class="btnrow">
                                 <button type="button" value="custom" class="btn btn-info showPage">自定义条件</button>
                             </div>
-                            <div class="btnrow">
+                            <!--<div class="btnrow">
                                 <button type="button" value="resuhSet" class="btn btn-info showPage">按结果集</button>
-                            </div>
+                            </div>-->
                         </div>
                         <div class="col-xs-9" style="margin-top: 10px;margin-left: 50px;">
                             <div class="row" style="margin-left: 200px">
@@ -88,6 +94,19 @@
                                             </select>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <div id="custom" style="display: none">
+                                <div class="col-xs-3" style="border:1px solid #e1e1e1;height: 500px;overflow: auto" >
+                                    <div class="input-group">
+                                        <input type="text" id="key" class="form-control" placeholder="Search for...">
+                                    </div>
+                                    <div>
+                                        <ul id="treeDemo" class="ztree"></ul>
+                                    </div>
+                                </div>
+                                <div class="col-xs-9" id="box">
+
                                 </div>
                             </div>
                             <div id="diseases" style="display: none">
@@ -229,7 +248,96 @@
     </div>
 </div>
 </body>
-<script>
+<script th:inline="javascript">
+    var zTreeObj;
+    // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+    var setting = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox"
+        },
+        view: {
+            nameIsHTML: true, //允许name支持html
+            selectedMulti: false,
+            showIcon: false
+        },
+        edit: {
+            enable: false,
+            editNameSelectAll: false
+        },
+        data: {
+            key:{
+                name:"lableName"
+            },
+            simpleData: {
+                enable: true,
+                idKey: "lableId",
+                pIdKey: "lableUpperId",
+                rootPId: 0,
+                upperId:'lableUpperId'
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick
+        },
+        async: {
+            enable: true,
+            url: '/getLableTree',
+        }
+    };
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        if (treeNode.checked){
+            treeObj.checkNode(treeNode,false, true);
+            remove(treeNode.lableName);
+        }else {
+            treeObj.checkNode(treeNode,true, true);
+            $(custom(treeNode.lableName)).appendTo($('#box'));
+        }
+    }
+
+    $(document).ready(function(){
+        $.getJSON('/getLableTree',function (data) {
+            zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, data);
+            fuzzySearch('treeDemo','#key',null,true); //初始化模糊搜索方法
+        })
+    });
+    
+    function remove(name) {
+        $("#box").find("span").each(function (index,element) {
+            if($(element).text()==name){
+                $(this).parent().parent().parent().remove();
+            }
+        })
+    }
+
+    function custom(name){
+        var con = '<select class="form-control">\n' +
+            '          <option>-请选择-</option>\n' +
+            '          <option>AND</option>\n' +
+            '          <option>OR</option>\n' +
+            '      </select>'
+        var tou = '<div class="row"><div class="form-group"><div class="input-group">';
+        var main = '<span class="input-group-addon">'+name+'</span>\n' +
+        '                 <select class="form-control">\n' +
+        '                   <option>-请选择-</option>\n' +
+        '                   <option>等于</option>\n' +
+        '                   <option>大于</option>\n' +
+        '                   <option>小于</option>\n' +
+        '                 </select>\n' +
+        '               <div class="input-group-addon"></div>\n' +
+            '          <input class="form-control">\n' +
+            '       </div>\n' +
+            '     </div>\n' +
+            '   </div>';
+        if ($('#box').find('.row').length!=0){
+            return tou+con+main;
+        }
+        return tou+main;
+    }
+
+
     $(function () {
 
         $(document).on("click",".showPage",function () {
@@ -246,7 +354,6 @@
                 }
             })
         }
-
     })
 
 </script>
