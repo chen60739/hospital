@@ -45,7 +45,7 @@ public class  Patient implements Serializable,Cloneable{
     }
     /** 姓名 */
     public void setPatientName(String patientName){
-        this.patientName = patientName;
+        this.patientName = patientName==""?null:patientName;
     }
     /** 性别 */
     public Integer getPatientSex() { return patientSex; }
@@ -73,7 +73,7 @@ public class  Patient implements Serializable,Cloneable{
     }
     /** 门诊号 */
     public void setOutpatientService(String outpatientService) {
-        this.outpatientService = outpatientService;
+        this.outpatientService = outpatientService == "" ? null : outpatientService;
     }
     /** 住院号 */
     public String getHospitalizationNumber() {
@@ -81,7 +81,7 @@ public class  Patient implements Serializable,Cloneable{
     }
     /** 住院号 */
     public void setHospitalizationNumber(String hospitalizationNumber) {
-        this.hospitalizationNumber = hospitalizationNumber;
+        this.hospitalizationNumber = hospitalizationNumber == "" ? null : hospitalizationNumber;
     }
     /** 疾病名称 */
     public String getDiseaseName(){

@@ -67,11 +67,12 @@
 
   <!--随访进度管理页面查询语句-->
   <select id="followUpManagementData" resultMap="followUpMap">
-              SELECT
+      SELECT a.*,n.follow_time from(
+      SELECT
+          p.patient_id,
           p.outpatient_service,
           p.hospitalization_number,
           gg.group_name,
-          gg.group_id,
           p.patient_name,
           p.patient_sex,
           p.patient_birthday,
@@ -79,27 +80,16 @@
           f.follow_state,
           d.dictionary_name AS department_name,
           gg.group_department_id,
-          n.follow_time,
           f.follow_id
       FROM
-          `planning_group` g,
-          `patient` p,
-          `follow_up_rule` r,
-          `groups` gg,
-          `follow_up` f,
-          `dictionary` d,
-            (
-                SELECT
-                    follow_time,
-                    follow_patient_id
-                FROM
-                    follow_up
-                WHERE
-                    follow_time > NOW()
-            ) AS n
+          planning_group g,
+          patient p,
+          follow_up_rule r,
+          groups gg,
+          follow_up f,
+          dictionary d
       WHERE
-          gg.group_department_id = d.dictionary_id
-      AND p.patient_id = n.follow_patient_id
+      gg.group_department_id = d.dictionary_id
       AND g.p_patient_id = p.patient_id
       AND g.p_group_id = gg.group_id
       AND p.patient_id = f.follow_patient_id
@@ -127,9 +117,16 @@
           AND p.patient_name like CONCAT('%',#{followUpPatient.patientName},'%')
       </if>
       <if test="followUpPatient.followState != null">
-        AND f.follow_state=#{followUpPatient.followState}
+          AND f.follow_state=#{followUpPatient.followState}
       </if>
-      GROUP BY f.follow_id
+      ) as a LEFT JOIN 	(
+          SELECT
+          follow_time,
+          follow_patient_id
+          FROM
+          follow_up
+      WHERE follow_time > NOW()
+      ) AS n ON a.patient_id = n.follow_patient_id
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
