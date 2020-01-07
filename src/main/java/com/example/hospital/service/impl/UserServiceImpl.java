@@ -54,16 +54,8 @@ public class UserServiceImpl implements UserService {
     public User selectOne(Integer userId) {
         return userMapper.selectOne(userId);
     }
-
-    @Override
-    public List<SuperUser> findAllUser(String occupationId) {
-        System.out.println(occupationId);
-        return userMapper.selectAllUser(occupationId);
-    }
-
     @Override
     public int removeById(String ids) {
         return userMapper.deleteById(ids);
     }
-
 }
