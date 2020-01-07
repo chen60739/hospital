@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 陈奕璇
@@ -23,9 +25,13 @@ public class TemplateController {
     private TemplateServiceImpl templateService;
 
     @RequestMapping("/saveTemp")
-    public void createTemp(@RequestParam("tempName") String tempName,
-                           @RequestParam("lableId") String lableId){
+    @ResponseBody
+    public Map<String, String> createTemp(@RequestParam("tempName") String tempName,
+                                          @RequestParam("lableId") String lableId){
         templateService.saveTemplate(tempName,lableId);
+        Map<String,String> res = new HashMap<>();
+        res.put("mes","message");
+        return res;
     }
 
     @RequestMapping("/tempListDate")

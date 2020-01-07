@@ -56,9 +56,9 @@
         </div>
     </div>
 </div>
-<div id="toolbar">
+<!--<div id="toolbar">
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">新增</button>
-</div>
+</div>-->
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -112,34 +112,12 @@
                 {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
             ];
 
-       /* var data1 = [{"userId":"内分泌随访",
-            "lv":"60%",
-            "person":"张三",
-            "state":"开放",
-            "class":"内分泌科",
-            "creatTime":"2018-11-12"},
-            {"name":"内分泌随访",
-                "lv":"40%",
-                "person":"xx",
-                "state":"开放",
-                "class":"内分泌科",
-                "creatTime":"2018-11-12"
-            }];*/
-
-       /* window.operateEvents = {
-            'click .RoleOfDel': function (e, value, row, index) {
-                if(confirm("确定要删除？")){
-                    location.href="deleteUser?userId="+row.userId;
-                }
-            }
-        };*/
         window.operateEvents = {
             'click .RoleOfDel': function (e, value, row, index) {
                 if(confirm("确定要删除？")){
                     location.href="deleteUser?userId="+row.userId;
                 }
             },
-
             'click .RoleOfUpdate': function (e, value, row, index) {
                 $.get("selectOne?userId="+row.userId,{},function(rs) {
                     $("#keshi option").each(function () {
@@ -208,7 +186,6 @@
 
         selectDictionary();
         selectUser();
-        edit();
 
     })
     function selectDictionary(){
@@ -254,7 +231,7 @@
            $("#dictionaryName").val("");
            $("#userName").val("");
     }
-//插入数据
+    //插入数据
     function bao() {
        var userId= $("#renyuan").val();
         var keshi= $("#keshi").val();

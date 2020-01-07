@@ -92,16 +92,20 @@
         var name=prompt("请输入模板名称","");
         if (name!=null && name!=""){
             var lableId = '';
-            $(".sortable").find('div [class=input-group]').each(function (index, element) {
-                console.log($(element).find('span').text()+$(element).find('span').attr('id'));
+            $(".sortable").find('div [class=col-sm-7]').each(function (index, element) {
+                var spanVal = $(element).find('span').attr('id');
+                var titleVal = $(element).find('h5').attr('id');
                 if (index==0){
-                    lableId += $(element).find('span').attr('id');
+                    lableId += typeof spanVal == 'undefined'?'':spanVal;
+                    lableId += typeof titleVal == 'undefined'?'':titleVal;
                 }else {
-                    lableId += ',' + $(element).find('span').attr('id');
+                    lableId += typeof spanVal == 'undefined'?'':','+spanVal;
+                    lableId += typeof titleVal == 'undefined'?'':','+titleVal;
                 }
             })
+            console.log(lableId)
             $.getJSON('/saveTemp',{'tempName':name,'lableId':lableId},function () {
-
+                window.location.href="/templist";
             })
         }
     })
@@ -200,7 +204,7 @@
         var tou = '<div class="form-group draggable ui-draggable dropped" id="info"><div class="row"><div class="col-sm-7">';
         switch (type) {
             case "title":
-                var title = '<h5>'+name+'</h5><hr>';
+                var title = '<h5 id="'+id+'">'+name+'</h5><hr>';
                 content = tou + title + '</div>';
                 break;
             case "date":
@@ -216,7 +220,7 @@
                 content = tou + title + '</div></div>';
                 break;
             case "number":
-                var title = '<div class="input-group"><span class="input-group-addon" id="basic-addon1">'+name+'</span><input type="number" class="form-control" placeholder="请输入"></div>';
+                var title = '<div class="input-group"><span class="input-group-addon" id="'+id+'">'+name+'</span><input type="number" class="form-control" placeholder="请输入"></div>';
                 content = tou + title + '</div></div>';
                 break;
             case "textarea":
