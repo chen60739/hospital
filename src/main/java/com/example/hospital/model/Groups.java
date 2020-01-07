@@ -28,7 +28,6 @@ public class Groups implements Serializable,Cloneable{
     /** 状态 */
     private Boolean groupState ;
     /** 开始时间 */
-
     @JsonFormat(pattern="yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date groupStartTime ;

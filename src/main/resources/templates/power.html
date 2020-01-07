@@ -56,9 +56,9 @@
         </div>
     </div>
 </div>
-<div id="toolbar">
+<!--<div id="toolbar">
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">新增</button>
-</div>
+</div>-->
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -101,7 +101,7 @@
     </div>
 </div>
 </body>
-<script type="text/javascript">
+<script >
 
     $(function () {
 
@@ -112,43 +112,34 @@
                 {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
             ];
 
-       /* var data1 = [{"userId":"内分泌随访",
-            "lv":"60%",
-            "person":"张三",
-            "state":"开放",
-            "class":"内分泌科",
-            "creatTime":"2018-11-12"},
-            {"name":"内分泌随访",
-                "lv":"40%",
-                "person":"xx",
-                "state":"开放",
-                "class":"内分泌科",
-                "creatTime":"2018-11-12"
-            }];*/
-
         window.operateEvents = {
             'click .RoleOfDel': function (e, value, row, index) {
                 if(confirm("确定要删除？")){
                     location.href="deleteUser?userId="+row.userId;
                 }
-            }
-        };
-        window.operateEvents = {
+            },
             'click .RoleOfUpdate': function (e, value, row, index) {
-                alert(row.userId)
-                if(confirm("确定要修改？")){
+                $.get("selectOne?userId="+row.userId,{},function(rs) {
+                    $("#keshi option").each(function () {
+                        if(rs[0].dictionaryName==$(this).text()){
+                            $(this).prop("selected",true);
+                        }
+                    })
+                    $("#renyuan option").each(function () {
+                        if(rs[0].userName==$(this).text()){
+                            $(this).prop("selected",true);
+                        }
+                    })
+                })
 
-                    location.href="selectOne?userId="+row.userId;
-                }
             }
-
         };
 
 
         function operateFormatter(value, row, index) {
 
             return [
-                '<button type="button" data-toggle="modal" data-target="#myModal" class="RoleOfUpdate btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
+                '<button type="button" id="edit"  data-toggle="modal" data-target="#myModal" class="RoleOfUpdate btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
                 '<button type="button" class="RoleOfDel btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-trash"></i></button>'
             ].join('');
         }
@@ -159,8 +150,6 @@
         $('#tableL01').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
            // data:data1, //通过ajax返回的数据
-            width:300,
-            height:268,
             method: 'get',
             url:'getUser',
             pageNumber: 1,
@@ -189,20 +178,17 @@
                 };
                 return param;
             }
-
-
         });
-
 
         $(document).on('click', "#search",function(){
             $('#tableL01').bootstrapTable('refresh');
         });
 
-        selectDiceionary();
+        selectDictionary();
         selectUser();
 
     })
-    function selectDiceionary(){
+    function selectDictionary(){
         $.get("findAllDepartment",{},function(rs){
             if(rs !=null){
                 var aa=$("#dictionaryName");
@@ -241,22 +227,17 @@
     }
 
     function bb() {//清空选择框
-        if(confirm("确定要清空？")){
-            $("select:first option:first").prop("selected",true  );
-        }
+            //$("select:first option:first").prop("selected",true );
+           $("#dictionaryName").val("");
+           $("#userName").val("");
     }
-
+    //插入数据
     function bao() {
        var userId= $("#renyuan").val();
         var keshi= $("#keshi").val();
         location.href="updateInsert?userId="+userId+"&departmentId="+keshi;
     }
 
-    function update() {
-        var userId= $("#renyuan").val();
-        alert(1)
-         //location.href="selectByKey?userId="+userId;
-    }
 
 </script>
 

@@ -32,8 +32,6 @@
       <result column="menu" jdbcType="VARCHAR" property="menu" />
     </association>
   </resultMap>
-
-
   <sql id="Base_Column_List">
   user_id, user_name, user_pwd, user_sex, user_phone, user_email, department_id, role_id,
   create_time, modified_time, is_del, grade_id, group_id, occupation_id
@@ -42,7 +40,7 @@
   <select id="getUser" resultMap="super">
     SELECT user_id, user_name,dictionary_name FROM `user` ,`dictionary`
     <where>
-      department_id=dictionary_id
+      department_id=dictionary_id and is_del=0
       <if test="dictionaryName!= null and dictionaryName != ''">
         and dictionary_id = #{dictionaryName}
       </if>
@@ -59,6 +57,32 @@
       department_id=dictionary_id
       <if test="userName!= null and userName != ''">
         and user_id = #{userId}
+      </if>
+
+    </where>
+  </select>
+<!--用户界面查询-->
+  <select id="getUserAll" resultMap="super">
+    SELECT user_id, user_name,user_sex,user_phone,user_email,dictionary_name FROM `user` ,`dictionary`
+    <where>
+      department_id=dictionary_id and is_del=0
+      <if test="userId!= null and userId != ''">
+        and user_id = #{userId}
+      </if>
+      <if test="userName!= null and userName != ''">
+        and user_name like concat('%',#{userName},'%')
+      </if>
+      <if test="userSex!= null ">
+        and user_sex = #{userSex}
+      </if>
+      <if test="userPhone!= null and userPhone != ''">
+        and user_phone like concat('%', #{userPhone},'%')
+      </if>
+      <if test="userEmail!= null and userEmail != ''">
+        and user_email like concat('%', #{userEmail},'%')
+      </if>
+      <if test="dictionaryName!= null and dictionaryName != ''">
+        and dictionary_id = #{dictionaryName}
       </if>
 
     </where>
@@ -92,12 +116,12 @@
     from `user`
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <!--<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from `user`
     where user_id = #{userId,jdbcType=INTEGER}
-  </delete>
+  </delete>-->
 
-  <insert id="insert" parameterType="com.example.hospital.model.User">
+  <insert id="insertUser" parameterType="com.example.hospital.model.User">
     insert into `user` (user_id, user_name, user_pwd,
       user_sex, user_phone, user_email, 
       department_id, role_id, create_time, 
@@ -105,9 +129,7 @@
       group_id, occupation_id)
     values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
       #{userSex,jdbcType=TINYINT}, #{userPhone,jdbcType=CHAR}, #{userEmail,jdbcType=VARCHAR}, 
-      #{departmentId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{modifiedTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=TINYINT}, #{gradeId,jdbcType=INTEGER}, 
-      #{groupId,jdbcType=INTEGER}, #{occupationId,jdbcType=INTEGER})
+      #{departmentId,jdbcType=INTEGER}, 10002,#{createTime}, null, 0, 1, 1,12003)
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.User">
     insert into `user`
@@ -250,6 +272,36 @@
     set department_id = #{departmentId,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+
+<update id="updateUser" parameterType="com.example.hospital.model.User">
+    update `user` set
+    user_id = #{userId,jdbcType=INTEGER} ,
+    user_name = #{userName,jdbcType=VARCHAR},
+    user_sex = #{userSex,jdbcType=TINYINT},
+    user_phone = #{userPhone,jdbcType=CHAR},
+    user_email = #{userEmail,jdbcType=VARCHAR},
+    department_id = #{departmentId,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <!--用户界面查询-->
+  <select id="getUserOne" resultMap="super">
+    SELECT user_id, user_name,user_sex,user_phone,user_email,dictionary_name FROM `user` ,`dictionary`
+    <where>
+      department_id=dictionary_id and is_del=0
+      <if test="userId!= null and userId != ''">
+        and user_id = #{userId}
+      </if>
+
+    </where>
+  </select>
+
+  <!--删除用户-->
+  <update id="deleteByPrimaryKey">
+    UPDATE user SET is_del=1 WHERE user_id=#{userId}
+  </update>
+
+  <!--权限管理页面   查询-->
   <!--&lt;!&ndash;权限管理页面   查询&ndash;&gt;
   <select id="selectAllUser" resultMap="super">
     select d.dictionary_name as dname,d2.dictionary_name as dname2,d3.dictionary_name as dname3 ,user.user_name,select_role.menu_name,user.user_id,user.department_id

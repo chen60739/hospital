@@ -114,6 +114,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-8 col-xs-offset-2">
+                        <button class="btn btn-info" id="searchReset">清空</button>
                         <button class="btn btn-info" id="search">筛选</button>
                     </div>
                 </div>
@@ -249,6 +250,13 @@
 
         $(document).on('click','#search',function () {
             $('#tableL01').bootstrapTable('refresh');
+        })
+
+        $("#searchReset").click(function () {
+            $("input").val('');
+            $("select").each(function(){
+                $(this).find("option").eq(0).prop("selected",true)
+            });
         })
 
     })

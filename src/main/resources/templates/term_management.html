@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>术语管理</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/hospital.css">
+    <link rel="stylesheet" href="/css/animate.min.css">
+    <link rel="stylesheet" href="/css/summernote.css">
+    <script src="/js/beautifyhtml.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="/plugs/zTree/css/zTreeStyle/zTreeStyle.css">
+    <script src="/plugs/zTree/js/jquery.ztree.core.js"></script>
+    <script src="/plugs/zTree/js/jquery.ztree.exhide.js"></script>
+    <script src="/plugs/zTree/js/fuzzysearch.js"></script>
+    <script src="/plugs/zTree/js/jquery.ztree.excheck.js"></script>
+</head>
+<style>
+    .ztree * {
+        font-size: 18px;
+    }
+</style>
+<body>
+<div th:replace="navigation :: nav"></div>
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-xs-12 col-md-12">
+            <div style="padding-top: 20px">
+                <h3 align="center">字典术语项维护</h3>
+                <hr>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <div class="col-xs-3" style="border:1px #e1e1e1;border-right-style: solid;">
+                <div class="input-group">
+                    <input type="text" id="key" class="form-control" placeholder="Search for...">
+                </div>
+                <div>
+                    <ul id="treeDemo" class="ztree"></ul>
+                </div>
+            </div>
+            <div class="col-xs-9" style="border:1px #e1e1e1;border-left-style: solid;height: 590px">
+                <form style="margin: 30px">
+                    <div class="row form-body form-horizontal m-t">
+                        <div class="col-md-12 droppable sortable ui-droppable ui-sortable">
+
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var zTreeObj;
+    // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+    var setting = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox"
+        },
+        view: {
+            nameIsHTML: true, //允许name支持html
+            selectedMulti: false,
+            showIcon: false
+        },
+        edit: {
+            enable: false,
+            editNameSelectAll: false
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick
+        },
+
+    };
+
+
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        //alert(treeNode.tId + ", " + treeNode.name);
+        var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        if (treeNode.checked){
+            treeObj.checkNode(treeNode,false, true);
+            $("#info").remove();
+        }else {
+            treeObj.checkNode(treeNode,true, true);
+            $(tableList(treeNode.id)).appendTo($(".sortable"));
+        }
+    }
+
+    // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
+    var zNodes = [
+        {name:"基本信息", open:true, children:[
+                {name:"患者唯一标识",id:"id"}, {name:"test1_2"}]},
+        {name:"首页信息",
+            open:false,
+            children:[
+                {name:"test2_1"},
+                {name:"test2_2"}
+                ]}
+    ];
+    $(document).ready(function(){
+        zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+        fuzzySearch('treeDemo','#key',null,true); //初始化模糊搜索方法
+    });
+
+
+</script>
+</html>

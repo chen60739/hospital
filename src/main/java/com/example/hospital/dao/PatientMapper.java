@@ -34,4 +34,6 @@ public interface PatientMapper {
     List<FollowUpPatient> followUpManagementData(@Param("followUpPatient")FollowUpPatient followUpPatient,
                                                  @Param("startDate") String startDate,
                                                  @Param("endDate") String endDate);
+
+    int deleteById(@Param("ids")  String ids);
 }

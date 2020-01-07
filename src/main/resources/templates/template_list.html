@@ -13,6 +13,8 @@
     <script src="/js/bootstrap-table-zh-CN.js"></script>
     <link rel="stylesheet" href="/css/hospital.css">
     <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
+    <link rel="stylesheet" href="/css/selectcheck.css">
+    <script src="/js/selectcheck.js"></script>
 </head>
 <body>
 <div th:replace="navigation :: nav"></div>
@@ -25,7 +27,7 @@
                 <hr>
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
-                        <button type="button" class="btn btn-info"><a href="/design" style="color: white">创建模板</a></button>
+                        <button type="button" class="btn btn-info"><a th:href="@{'/design?tempId=&departmentId='+${departmentId}}" style="color: white">创建模板</a></button>
                     </div>
                     <hr>
                 </div>
@@ -41,66 +43,117 @@
         </ul>
     </nav>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">共享到</h4>
+            </div>
+            <div class="modal-body">
+                <select id="range"  multiple="multiple" class="medication">
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="pSave" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
-<script>
+<script th:inline="javascript">
+
     $(function () {
         var tableColumns = [
-            {field: 'name', title: '模板名称',align:'center'},
-            {field: 'lv', title: '更新日期',align:'center'},
-            {field: 'person', title: '更新者',align:'center'},
-            {field: 'class', title: '版本号',align:'center'},
-            {field: 'creatTime', title: '创建日期',align:'center'},
-            {field: 'state', title: '状态',align:'center'},
-            {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
+            {field: 'templateName', title: '模板名称',align:'center'},
+            {field: 'updateTime', title: '更新日期',align:'center'},
+            {field: 'updatePeople', title: '更新者',align:'center'},
+            {field: 'templateSettingVersion', title: '版本号',align:'center'},
+            {field: 'templateSettingCreateTime', title: '创建日期',align:'center'},
+            {field: 'templateSettingState', title: '状态',align:'center',formatter:function (value) {
+                    switch (value) {
+                        case 0:
+                            return "当前版本";
+                        case 1:
+                            return "未发布";
+                        case 2:
+                            return "历史版本";
+                    }
+                }},
+            {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: function (value) {
+                    return [
+                        '<button type="button" class="RoleOfLook btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>',
+                        '<button type="button" class="RoleOfB btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
+                        '<button type="button" class="RoleOfC btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-plus"></i></button>',
+                        '<button type="button" class="RoleOfD btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-close"></i></button>'
+                    ].join('');
+                }}
         ];
 
-        var data1 = [{"name":"内分泌随访",
-            "lv":"60%",
-            "person":"张三",
-            "state":"开放",
-            "class":"内分泌科",
-            "creatTime":"2018-11-12"},
-            {"name":"内分泌随访",
-                "lv":"40%",
-                "person":"xx",
-                "state":"开放",
-                "class":"内分泌科",
-                "creatTime":"2018-11-12"
-            }];
 
         window.operateEvents = {
             'click .RoleOfLook': function (e, value, row, index) {
-                window.location.href="/design";
+                window.location.href="/design?tempId="+row.templateId+"&departmentId="+[[${departmentId}]];
             },
             'click .RoleOfB': function (e, value, row, index) {
                 alert("B");
             },
             'click .RoleOfC': function (e, value, row, index) {
-                alert("C");
+                $('#range').empty();
+                $('#range').append('<option value="'+[[${departmentId}]]+'">本科室</option>');
+                $('#range').append('<option value="2">全院</option>');
+                $.getJSON('/findAllDepartment',function (res) {
+                    var check = row.templateRange.split(',');
+                    for (var i=0;i<res.length;i++){
+                        if(res[i].dictionaryId==[[${departmentId}]]){
+                            continue;
+                        }
+                        $('#range').append('<option value="'+res[i].dictionaryId+'">'+res[i].dictionaryName+'</option>');
+                    }
+                    for (var j=0;j<check.length;j++){
+                        $('#range').find('option[value='+check[j]+']').attr("selected","selected");
+                    }
+                    $('#range').fSelect();
+                    $('#range').fSelect('destroy');
+                    $('#range').fSelect('create');
+                    $('#myModal').modal();
+                })
+
+                $('#pSave').click(function () {
+                    var departmentIds = "";
+                    $('.fs-options').find('div.selected').each(function (index) {
+                        if (index==0){
+                            departmentIds+=$(this).attr("data-value");
+                        }else {
+                            departmentIds+=","+$(this).attr("data-value");
+                        }
+                    });
+                    $.getJSON('/setTempRange',{"tempId":row.templateId,"departmentIds":departmentIds},function (res) {
+                        $('#myModal').modal('toggle');
+                        alert(res.mes);
+                        $('#table').bootstrapTable('refresh');
+                    })
+                })
             },
             'click .RoleOfD': function (e, value, row, index) {
-                alert("D");
+                if(confirm("真的要删除么？")){
+                    $.getJSON('/delTemplate',{"tempId":row.templateId},function (res) {
+                        alert(res.mes);
+                        $('#table').bootstrapTable('refresh');
+                    })
+                }
+
             }
         };
-
-
-        function operateFormatter(value, row, index) {
-            return [
-                '<button type="button" class="RoleOfLook btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>',
-                '<button type="button" class="RoleOfB btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
-                '<button type="button" class="RoleOfC btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-plus"></i></button>',
-                '<button type="button" class="RoleOfD btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-close"></i></button>'
-            ].join('');
-        }
 
         $('#table').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
 
         $('#table').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
-            data:data1, //通过ajax返回的数据
-            width:300,
-            height:268,
             method: 'get',
+            url:"/tempListDate?departmentId="+[[${departmentId}]],
             pageNumber: 1,
             theadClasses: "thead-blue",
             cache: false,
@@ -113,7 +166,6 @@
             showRefresh: false,
             showExport: false,
             showFooter: true,
-            // exportTypes: ['csv', 'txt', 'xml'],
             clickToSelect: true,
             /*onLoadSuccess: function (data1) {
                 alert("aaa");

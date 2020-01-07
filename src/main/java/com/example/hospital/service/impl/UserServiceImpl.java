@@ -7,10 +7,7 @@ import com.example.hospital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -44,16 +41,43 @@ public class UserServiceImpl implements UserService {
         return userMapper.updateByPrimaryKeySelective(record);
     }
 
-
     @Override
     public User selectByPrimaryKey(Integer userId) {
         return userMapper.selectByPrimaryKey(userId);
     }
 
     @Override
-    public User selectOne(Integer userId) {
+    public List<User> selectOne(Integer userId) {
         return userMapper.selectOne(userId);
     }
+
+    @Override
+    public List<User> getUserAll(Integer userId,String userName,Integer userSex,String userPhone,String userEmail,String dictionaryName) {
+        return userMapper.getUserAll(userId, userName, userSex, userPhone, userEmail,  dictionaryName);
+    }
+
+    @Override
+    public int updateUser(User record) {
+        return userMapper.updateUser(record);
+    }
+
+    @Override
+    public List<User> getUserOne(Integer userId) {
+        return userMapper.getUserOne(userId);
+    }
+
+    @Override
+    public int insertUser(User record) {
+        record.setCreateTime(new Date());
+        return userMapper.insertUser(record);
+    }
+
+    @Override
+    public List<SuperUser> findAllUser(String occupationId) {
+        System.out.println(occupationId);
+        return userMapper.selectAllUser(occupationId);
+    }
+
     @Override
     public int removeById(String ids) {
         return userMapper.deleteById(ids);
