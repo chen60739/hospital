@@ -7,10 +7,7 @@ import com.example.hospital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -67,6 +64,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUserOne(Integer userId) {
         return userMapper.getUserOne(userId);
+    }
+
+    @Override
+    public int insertUser(User record) {
+        record.setCreateTime(new Date());
+        return userMapper.insertUser(record);
     }
 
     @Override

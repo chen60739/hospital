@@ -24,6 +24,7 @@ public interface UserService {
 
     //批量删除
     int removeById(String ids);
+
     User selectByPrimaryKey(Integer userId);//查询单条
 
     List<User> selectOne(Integer userId);//查询单条
@@ -34,4 +35,6 @@ public interface UserService {
     int updateUser(User record);
 
     List<User> getUserOne(Integer userId);
+
+    int insertUser(User record);
 }

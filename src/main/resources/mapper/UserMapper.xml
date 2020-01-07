@@ -39,7 +39,7 @@
   <select id="getUser" resultMap="super">
     SELECT user_id, user_name,dictionary_name FROM `user` ,`dictionary`
     <where>
-      department_id=dictionary_id
+      department_id=dictionary_id and is_del=0
       <if test="dictionaryName!= null and dictionaryName != ''">
         and dictionary_id = #{dictionaryName}
       </if>
@@ -115,12 +115,12 @@
     from `user`
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <!--<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from `user`
     where user_id = #{userId,jdbcType=INTEGER}
-  </delete>
+  </delete>-->
 
-  <insert id="insert" parameterType="com.example.hospital.model.User">
+  <insert id="insertUser" parameterType="com.example.hospital.model.User">
     insert into `user` (user_id, user_name, user_pwd,
       user_sex, user_phone, user_email, 
       department_id, role_id, create_time, 
@@ -128,9 +128,7 @@
       group_id, occupation_id)
     values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
       #{userSex,jdbcType=TINYINT}, #{userPhone,jdbcType=CHAR}, #{userEmail,jdbcType=VARCHAR}, 
-      #{departmentId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{modifiedTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=TINYINT}, #{gradeId,jdbcType=INTEGER}, 
-      #{groupId,jdbcType=INTEGER}, #{occupationId,jdbcType=INTEGER})
+      #{departmentId,jdbcType=INTEGER}, 10002,#{createTime}, null, 0, 1, 1,12003)
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.User">
     insert into `user`
@@ -296,6 +294,12 @@
 
     </where>
   </select>
+
+  <!--删除用户-->
+  <update id="deleteByPrimaryKey">
+    UPDATE user SET is_del=1 WHERE user_id=#{userId}
+  </update>
+
   <!--权限管理页面   查询-->
   <select id="selectAllUser" resultMap="super">
     select d.dictionary_name as dname,d2.dictionary_name as dname2 ,user.user_name,select_role.menu_name,user.user_id

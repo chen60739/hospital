@@ -101,7 +101,7 @@
     </div>
 </div>
 </body>
-<script type="text/javascript">
+<script >
 
     $(function () {
 
@@ -126,14 +126,20 @@
                 "creatTime":"2018-11-12"
             }];*/
 
-        window.operateEvents = {
+       /* window.operateEvents = {
             'click .RoleOfDel': function (e, value, row, index) {
                 if(confirm("确定要删除？")){
                     location.href="deleteUser?userId="+row.userId;
                 }
             }
-        };
+        };*/
         window.operateEvents = {
+            'click .RoleOfDel': function (e, value, row, index) {
+                if(confirm("确定要删除？")){
+                    location.href="deleteUser?userId="+row.userId;
+                }
+            },
+
             'click .RoleOfUpdate': function (e, value, row, index) {
                 $.get("selectOne?userId="+row.userId,{},function(rs) {
                     $("#keshi option").each(function () {
@@ -200,12 +206,12 @@
             $('#tableL01').bootstrapTable('refresh');
         });
 
-        selectDiceionary();
+        selectDictionary();
         selectUser();
         edit();
 
     })
-    function selectDiceionary(){
+    function selectDictionary(){
         $.get("findAllDepartment",{},function(rs){
             if(rs !=null){
                 var aa=$("#dictionaryName");

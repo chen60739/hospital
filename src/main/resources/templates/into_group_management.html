@@ -83,8 +83,8 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="input-group-addon">科室</div>
-                                            <select class="form-control">
-                                                <option>-请选择-</option>
+                                            <select class="form-control" id="dictionaryName">
+                                                <option value=" ">-请选择-</option>
                                             </select>
                                         </div>
                                     </div>
@@ -116,7 +116,7 @@
                                         <div class="input-group">
                                             <div class="input-group-addon">医生</div>
                                             <select class="form-control">
-                                                <option>-请选择-</option>
+                                                <option value="">-请选择-</option>
                                             </select>
                                         </div>
                                     </div>
@@ -217,7 +217,7 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">起始</div>
-                                        <input type="date" class="form-control" placeholder="请输入密码">
+                                        <input type="date" class="form-control"  placeholder="请输入密码">
                                     </div>
                                 </div>
                             </div>
@@ -247,7 +247,21 @@
             })
         }
 
+        selectDictionary();
     })
+
+    function selectDictionary(){
+        $.get("findAllDepartment",{},function(rs){
+            if(rs !=null){
+                var aa=$("#dictionaryName")     ;
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].dictionaryId+">"+rs[i].dictionaryName+"</option>");
+                    aa.append(varoption);
+                }
+            }
+
+        })
+    }
 
 </script>
 </html>
