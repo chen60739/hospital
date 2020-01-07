@@ -18,13 +18,12 @@ public interface UserService {
 
     int updateByPrimaryKeySelective(User record);
 
-
-    //权限管理页面--查询
-    List<SuperUser> findAllUser(String occupationId);
-
     //批量删除
     int removeById(String ids);
+
     User selectByPrimaryKey(Integer userId);//查询单条
 
     User selectOne(Integer userId);//查询单条
+
+
 }

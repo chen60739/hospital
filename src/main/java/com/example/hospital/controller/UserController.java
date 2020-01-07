@@ -66,14 +66,8 @@ public class UserController {
         userService.selectOne(userId);
         return "redirect:power";
     }
-    @RequestMapping("findAllUser")
-    @ResponseBody
-    public List<SuperUser> findAllUser(String occupationId){
-        return userService.findAllUser(occupationId);
-    }
-
     //批量删除
-    @RequestMapping("removeById1")
+    @RequestMapping("removeById2")
     @ResponseBody
     public String  removeById1(String ids){
         System.out.println(ids);
@@ -90,6 +84,4 @@ public class UserController {
         }
 
     }
-
-
 }

@@ -22,6 +22,7 @@
     <result column="dictionary_name" jdbcType="VARCHAR" property="dictionaryName" />
     <result column="dname" property="d1"></result>
     <result column="dname2" property="d2"></result>
+    <result column="dname3" property="d3"></result>
 
 
     <association property="selectRole" javaType="com.example.hospital.model.SelectRole">
@@ -249,28 +250,27 @@
     set department_id = #{departmentId,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
-  <!--权限管理页面   查询-->
+  <!--&lt;!&ndash;权限管理页面   查询&ndash;&gt;
   <select id="selectAllUser" resultMap="super">
-    select d.dictionary_name as dname,d2.dictionary_name as dname2 ,user.user_name,select_role.menu_name,user.user_id
-    from user,dictionary d,select_role,dictionary d2
+    select d.dictionary_name as dname,d2.dictionary_name as dname2,d3.dictionary_name as dname3 ,user.user_name,select_role.menu_name,user.user_id,user.department_id
+    from user,dictionary d,select_role,dictionary d2,dictionary d3
     where user.occupation_id=d.dictionary_id
     AND user.grade_id=select_role.role_id
     AND user.role_id =d2.dictionary_id
+    AND user.department_id =d3.dictionary_id
     AND user.is_del=0
     <if test="occupationId!=null and occupationId!=''">
       AND d.dictionary_name = #{occupationId}
     </if>
-  </select>
+  </select>-->
 
   <!--批量删除-->
   <update id="deleteById">
-    UPDATE user SET is_del=1 WHERE user_id=#{ids}
+    UPDATE `user` SET is_del=1 WHERE user_id=#{ids}
   </update>
-  <!--<select id="selectAllUser1" resultMap="super">
-    select dictionary_name
-       from user,dictionary
-        where user.role_id=dictionary.dictionary_id
-        AND user.is_del=0
 
-  </select>-->
+  <!--根据id 查询用户-->
+  <select id="selectNameById" resultMap="BaseResultMap">
+    SELECT  user_name from `user` WHERE user_id=#{id}
+  </select>
 </mapper>

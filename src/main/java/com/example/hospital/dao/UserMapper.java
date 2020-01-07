@@ -30,12 +30,9 @@ public interface UserMapper {
 
     User selectOne(Integer userId);//查询单条
 
-
-    //权限管理页面--查询
-    List<SuperUser> selectAllUser(@Param("occupationId") String occupationId);
-    /*List<SuperUser> selectAllUser1();*/
-
     //批量删除
     int deleteById(@Param("ids") String ids);
 
+    //根据id查询用户
+    User selectNameById(@Param("id")String id);
 }
