@@ -87,7 +87,7 @@
                         </div>
                     </div>
                     <div class="col-xs-2 col-lg-offset-1">
-                        <button type="button" class="btn btn-info" onclick="insert()">保存</button>
+                        <button type="button" class="btn btn-info" onclick="update()">保存</button>
                         <button type="button" class="btn btn-info" onclick="bb()">清空</button>
                         <button type="submit" class="btn btn-info"  id="search">检索</button>
                     </div>
@@ -102,8 +102,8 @@
     </div>
 </div>
 <div id="toolbar">
-    <button type="button" class="btn btn-info">新增</button>
-    <button type="button" class="btn btn-danger">删除</button>
+    <button type="button" class="btn btn-info" onclick="insert()">新增</button>
+    <button type="button" class="btn btn-danger" onclick="remove()">删除</button>
 </div>
 </body>
 <script>
@@ -134,7 +134,7 @@
                 "creatTime":"2018-11-12"
             }];*/
 
-        window.operateEvents = {
+        window.operateEvents = {//修改回显
             'click .RoleOfEdit': function (e, value, row, index) {
                 $.get("selectUserOne?userId="+row.userId,{},function(rs) {
                     $("#userId").val(rs[0].userId);
@@ -244,7 +244,8 @@
             $("#dictionaryName").val("");
     }
 
-    function insert() {
+    //修改数据
+    function update() {
             var userId= $("#userId").val();
             var userName=$("#userName").val();
             var userSex=$("#userSex").val();
@@ -259,6 +260,48 @@
         })
     }
 
+    //插入数据
+    function insert() {
+        var userId= $("#userId").val();
+        var userName=$("#userName").val();
+        var userSex=$("#userSex").val();
+        var userPwd=$("#userPwd").val();
+        var  userPhone=$("#userPhone").val();
+        var userEmail=$("#userEmail").val();
+        var dictionaryName=$("#dictionaryName").val();
+        $.get("insertUser",{
+            "userId":userId,"userName":userName,"userSex":userSex,"userPwd":userPwd,
+            "userPhone":userPhone,"userEmail":userEmail,"departmentId":dictionaryName
+        },function(rs){
+            location.href="/user";
+        })
+    }
+
+    //批量删除
+    function remove(){
+        if(!confirm("是否确认删除？"))
+            return ;
+        var  rows=$("#tableL01").bootstrapTable('getSelections')//要删除的数据
+        if(rows.length == 0){
+            alert("请选择要删除的记录！");
+            return ;
+        }else {
+            var ids="";
+            $(rows).each(function(){
+                ids+=this.userId+",";
+            });
+            $.ajax({
+                url:"removeById1",
+                data:{"ids":ids},
+                type:"post",
+                success:function(data){
+                    $("#tableL01").bootstrapTable('refresh', data);
+
+                }
+            })
+        }
+
+    }
 
 
 

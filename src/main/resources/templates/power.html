@@ -101,7 +101,8 @@
     </div>
 </div>
 </body>
-<script type="text/javascript">
+<script >
+
     $(function () {
 
         var tableColumns = [
@@ -136,6 +137,7 @@
 
 
         function operateFormatter(value, row, index) {
+
             return [
                 '<button type="button" id="edit"  data-toggle="modal" data-target="#myModal" class="RoleOfUpdate btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
                 '<button type="button" class="RoleOfDel btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-trash"></i></button>'
@@ -164,10 +166,11 @@
             showFooter: true,
             // exportTypes: ['csv', 'txt', 'xml'],
             clickToSelect: true,
-            //toolbar:'#toolbar',
+            toolbar:'#toolbar',
             /*onClickCell: function(params){
                 location.href="/one";
             }*/
+
             queryParams: function queryParams(params){
                 var param = {
                     dictionaryName:$("#dictionaryName").val(),
@@ -181,11 +184,11 @@
             $('#tableL01').bootstrapTable('refresh');
         });
 
-        selectDiceionary();
+        selectDictionary();
         selectUser();
 
     })
-    function selectDiceionary(){
+    function selectDictionary(){
         $.get("findAllDepartment",{},function(rs){
             if(rs !=null){
                 var aa=$("#dictionaryName");

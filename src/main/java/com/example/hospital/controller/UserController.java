@@ -20,7 +20,7 @@ public class UserController {
     private UserService userService;
 
     @ResponseBody
-    @RequestMapping("/getUser")
+    @RequestMapping("/getUser")//权限页面
     public List<User> getUser(String dictionaryName,String userName){
         System.out.println(dictionaryName);
         List<User> users =userService.getUser(dictionaryName,userName);
@@ -68,7 +68,7 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping("/getUserAll")
+    @RequestMapping("/getUserAll")//用户界面查询
     public List<User> getUserAll(Integer userId,String userName,Integer userSex,
                                  String userPhone,String userEmail,
                                  String dictionaryName){
@@ -78,10 +78,16 @@ public class UserController {
         System.out.println(dictionaryName);
         return userAll;
     }
+    @RequestMapping("/insertUser")
+    public String insertUser(User user){
+        System.out.println(user);
+        userService.insertUser(user);
+        return "redirect:user";
+    }
+
 
     @RequestMapping("/updateUser")
     public String updateUser(User user){
-        System.out.println(user);
         userService.updateUser(user);
         return "redirect:user";
     }

@@ -163,6 +163,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">性别</div>
+                                        <select class="form-control" id="sex1">
+                                            <option value="">-请选择-</option>
+                                            <option value="1">男</option>
+                                            <option value="0">女</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="profile">
                         <form enctype="multipart/form-data">
@@ -318,7 +332,8 @@
         var Number=$('#Number').val();
         var birthday=$('#birthday').val();
         var groupId=$('#groupId').val();
-        window.location.href="patientAdd?outpatientService2="+outpatientService2+"&pName="+pName+"&Number="+Number+"&birthday="+birthday+"&groupId="+groupId;
+        var sex=$('#sex1').val();
+        location.href="patientAdd?outpatientService2="+outpatientService2+"&pName="+pName+"&Number="+Number+"&birthday="+birthday+"&groupId="+groupId+"&sex="+sex;
     }
 </script>
 </html>
