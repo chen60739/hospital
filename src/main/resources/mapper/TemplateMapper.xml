@@ -10,10 +10,12 @@
     <result column="create_people" jdbcType="INTEGER" property="createPeople" />
     <result column="template_setting_version" jdbcType="INTEGER" property="templateSettingVersion" />
     <result column="template_setting_state" jdbcType="TINYINT" property="templateSettingState" />
+    <result column="template_range" jdbcType="VARCHAR" property="templateRange" />
+    <result column="is_del" jdbcType="TINYINT" property="isDel" />
   </resultMap>
   <sql id="Base_Column_List">
     template_id, template_name, update_time, template_setting_create_time, update_people,
-    create_people, template_setting_version, template_setting_state
+    create_people, template_setting_version, template_setting_state,template_range,is_del
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -131,5 +133,29 @@
   
   <select id="selectAll" resultMap="BaseResultMap">
     SELECT * FROM `template`
+    WHERE is_del=0
+    AND (FIND_IN_SET('2',template_range)
+    OR FIND_IN_SET(#{departmentId},template_range))
   </select>
+
+  <update id="setRange">
+        UPDATE `template`
+    SET template_range = #{departmentIds}
+    WHERE
+        template_id = #{tempId}
+  </update>
+
+  <update id="changeTemplateState">
+        UPDATE `template`
+    SET template_setting_state = 0
+    WHERE
+        template_id = #{tempId}
+  </update>
+  
+  <update id="delTemplate">
+    UPDATE `template`
+    SET is_del = 1
+    WHERE
+        template_id = #{tempId}
+  </update>
 </mapper>

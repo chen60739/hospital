@@ -5,6 +5,7 @@ import com.example.hospital.model.Template;
 import com.example.hospital.model.TemplateSet;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 陈奕璇
@@ -16,7 +17,13 @@ public interface TemplateService {
 
     void saveTemplate(String tempName, String lableId);
 
-    List<Template> getTemplateList();
+    List<Template> getTemplateList(Integer departmentId);
 
     List<TemplateSet> getLablesByTempId(Integer tempId);
+
+    Map<String,String> setTempRange(Integer tempId, String departmentIds);
+
+    Map<String,String> publishTemp(Integer tempId);
+
+    Map<String,String> delTemplate(Integer tempId);
 }

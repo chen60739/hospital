@@ -31,6 +31,11 @@ public class Template implements Serializable,Cloneable{
     private Integer templateSettingVersion ;
     /** 状态  0当前版本 1未发布  2历史版本 */
     private Integer templateSettingState ;
+    /** 模板共享科室 */
+    private String templateRange ;
+    /** 是否删除 */
+    private Boolean isDel ;
+
 
     public Integer getTemplateId() {
         return templateId;
@@ -96,17 +101,35 @@ public class Template implements Serializable,Cloneable{
         this.templateSettingState = templateSettingState;
     }
 
+    public String getTemplateRange() {
+        return templateRange;
+    }
+
+    public void setTemplateRange(String templateRange) {
+        this.templateRange = templateRange;
+    }
+
+    public Boolean getDel() {
+        return isDel;
+    }
+
+    public void setDel(Boolean del) {
+        isDel = del;
+    }
+
     @Override
     public String toString() {
         return "Template{" +
                 "templateId=" + templateId +
-                ", templateName='" + templateName +
+                ", templateName='" + templateName + '\'' +
                 ", updateTime=" + updateTime +
                 ", templateSettingCreateTime=" + templateSettingCreateTime +
                 ", updatePeople=" + updatePeople +
                 ", createPeople=" + createPeople +
                 ", templateSettingVersion=" + templateSettingVersion +
                 ", templateSettingState=" + templateSettingState +
+                ", templateRange='" + templateRange + '\'' +
+                ", isDel=" + isDel +
                 '}';
     }
 }

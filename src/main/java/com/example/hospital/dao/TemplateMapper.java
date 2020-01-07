@@ -2,6 +2,7 @@ package com.example.hospital.dao;
 
 import com.example.hospital.model.Template;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,6 +23,13 @@ public interface TemplateMapper {
     /**
      * 查询所有模板
      * @return
+     * @param
      */
-    List<Template> selectAll();
+    List<Template> selectAll(Integer departmentId);
+
+    int setRange(@Param("tempId") Integer tempId, @Param("departmentIds") String departmentIds);
+
+    int changeTemplateState(Integer tempId);
+
+    int delTemplate(Integer tempId);
 }

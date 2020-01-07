@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -46,8 +47,11 @@ public class IndexController {
     }*/
 
     @RequestMapping("/one")
-    public String one(Integer groupId, Model model){
+    public String one(@RequestParam("groupId") Integer groupId,
+                      @RequestParam("departmentId") Integer departmentId,
+                      Model model){
         model.addAttribute("groupId",groupId);
+        model.addAttribute("departmentId",departmentId);
         return "group_one";
     }
 
@@ -71,7 +75,8 @@ public class IndexController {
     }
 
     @RequestMapping("/templist")
-    public String templist(){
+    public String templist(@RequestParam("departmentId") Integer departmentId,Model model){
+        model.addAttribute("departmentId",departmentId);
         return "template_list";
     }
 

@@ -52,7 +52,7 @@
                     <div class="col-xs-12 col-md-12">
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">引用模板</button>
                         <button type="button" id="save" class="btn btn-info" style="float: right;margin-right: 10px">保存</button>
-                        <button type="button" class="btn btn-info" style="float: right;margin-right: 10px">发布</button>
+                        <button type="button" id="publish" class="btn btn-info" style="float: right;margin-right: 10px">发布</button>
                         <button type="button" class="btn btn-info" style="float: right;margin-right: 10px">取消</button>
                         <button type="button" class="btn btn-info" style="float: right;margin-right: 10px">规则设定</button>
                     </div>
@@ -86,6 +86,18 @@
 <div th:replace="template_selection :: temp"></div>
 </body>
 <script th:inline="javascript">
+
+    $('#publish').click(function () {
+        if([[${tempId}]]==null){
+            alert("请先保存模板！");
+            return false;
+        }
+        if(confirm("确认发布")){
+            $.getJSON('/publishTemp',{"tempId":[[${tempId}]]},function (res) {
+                alert(res.mes);
+            })
+        }
+    })
 
     //保存模板
     $('#save').click(function () {
@@ -176,7 +188,11 @@
             var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
             for (var i=0;i<lables.length;i++){
                 var nodes = treeObj.getNodesByParam("lableId",lables[i].lableId);
-                treeObj.checkNode(nodes[0],true, true);
+                if(nodes[0].isParent){
+                    treeObj.checkNode(nodes[0],true,false);
+                }else {
+                    treeObj.checkNode(nodes[0], true, true);
+                }
                 treeObj.selectNode(nodes[0]);
                 $(tableList(nodes[0].lableType,nodes[0].lableName,nodes[0].lableId)).appendTo($(".sortable"));
             }

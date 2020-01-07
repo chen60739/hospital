@@ -13,6 +13,8 @@
     <script src="/js/bootstrap-table-zh-CN.js"></script>
     <link rel="stylesheet" href="/css/hospital.css">
     <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
+    <link rel="stylesheet" href="/css/selectcheck.css">
+    <script src="/js/selectcheck.js"></script>
 </head>
 <body>
 <div th:replace="navigation :: nav"></div>
@@ -25,7 +27,7 @@
                 <hr>
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
-                        <button type="button" class="btn btn-info"><a href="/design?tempId=" style="color: white">创建模板</a></button>
+                        <button type="button" class="btn btn-info"><a th:href="@{'/design?tempId=&departmentId='+${departmentId}}" style="color: white">创建模板</a></button>
                     </div>
                     <hr>
                 </div>
@@ -41,8 +43,28 @@
         </ul>
     </nav>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">共享到</h4>
+            </div>
+            <div class="modal-body">
+                <select id="range"  multiple="multiple" class="medication">
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="pSave" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
-<script>
+<script th:inline="javascript">
+
     $(function () {
         var tableColumns = [
             {field: 'templateName', title: '模板名称',align:'center'},
@@ -73,16 +95,56 @@
 
         window.operateEvents = {
             'click .RoleOfLook': function (e, value, row, index) {
-                window.location.href="/design?tempId="+row.templateId;
+                window.location.href="/design?tempId="+row.templateId+"&departmentId="+[[${departmentId}]];
             },
             'click .RoleOfB': function (e, value, row, index) {
                 alert("B");
             },
             'click .RoleOfC': function (e, value, row, index) {
-                alert("C");
+                $('#range').empty();
+                $('#range').append('<option value="'+[[${departmentId}]]+'">本科室</option>');
+                $('#range').append('<option value="2">全院</option>');
+                $.getJSON('/findAllDepartment',function (res) {
+                    var check = row.templateRange.split(',');
+                    for (var i=0;i<res.length;i++){
+                        if(res[i].dictionaryId==[[${departmentId}]]){
+                            continue;
+                        }
+                        $('#range').append('<option value="'+res[i].dictionaryId+'">'+res[i].dictionaryName+'</option>');
+                    }
+                    for (var j=0;j<check.length;j++){
+                        $('#range').find('option[value='+check[j]+']').attr("selected","selected");
+                    }
+                    $('#range').fSelect();
+                    $('#range').fSelect('destroy');
+                    $('#range').fSelect('create');
+                    $('#myModal').modal();
+                })
+
+                $('#pSave').click(function () {
+                    var departmentIds = "";
+                    $('.fs-options').find('div.selected').each(function (index) {
+                        if (index==0){
+                            departmentIds+=$(this).attr("data-value");
+                        }else {
+                            departmentIds+=","+$(this).attr("data-value");
+                        }
+                    });
+                    $.getJSON('/setTempRange',{"tempId":row.templateId,"departmentIds":departmentIds},function (res) {
+                        $('#myModal').modal('toggle');
+                        alert(res.mes);
+                        $('#table').bootstrapTable('refresh');
+                    })
+                })
             },
             'click .RoleOfD': function (e, value, row, index) {
-                alert("D");
+                if(confirm("真的要删除么？")){
+                    $.getJSON('/delTemplate',{"tempId":row.templateId},function (res) {
+                        alert(res.mes);
+                        $('#table').bootstrapTable('refresh');
+                    })
+                }
+
             }
         };
 
@@ -91,7 +153,7 @@
         $('#table').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
             method: 'get',
-            url:"/tempListDate",
+            url:"/tempListDate?departmentId="+[[${departmentId}]],
             pageNumber: 1,
             theadClasses: "thead-blue",
             cache: false,
