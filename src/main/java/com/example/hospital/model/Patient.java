@@ -1,5 +1,8 @@
 package com.example.hospital.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,6 +18,8 @@ public class  Patient implements Serializable,Cloneable{
     /** 性别 */
     private Integer patientSex ;
     /** 出生日期 */
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date patientBirthday ;
     /** 民族0其他1汉族 */
     private Integer nationId ;

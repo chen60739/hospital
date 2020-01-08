@@ -111,10 +111,7 @@ public class IndexController {
     public String followUpSetting(){
         return "follow_up_rule_setting";
     }
-    @RequestMapping("/patient")
-    public String patient(){
-        return "patient";
-    }
+
 
     @RequestMapping("/dataReview")
     public String dataReview(){

@@ -16,6 +16,7 @@
     <result column="patient_num" jdbcType="INTEGER" property="patientNum" />
     <result column="control_group" jdbcType="TINYINT" property="controlGroup" />
     <result column="background" jdbcType="VARCHAR" property="background" />
+    <result column="group_template_ids" jdbcType="VARCHAR" property="groupTemplateIds" />
     <result column="is_del" jdbcType="TINYINT" property="isDel" />
   </resultMap>
 
@@ -25,7 +26,7 @@
   <sql id="Base_Column_List">
     group_id, group_name, group_principal, group_hospital_id, group_department_id, group_rank_id, 
     group_phone, group_state, group_start_time, group_end_time, group_num, patient_num, 
-    control_group, background, is_del
+    control_group, background, group_template_ids,is_del
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
