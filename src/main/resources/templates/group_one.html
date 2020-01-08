@@ -235,7 +235,7 @@
 
     window.operateEvents = {
         'click .RoleOfA': function (e, value, row, index) {
-            window.location.href="/patient";
+            window.location.href="/patient?patientId="+row.patientId+"&groupId="+row.planningGroups.pgroupId;
         }
     };
 

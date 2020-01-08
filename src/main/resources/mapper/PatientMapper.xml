@@ -40,7 +40,7 @@
 <!--我写的sql语句-->
   <select id="selectPatientsByGroupId" resultMap="SuperResultMap">
     select
-    p.*,pg.in_group_time
+    p.*,pg.in_group_time,pg.p_group_id
     from `patient` p,`planning_group` pg
       where
       p.patient_id=pg.p_patient_id

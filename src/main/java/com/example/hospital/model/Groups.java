@@ -45,6 +45,8 @@ public class Groups implements Serializable,Cloneable{
     private String background ;
     /** 是否删除 */
     private Boolean isDel ;
+    /** 小组用的模板id */
+    private String groupTemplateIds ;
 
     /** 主键 */
     public Integer getGroupId(){
@@ -167,6 +169,14 @@ public class Groups implements Serializable,Cloneable{
         this.isDel = isDel;
     }
 
+    public String getGroupTemplateIds() {
+        return groupTemplateIds;
+    }
+
+    public void setGroupTemplateIds(String groupTemplateIds) {
+        this.groupTemplateIds = groupTemplateIds;
+    }
+
     @Override
     public String toString() {
         return "Groups{" +
@@ -185,6 +195,7 @@ public class Groups implements Serializable,Cloneable{
                 ", controlGroup=" + controlGroup +
                 ", background='" + background + '\'' +
                 ", isDel=" + isDel +
+                ", groupTemplateIds='" + groupTemplateIds + '\'' +
                 '}';
     }
 }

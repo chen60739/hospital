@@ -30,20 +30,13 @@
 <div th:replace="navigation :: nav"></div>
 <div class="container-fluid main">
     <div class="row">
-        <!--<div class="col-xs-12 col-md-12">
-            <div style="padding-top: 20px">
-                <a href="javascript:history.back(-1)"><span class="glyphicon glyphicon-arrow-left"></span>返回模板列表</a>
-                <h3 align="center">模板设计</h3>
-                <hr>
-            </div>
-        </div>-->
         <div class="col-xs-12 col-md-12">
             <div class="col-xs-3" style="border:1px #e1e1e1;border-right-style: solid">
                 <div class="row">
-                    <h4>刘阳  <small><span>男</span></small></h4>
-                    <span>住院号 2198657</span>
+                    <span style="font-size: 25px" th:text="${patient.patientName}">刘阳</span><span style="margin-left: 10px" th:text="${patient.patientSex}==0?'女':'男'">男</span><br>
+                    住院号 <span th:text="${patient.hospitalizationNumber}"> 2198657</span>
                     <br>
-                    <span>出生日期 1940-08-24</span>
+                    出生日期 <span th:text="${patient.patientBirthday}"> 1940-08-24</span>
                     <br>
                     <a>链接到CDR</a>
                     <a style="margin-left: 30px">展开其他随访组</a>
@@ -78,6 +71,9 @@
                         </tr>
                     </table>
                     <hr>
+                    <div class="row" id="formbox">
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -104,6 +100,13 @@
 </div>
 </body>
 <script>
+
+    $(document).ready(function () {
+        $.getJSON('',{},function () {
+
+        })
+    })
+
     var zTreeObj;
     // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
     var setting = {
@@ -174,7 +177,7 @@
     $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
     $('#tableL01').bootstrapTable({//表格初始化
         columns: tableColumns,  //表头
-        url:'/findPatients',
+        //url:'/findPatients',
         //data:data1, //通过ajax返回的数据
         method: 'get',
         pageNumber: 1,//初始化加载第一页

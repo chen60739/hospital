@@ -7,6 +7,7 @@ import com.example.hospital.service.PatientService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -29,7 +30,6 @@ public class PatientController {
     @RequestMapping("/findPatients")
     @ResponseBody
     public List<SuperPatient> findPatients(SuperPatient superPatient,String preTime,String sufTime,Integer groupId) throws ParseException {
-        System.out.println("=性别");
         List<SuperPatient> list=patientService.findPatients(superPatient,preTime,sufTime,groupId);
         return list;
     }
@@ -66,5 +66,15 @@ public class PatientController {
         patientService.insert(patient);
         model.addAttribute("groupId",groupId);
         return "group_one";
+    }
+
+    @RequestMapping("/patient")
+    public String patient(@RequestParam("patientId") Integer patientId,
+                          @RequestParam("groupId") Integer groupId,
+                          Model model){
+        Patient p = patientService.selectById(patientId);
+        model.addAttribute("patient",p);
+        model.addAttribute("groupId",groupId);
+        return "patient";
     }
 }

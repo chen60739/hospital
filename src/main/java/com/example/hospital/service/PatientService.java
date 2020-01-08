@@ -17,4 +17,6 @@ public interface PatientService {
     int delById(String ids);
 
     void insert(Patient patient);
+
+    Patient selectById(Integer patientId);
 }
