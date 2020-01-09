@@ -54,4 +54,12 @@ public interface GroupsMapper {
      * @return
      */
     String getSelectTemp(Integer groupId);
+
+    /**
+     * 移除小组所选的某个模板
+     * @param groupId
+     * @param tempId
+     * @return
+     */
+    int updateSelectTemplate(@Param("groupId") Integer groupId,@Param("tempId") Integer tempId);
 }

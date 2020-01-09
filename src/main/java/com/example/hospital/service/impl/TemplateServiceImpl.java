@@ -31,6 +31,36 @@ public class TemplateServiceImpl implements TemplateService {
     private GroupsMapper groupsMapper;
 
     @Override
+    public Map<String, String> updateTemp(Integer tempId, String lableId) {
+        Map<String,String> res = new HashMap<>();
+        Template old = templateMapper.selectByPrimaryKey(tempId);
+        old.setTemplateSettingCreateTime(new Date());
+        old.setTemplateSettingVersion(old.getTemplateSettingVersion()+1);
+        templateMapper.insert(old);
+        saveLables(old.getTemplateId(),lableId);
+        res.put("mes","success");
+        return res;
+    }
+
+    @Override
+    public Template selectOneTemplate(Integer tempId) {
+        Template template = templateMapper.selectByPrimaryKey(tempId);
+        return template;
+    }
+
+    @Override
+    public Map<String, String> removeTemplate(Integer groupId, Integer tempId) {
+        int i = groupsMapper.updateSelectTemplate(groupId,tempId);
+        Map<String,String> res = new HashMap<>();
+        if (i==1){
+            res.put("mes","成功");
+        }else{
+            res.put("mes","失败");
+        }
+        return res;
+    }
+
+    @Override
     public List<TemplateOverView> templateOverviewData(String groupName, String startTime, String endTime, String tempName, String createPeople) {
         List<TemplateOverView> list = templateMapper.templateOverviewData(groupName,startTime,endTime,tempName,createPeople);
         return list;
@@ -52,10 +82,12 @@ public class TemplateServiceImpl implements TemplateService {
     public Map<String, List> getTemp(Integer groupId, Integer departmentId) {
         List<Template> list = templateMapper.getTemplate(departmentId);
         String tempIds = groupsMapper.getSelectTemp(groupId);
-        String[] ids = tempIds.split(",");
         List<String> idList = new ArrayList<>();
-        for (String id : ids) {
-            idList.add(id);
+        if(tempIds!=null) {
+            String[] ids = tempIds.split(",");
+            for (String id : ids) {
+                idList.add(id);
+            }
         }
         Map<String,List> res = new HashMap<>();
         res.put("tempList",list);
@@ -64,7 +96,7 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public Map<String, String> delTemplate(Integer tempId) {
+    public Map<String, String> delTemplate(Integer id, Integer tempId) {
         Map<String,String> res = new HashMap<>();
         int i = templateMapper.delTemplate(tempId);
         if (i==1){
@@ -112,25 +144,36 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public void saveTemplate(String tempName, String lableId) {
+    public Map<String, String> saveTemplate(String tempName, String lableId) {
         Template template = new Template();
-        template.setTemplateSettingCreateTime(new Date());
-        template.setTemplateName(tempName);
-        templateMapper.insert(template);
-        String[] ids = lableId.split(",");
-        for (String id : ids) {
-            TemplateSet templateSet = new TemplateSet();
-            templateSet.setLableId(Integer.parseInt(id));
-            templateSet.setTempId(template.getTemplateId());
-            templateSetMapper.insert(templateSet);
-
+        int i = templateMapper.checkName(tempName);
+        Map<String,String> res = new HashMap<>();
+        if (i==0){
+            template.setTemplateSettingCreateTime(new Date());
+            template.setTemplateName(tempName);
+            templateMapper.insert(template);
+            saveLables(template.getTemplateId(),lableId);
+            res.put("mes","success");
+        }else {
+            res.put("mes","模板已存在");
         }
+        return res;
     }
 
     @Override
     public List<Lable> getTreeData() {
         List<Lable> list = lableMapper.selectAll();
         return list;
+    }
+
+    public void saveLables(Integer tempId,String lableId){
+        String[] ids = lableId.split(",");
+        for (String id : ids) {
+            TemplateSet templateSet = new TemplateSet();
+            templateSet.setLableId(Integer.parseInt(id));
+            templateSet.setTempId(tempId);
+            templateSetMapper.insert(templateSet);
+        }
     }
 
 }

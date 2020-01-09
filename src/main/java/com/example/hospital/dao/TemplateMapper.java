@@ -51,4 +51,11 @@ public interface TemplateMapper {
                                                 @Param("endTime") String endTime,
                                                 @Param("tempName") String tempName,
                                                 @Param("createPeople") String createPeople);
+
+    /**
+     * 检查模板名称是否存在
+     * @param tempName
+     * @return
+     */
+    int checkName(String tempName);
 }

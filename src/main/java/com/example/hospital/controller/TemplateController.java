@@ -1,8 +1,10 @@
 package com.example.hospital.controller;
 
 import com.example.hospital.dto.TemplateOverView;
+import com.example.hospital.model.Lable;
 import com.example.hospital.model.Template;
 import com.example.hospital.model.TemplateSet;
+import com.example.hospital.service.impl.LableServiceImpl;
 import com.example.hospital.service.impl.TemplateServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,14 +30,28 @@ public class TemplateController {
 
     @Autowired
     private TemplateServiceImpl templateService;
+    @Autowired
+    private LableServiceImpl lableService;
 
+    /**
+     * 保存模板
+     * @param tempName 模板名称
+     * @param lableId 表单控件id
+     * @return
+     */
     @RequestMapping("/saveTemp")
     @ResponseBody
     public Map<String, String> createTemp(@RequestParam("tempName") String tempName,
                                           @RequestParam("lableId") String lableId){
-        templateService.saveTemplate(tempName,lableId);
-        Map<String,String> res = new HashMap<>();
-        res.put("mes","message");
+        Map<String, String> res = templateService.saveTemplate(tempName, lableId);
+        return res;
+    }
+
+    @RequestMapping("updateTemp")
+    @ResponseBody
+    public Map<String, String> updateTemplate(@RequestParam("tempId") Integer tempId,
+                                              @RequestParam("lableId") String lableId){
+        Map<String, String> res = templateService.updateTemp(tempId,lableId);
         return res;
     }
 
@@ -67,10 +83,18 @@ public class TemplateController {
                         @RequestParam("departmentId") Integer departmentId,
                          Model model){
         List<TemplateSet> list = templateService.getLablesByTempId(tempId);
+        Template t = templateService.selectOneTemplate(tempId);
         model.addAttribute("lables",list);
-        model.addAttribute("tempId",tempId);
+        model.addAttribute("temp",t);
         model.addAttribute("departmentId",departmentId);
         return "template_design";
+    }
+
+    @RequestMapping("/getLables")
+    @ResponseBody
+    public List<Lable> getLables(@RequestParam("tempId") Integer tempId){
+        List<Lable> lables = lableService.getLablesByTempId(tempId);
+        return lables;
     }
 
     @RequestMapping("/publishTemp")
@@ -80,10 +104,11 @@ public class TemplateController {
         return res;
     }
 
-    @RequestMapping("/delTemplate")
+    @RequestMapping("/removeTemplate")
     @ResponseBody
-    public Map<String, String> delTemplate(@RequestParam("tempId") Integer tempId){
-        Map<String, String> res = templateService.delTemplate(tempId);
+    public Map<String, String> delTemplate(@RequestParam("tempId") Integer tempId,
+                                           @RequestParam("groupId") Integer groupId){
+        Map<String, String> res = templateService.removeTemplate(groupId,tempId);
         return res;
     }
 

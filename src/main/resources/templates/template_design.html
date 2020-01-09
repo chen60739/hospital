@@ -17,6 +17,8 @@
     <script src="/plugs/zTree/js/fuzzysearch.js"></script>
     <script src="/plugs/zTree/js/jquery.ztree.excheck.js"></script>
     <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
+    <link rel="stylesheet" href="/css/selectcheck.css">
+    <script src="/js/selectcheck.js"></script>
 </head>
 <style>
     .ztree * {
@@ -46,7 +48,7 @@
         <div class="col-xs-12 col-md-12">
             <div style="padding-top: 20px">
                 <a href="javascript:history.back(-1)"><span class="glyphicon glyphicon-arrow-left"></span>返回模板列表</a>
-                <h3 align="center">模板设计</h3>
+                <h3 align="center" th:text="${temp}==null?'模板设计':${temp.templateName}">模板设计</h3>
                 <hr>
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
@@ -82,42 +84,106 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="pub" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">共享到</h4>
+            </div>
+            <div class="modal-body">
+                <select id="range"  multiple="multiple" class="medication">
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="pSave" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--通用模板选择弹出页面-->
 <div th:replace="template_selection :: temp"></div>
 </body>
 <script th:inline="javascript">
-
+    var temp = [[${temp}]];
     $('#publish').click(function () {
-        if([[${tempId}]]==null){
+        if(temp==null){
             alert("请先保存模板！");
             return false;
-        }
-        if(confirm("确认发布")){
-            $.getJSON('/publishTemp',{"tempId":[[${tempId}]]},function (res) {
-                alert(res.mes);
+        }else {
+
+            $('#range').empty();
+            $('#range').append('<option value="' + [[${departmentId}]] + '">本科室</option>');
+            $('#range').append('<option value="2">全院</option>');
+            $.getJSON('/findAllDepartment', function (res) {
+                var check = temp.templateRange.split(',');
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].dictionaryId == [[${departmentId}]]) {
+                        continue;
+                    }
+                    $('#range').append('<option value="' + res[i].dictionaryId + '">' + res[i].dictionaryName + '</option>');
+                }
+                for (var j = 0; j < check.length; j++) {
+                    $('#range').find('option[value=' + check[j] + ']').attr("selected", "selected");
+                }
+                $('#range').fSelect();
+                $('#range').fSelect('destroy');
+                $('#range').fSelect('create');
+                $('#pub').modal();
             })
         }
+
+            /*$.getJSON('/publishTemp',{"tempId":[[${tempId}]]},function (res) {
+                alert(res.mes);
+            })*/
+    })
+
+    $('#pSave').click(function () {
+        var departmentIds = "";
+        $('.fs-options').find('div.selected').each(function (index) {
+            if (index==0){
+                departmentIds+=$(this).attr("data-value");
+            }else {
+                departmentIds+=","+$(this).attr("data-value");
+            }
+        });
+        $.getJSON('/setTempRange',{"tempId":temp.templateId,"departmentIds":departmentIds},function (res) {
+            $('#pub').modal('toggle');
+            alert(res.mes);
+            $('#table').bootstrapTable('refresh');
+        })
     })
 
     //保存模板
     $('#save').click(function () {
-        var name=prompt("请输入模板名称","");
-        if (name!=null && name!=""){
-            var lableId = '';
-            $(".sortable").find('div [class=col-sm-7]').each(function (index, element) {
-                var spanVal = $(element).find('span').attr('id');
-                var titleVal = $(element).find('h5').attr('id');
-                if (index==0){
-                    lableId += typeof spanVal == 'undefined'?'':spanVal;
-                    lableId += typeof titleVal == 'undefined'?'':titleVal;
-                }else {
-                    lableId += typeof spanVal == 'undefined'?'':','+spanVal;
-                    lableId += typeof titleVal == 'undefined'?'':','+titleVal;
-                }
-            })
-            console.log(lableId)
-            $.getJSON('/saveTemp',{'tempName':name,'lableId':lableId},function () {
-                window.location = history.back(-1);
+        var lableId = '';
+        $(".sortable").find('div [class=col-sm-7]').each(function (index, element) {
+            var spanVal = $(element).find('span').attr('id');
+            var titleVal = $(element).find('h5').attr('id');
+            if (index==0){
+                lableId += typeof spanVal == 'undefined'?'':spanVal;
+                lableId += typeof titleVal == 'undefined'?'':titleVal;
+            }else {
+                lableId += typeof spanVal == 'undefined'?'':','+spanVal;
+                lableId += typeof titleVal == 'undefined'?'':','+titleVal;
+            }
+        })
+        console.log(lableId)
+        if (temp==null){
+            var name=prompt("请输入模板名称","");
+            if (name!=null && name!=""){
+                $.getJSON('/saveTemp',{'tempName':name,'lableId':lableId},function (res) {
+                    alert(res.mes);
+                    if(res.mes=='success'){
+                        window.location = history.back(-1);
+                    }
+                })
+            }
+        }else {
+            $.getJSON('/updateTemp',{'tempId':temp.templateId,'lableId':lableId},function () {
+                //window.location = history.back(-1);
             })
         }
     })

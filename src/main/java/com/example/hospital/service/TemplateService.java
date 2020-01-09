@@ -16,7 +16,7 @@ public interface TemplateService {
 
     List<Lable> getTreeData();
 
-    void saveTemplate(String tempName, String lableId);
+    Map<String, String> saveTemplate(String tempName, String lableId);
 
     List<Template> getTemplateList(Integer groupId);
 
@@ -26,7 +26,7 @@ public interface TemplateService {
 
     Map<String,String> publishTemp(Integer tempId);
 
-    Map<String,String> delTemplate(Integer tempId);
+    Map<String,String> delTemplate(Integer id, Integer tempId);
 
     Map<String, List> getTemp(Integer groupId, Integer departmentId);
 
@@ -34,4 +34,20 @@ public interface TemplateService {
 
     List<TemplateOverView> templateOverviewData(String groupName, String startTime, String endTime, String tempName, String createPeople);
 
+    Map<String,String> removeTemplate(Integer groupId, Integer tempId);
+
+    /**
+     * 根据id查询模板
+     * @param tempId
+     * @return
+     */
+    Template selectOneTemplate(Integer tempId);
+
+    /**
+     * 保存模板已存在时生成新版本
+     * @param tempId
+     * @param lableId
+     * @return
+     */
+    Map<String,String> updateTemp(Integer tempId, String lableId);
 }

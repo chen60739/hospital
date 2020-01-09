@@ -28,11 +28,11 @@
     where template_id = #{templateId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Template" useGeneratedKeys="true" keyProperty="templateId">
-    insert into `template` (template_id, update_time,
+    insert into `template` ( update_time,
       template_setting_create_time, update_people, 
       create_people, template_setting_version, template_setting_state, 
       template_name)
-    values (#{templateId,jdbcType=INTEGER},  #{updateTime,jdbcType=TIMESTAMP}, 
+    values ( #{updateTime,jdbcType=TIMESTAMP},
       #{templateSettingCreateTime,jdbcType=TIMESTAMP}, #{updatePeople,jdbcType=INTEGER}, 
       #{createPeople,jdbcType=INTEGER}, #{templateSettingVersion,jdbcType=INTEGER}, #{templateSettingState,jdbcType=TINYINT}, 
       #{templateName,jdbcType=VARCHAR})
@@ -214,5 +214,10 @@
     <if test="endTime!='' and startTime=='' ">
       AND t.template_setting_create_time &lt; #{endTime}
     </if>
+    ORDER BY t.template_name
+  </select>
+
+  <select id="checkName">
+    SELECT count(*) FROM template WHERE template_name=#{tempName}
   </select>
 </mapper>
