@@ -21,10 +21,21 @@ public interface DictionaryMapper {
 
     int updateByPrimaryKey(Dictionary record);
 
-    //查询科室
+    /**
+     * 查询科室
+     * @return
+     */
     List<Dictionary> selectAll();
-    //查询医院
+
+    /**
+     * //查询医院
+     * @return
+     */
     List<Dictionary> selectAll1();
-    //查询级别
+
+    /**
+     *  //查询级别
+     * @return
+     */
     List<Dictionary> selectAll2();
 }

@@ -1,8 +1,10 @@
 package com.example.hospital.service.impl;
 
+import com.example.hospital.dao.GroupsMapper;
 import com.example.hospital.dao.LableMapper;
 import com.example.hospital.dao.TemplateMapper;
 import com.example.hospital.dao.TemplateSetMapper;
+import com.example.hospital.dto.TemplateOverView;
 import com.example.hospital.model.Lable;
 import com.example.hospital.model.Template;
 import com.example.hospital.model.TemplateSet;
@@ -10,10 +12,7 @@ import com.example.hospital.service.TemplateService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 陈奕璇
@@ -28,6 +27,41 @@ public class TemplateServiceImpl implements TemplateService {
     private TemplateMapper templateMapper;
     @Resource
     private TemplateSetMapper templateSetMapper;
+    @Resource
+    private GroupsMapper groupsMapper;
+
+    @Override
+    public List<TemplateOverView> templateOverviewData(String groupName, String startTime, String endTime, String tempName, String createPeople) {
+        List<TemplateOverView> list = templateMapper.templateOverviewData(groupName,startTime,endTime,tempName,createPeople);
+        return list;
+    }
+
+    @Override
+    public Map<String, String> setGroupSelectTemp(Integer groupId, String tempIds) {
+        Map<String,String> res = new HashMap<>();
+        int i = groupsMapper.setGroupTemp(groupId,tempIds);
+        if (i==1){
+            res.put("mes","成功");
+        }else{
+            res.put("mes","失败");
+        }
+        return res;
+    }
+
+    @Override
+    public Map<String, List> getTemp(Integer groupId, Integer departmentId) {
+        List<Template> list = templateMapper.getTemplate(departmentId);
+        String tempIds = groupsMapper.getSelectTemp(groupId);
+        String[] ids = tempIds.split(",");
+        List<String> idList = new ArrayList<>();
+        for (String id : ids) {
+            idList.add(id);
+        }
+        Map<String,List> res = new HashMap<>();
+        res.put("tempList",list);
+        res.put("tempIds",idList);
+        return res;
+    }
 
     @Override
     public Map<String, String> delTemplate(Integer tempId) {
@@ -72,8 +106,8 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public List<Template> getTemplateList(Integer departmentId) {
-        List<Template> list = templateMapper.selectAll(departmentId);
+    public List<Template> getTemplateList(Integer groupId) {
+        List<Template> list = templateMapper.selectAll(groupId);
         return list;
     }
 
@@ -98,4 +132,5 @@ public class TemplateServiceImpl implements TemplateService {
         List<Lable> list = lableMapper.selectAll();
         return list;
     }
+
 }

@@ -117,7 +117,7 @@
             })
             console.log(lableId)
             $.getJSON('/saveTemp',{'tempName':name,'lableId':lableId},function () {
-                window.location.href="/templist";
+                window.location = history.back(-1);
             })
         }
     })

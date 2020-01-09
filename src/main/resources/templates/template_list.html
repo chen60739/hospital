@@ -15,7 +15,26 @@
     <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
     <link rel="stylesheet" href="/css/selectcheck.css">
     <script src="/js/selectcheck.js"></script>
+    <style>
+        .btnrow{
+            padding-top: 10px;
+            padding-left: 35px;
+        }
+        .btn-info{
+            width: 100px;
+        }
+        .btndian{
+            width: 30px;
+            height: 17px;
+            padding:0px;
+        }
+        .follow-btn{
+            margin-left: -9px;
+            margin-top: 10px
+        }
+    </style>
 </head>
+
 <body>
 <div th:replace="navigation :: nav"></div>
 <div class="container-fluid main">
@@ -27,7 +46,8 @@
                 <hr>
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
-                        <button type="button" class="btn btn-info"><a th:href="@{'/design?tempId=&departmentId='+${departmentId}}" style="color: white">创建模板</a></button>
+                        <button type="button" class="btn btn-info"><a th:href="@{'/design?tempId=&departmentId='+${departmentId}}" class="btn-a">创建模板</a></button>
+                        <button type="button" class="btn btn-info" id="selectTemp">选择模板</button>
                     </div>
                     <hr>
                 </div>
@@ -38,14 +58,10 @@
 
         </div>
     </div>
-    <nav aria-label="Page navigation">
-        <ul class="pagination" id="qian">
-        </ul>
-    </nav>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="pub" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -62,8 +78,58 @@
         </div>
     </div>
 </div>
+
+<!--通用模板选择弹出页面-->
+<div th:replace="template_selection :: temp"></div>
 </body>
 <script th:inline="javascript">
+
+    $('#selectTemp').click(function () {
+        $('#tempBox1').empty();
+        $('#tempBox2').empty();
+        $.getJSON('/getTemp',{"groupId":[[${groupId}]],"departmentId":[[${departmentId}]]},function (res) {
+            var tlist = res.tempList;
+            var checked = res.tempIds;
+            for(var i=0;i<tlist.length;i++){
+                var temp ='<div class="checkbox">\n' +
+                    '                                <label>\n' +
+                    '                                    <input type="checkbox" value="'+tlist[i].templateId+'">\n' +
+                    '                                    '+tlist[i].templateName+'\n' +
+                    '                                    <button class="btn btn-info btndian"><a href="/design?tempId='+tlist[i].templateId+'&&departmentId='+[[${departmentId}]]+'" class="btn-a"><i class="fa fa-ellipsis-h"></i></a></button>\n' +
+                    '                                </label>\n' +
+                    '                            </div>';
+                if (i%2==0){
+                    $('#tempBox1').append(temp);
+                }else {
+                    $('#tempBox2').append(temp);
+                }
+            }
+            for (var a=0;a<checked.length;a++){
+                $('input:checkbox').each(function () {
+                    if ($(this).val()==checked[a]) {
+                        $(this).attr("checked",true);
+                    }
+                })
+            }
+            $('#myModal').modal('show');
+        })
+    })
+
+    $('#tSave').click(function () {
+        var tempIds='';
+        $('input:checked').each(function (index) {
+            if (index==0){
+                tempIds+=$(this).val();
+            }else {
+                tempIds+=','+$(this).val();
+            }
+        })
+        $.getJSON('/saveGroupSelectTemp',{"groupId":[[${groupId}]],"tempIds":tempIds},function (res) {
+            alert(res.mes);
+            $('#myModal').modal('toggle');
+            $('#table').bootstrapTable('refresh');
+        })
+    })
 
     $(function () {
         var tableColumns = [
@@ -118,7 +184,7 @@
                     $('#range').fSelect();
                     $('#range').fSelect('destroy');
                     $('#range').fSelect('create');
-                    $('#myModal').modal();
+                    $('#pub').modal();
                 })
 
                 $('#pSave').click(function () {
@@ -131,7 +197,7 @@
                         }
                     });
                     $.getJSON('/setTempRange',{"tempId":row.templateId,"departmentIds":departmentIds},function (res) {
-                        $('#myModal').modal('toggle');
+                        $('#pub').modal('toggle');
                         alert(res.mes);
                         $('#table').bootstrapTable('refresh');
                     })
@@ -153,7 +219,7 @@
         $('#table').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
             method: 'get',
-            url:"/tempListDate?departmentId="+[[${departmentId}]],
+            url:"/tempListDate?groupId="+[[${groupId}]],
             pageNumber: 1,
             theadClasses: "thead-blue",
             cache: false,
