@@ -51,6 +51,12 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
+    public Patient selectById(Integer patientId) {
+        Patient patient = patientMapper.selectByPrimaryKey(patientId);
+        return patient;
+    }
+
+    @Override
     public void insert(Patient patient) {
         patientMapper.insert(patient);
     }

@@ -69,4 +69,13 @@ public class PatientController {
         return "group_one";
     }
 
+    @RequestMapping("/patient")
+    public String patient(@RequestParam("patientId") Integer patientId,
+                          @RequestParam("groupId") Integer groupId,
+                          Model model){
+        Patient p = patientService.selectById(patientId);
+        model.addAttribute("patient",p);
+        model.addAttribute("groupId",groupId);
+        return "patient";
+    }
 }

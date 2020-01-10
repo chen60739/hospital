@@ -281,7 +281,8 @@
             toolbar:'#toolbar',
             onClickRow: function(params){
                 var groupId=params.groupId;
-                location.href="/one?groupId="+groupId;
+                var departmentId = params.groupDepartmentId;
+                location.href="/one?groupId="+groupId+"&departmentId="+departmentId;
             },
             queryParams: function queryParams(params){
                 var param = {

@@ -145,7 +145,7 @@
       group_id, occupation_id)
     values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
       #{userSex,jdbcType=TINYINT}, #{userPhone,jdbcType=CHAR}, #{userEmail,jdbcType=VARCHAR}, 
-      #{departmentId,jdbcType=INTEGER}, 10002,#{createTime},#{createTime}, 0, 1, 1,12001)
+      #{departmentId,jdbcType=INTEGER}, 10002,#{createTime}, #{createTime}, 0, 1, 1,12003)
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.User">
     insert into `user`
@@ -316,7 +316,6 @@
   <update id="deleteByPrimaryKey">
     UPDATE user SET is_del=1 WHERE user_id=#{userId}
   </update>
-
 
   <!--权限管理页面   查询-->
   <select id="selectAllUser" resultMap="super">
