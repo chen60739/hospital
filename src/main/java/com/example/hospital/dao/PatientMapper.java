@@ -36,4 +36,6 @@ public interface PatientMapper {
                                                  @Param("endDate") String endDate);
 
     int deleteById(@Param("ids")  String ids);
+
+    List<Patient> selectPatientByDepartment(@Param("dId")Integer dId);
 }

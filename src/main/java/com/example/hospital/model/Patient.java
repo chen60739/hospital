@@ -36,6 +36,27 @@ public class  Patient implements Serializable,Cloneable{
     /** 是否删除 */
     private Boolean isDel ;
 
+    /** 负责人*/
+    private Integer leadOff;
+    /** 科室ID */
+    private Integer departmentId ;
+
+    public Integer getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public Integer getLeadOff() {
+        return leadOff;
+    }
+
+    public void setLeadOff(Integer leadOff) {
+        this.leadOff = leadOff;
+    }
+
     /** 患者id */
     public Integer getPatientId(){
         return this.patientId;

@@ -12,7 +12,11 @@
     <result column="disease_name" jdbcType="VARCHAR" property="diseaseName" />
     <result column="disease" jdbcType="VARCHAR" property="disease" />
     <result column="result_level" jdbcType="VARCHAR" property="resultLevel" />
-    <result column="is_del" jdbcType="TINYINT" property="isDel" />
+    <result column="lead_off" jdbcType="INTEGER" property="leadOff" />
+      <result column="is_del" jdbcType="TINYINT" property="isDel" />
+      <result column="department_id" jdbcType="INTEGER" property="departmentId" />
+
+
   </resultMap>
   <resultMap id="SuperResultMap" type="com.example.hospital.dto.SuperPatient" extends="BaseResultMap">
     <association property="planningGroups" javaType="com.example.hospital.model.PlanningGroup">
@@ -279,4 +283,30 @@
       is_del = #{isDel,jdbcType=TINYINT}
     where patient_id = #{patientId,jdbcType=INTEGER}
   </update>
+
+    <!--根据科室查询病人-->
+    <select id="selectPatientByDepartment"  resultMap="BaseResultMap">
+       SELECT patient_id from patient where department_id=#{dId}
+    </select>
+
+    <!--查询医生下的病人-->
+    <select id="selectPatientByDoctor"  resultMap="BaseResultMap">
+       SELECT patient_id from patient where lead_id=12001
+    </select>
+
+    <!--查询护士下的病人-->
+    <select id="selectPatientByNurse"  resultMap="BaseResultMap">
+       SELECT patient_id from patient where lead_id=12002
+    </select>
+
+    <!--查询药师下的病人-->
+    <select id="selectPatientByApothecary"  resultMap="BaseResultMap">
+       SELECT patient_id from patient where lead_id=12003
+    </select>
+
+    <!--查询技师下的病人-->
+    <select id="selectPatientByArtificer"  resultMap="BaseResultMap">
+       SELECT patient_id from patient where lead_id=12004
+    </select>
+
 </mapper>

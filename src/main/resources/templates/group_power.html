@@ -70,7 +70,7 @@
     </div>
 </div>
 <div id="toolbar">
-    <button type="button" class="btn btn-info">新增</button>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal1">新增</button>
     <button type="button" class="btn btn-danger" onclick="remove()">删除</button>
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -186,6 +186,54 @@
     </div>
 </div>
 <input id="groupUserId" type="hidden" value="">
+
+
+
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel1">随访组编辑</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">责任医院</div>
+                                <select class="form-control" id="hospital1">
+                                    <option value="">-请选择-</option>
+                                    <option value="1">二级</option>
+                                    <option value="3">三级</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">责任科室</div>
+                                <select class="form-control" id="department1">
+                                    <option value="">-请选择-</option>
+                                    <option value="12001">医生</option>
+                                    <option value="12002">护士</option>
+                                    <option value="12003">技师</option>
+                                    <option value="12004">药师</option>
+                                    <option value="12005">随访员</option>
+                                    <option value="12006">组长</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" id="save1" data-toggle="modal" data-target="#myModal" onclick="save()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script>
     $('#public-methods').multiSelect({
@@ -209,7 +257,7 @@
         var tableColumns = [
             {checkbox:true},
             {field: 'selectRole.menuName', title: '角色级别',align:'center', sortable: true},
-            {field: 'd1', title: '角色名称',align:'center', sortable: true},
+            {field: 'd3', title: '角色名称',align:'center', sortable: true},
             {field: 'power', title: '权限及用户设定',align:'center',events: 'operateEvents',
                 formatter: function(value,row){
                     return '<button type="button" data-toggle="modal" data-target="#myModal" class="RoleOfPower btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-gear"></i></button>';
@@ -309,7 +357,8 @@
                 }*/
                 queryParams: function queryParams(params){
                     var param = {
-                        occupationId:$("#name").val()
+                        occupationId:$("#name").val(),
+                        groupId:$("")
                     };
                     return param;
                 },
@@ -437,23 +486,17 @@
         for (var i=0;i<aa.length;i++){
             bb+=aa[i]+",";
         }
-
-        if (aa!=null && aa!="" && $("input[class='role']:checked").length != 0){
-            $.get("changeGroupUser",{
-                "groupUserId":bb,
-                "id":id,
-                "groupRoleId":qq,
-            },function (rs) {
-                if(rs="success"){
-                    $("#myModal").modal('hide')//取消模态框
-                    $(".role").prop("checked",false);
-                    $("#tableL01").bootstrapTable('refresh', rs);
-                }
-            })
-        }else {
-            alert("请设置权限和用户")
-            return false;
-        }
+        $.get("changeGroupUser",{
+            "groupUserId":bb,
+            "id":id,
+            "groupRoleId":qq,
+        },function (rs) {
+            if(rs="success"){
+                $("#myModal").modal('hide')//取消模态框
+                $(".role").prop("checked",false);
+                $("#tableL01").bootstrapTable('refresh', rs);
+            }
+        })
     })
 
 
