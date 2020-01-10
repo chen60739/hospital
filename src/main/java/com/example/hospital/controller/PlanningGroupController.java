@@ -28,7 +28,7 @@ public class PlanningGroupController {
     @RequestMapping("/insertGroup")
     public String insertGroup(PlanningGroup planningGroup,Integer dId){
         System.out.println("科室的id="+dId);
-        List<Patient> patients=patientService.selectPatient(dId);
+        List<Patient> patients=patientService.selectPatientByDepartment(dId);
         for(int i=0;i<patients.size();i++){
             System.out.println("病人id="+ patients.get(i).getPatientId());
             planningGroup.setPPatientId(patients.get(i).getPatientId());

@@ -62,7 +62,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public List<Patient> selectPatient(Integer dId) {
-        return patientMapper.selectPatient(dId);
+    public List<Patient> selectPatientByDepartment(Integer dId) {
+        return patientMapper.selectPatientByDepartment(dId);
     }
 }

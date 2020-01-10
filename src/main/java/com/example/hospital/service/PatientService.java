@@ -18,7 +18,7 @@ public interface PatientService {
 
     void insert(Patient patient);
 
-    List<Patient> selectPatient(Integer dId);
+    List<Patient> selectPatientByDepartment(Integer dId);
 
     Patient selectById(Integer patientId);
 }
