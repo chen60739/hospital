@@ -28,11 +28,11 @@
     where template_id = #{templateId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Template" useGeneratedKeys="true" keyProperty="templateId">
-    insert into `template` (template_id, update_time,
+    insert into `template` ( update_time,
       template_setting_create_time, update_people, 
       create_people, template_setting_version, template_setting_state, 
       template_name)
-    values (#{templateId,jdbcType=INTEGER},  #{updateTime,jdbcType=TIMESTAMP}, 
+    values ( #{updateTime,jdbcType=TIMESTAMP},
       #{templateSettingCreateTime,jdbcType=TIMESTAMP}, #{updatePeople,jdbcType=INTEGER}, 
       #{createPeople,jdbcType=INTEGER}, #{templateSettingVersion,jdbcType=INTEGER}, #{templateSettingState,jdbcType=TINYINT}, 
       #{templateName,jdbcType=VARCHAR})
@@ -132,10 +132,17 @@
   </update>
   
   <select id="selectAll" resultMap="BaseResultMap">
-    SELECT * FROM `template`
-    WHERE is_del=0
-    AND (FIND_IN_SET('2',template_range)
-    OR FIND_IN_SET(#{departmentId},template_range))
+        SELECT
+        t.*
+    FROM
+        `template` t,
+        `groups` g
+    WHERE
+        FIND_IN_SET(
+            t.template_id,
+            g.group_template_ids
+        )
+    AND g.group_id = #{groupId}
   </select>
 
   <update id="setRange">
@@ -158,4 +165,59 @@
     WHERE
         template_id = #{tempId}
   </update>
+
+  <select id="getTemplate" resultMap="BaseResultMap">
+        SELECT
+        *
+    FROM
+        `template`
+    WHERE
+        FIND_IN_SET(2, template_range)
+    OR FIND_IN_SET(#{departmentId}, template_range)
+  </select>
+
+  <resultMap id="overview" type="com.example.hospital.dto.TemplateOverView" extends="BaseResultMap">
+    <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
+    <result column="people_name" jdbcType="VARCHAR" property="peopleName"/>
+    <result column="group_department_id" jdbcType="INTEGER" property="groupDepartmentId" />
+  </resultMap>
+
+  <select id="templateOverviewData" resultMap="overview">
+        SELECT
+        t.*,
+        g.group_name,
+        g.group_department_id,
+        u.user_name AS people_name
+    FROM
+        `groups` g,
+        `template` t,
+        `user` u
+    WHERE
+        t.group_id = g.group_id
+      AND t.create_people=u.user_id
+      AND t.is_del = 0
+    <if test="createPeople!='' ">
+      AND u.user_name LIKE CONCAT('%',#{createPeople},'%')
+    </if>
+    <if test="groupName != '' ">
+      AND g.group_name LIKE CONCAT('%',#{groupName},'%')
+    </if>
+    <if test="tempName!='' ">
+      AND t.template_name LIKE CONCAT('%',#{tempName},'%')
+    </if>
+    <if test="startTime!='' and endTime!='' ">
+      AND t.template_setting_create_time BETWEEN #{startTime} AND #{endTime}
+    </if>
+    <if test="startTime!='' and endTime=='' ">
+      AND t.template_setting_create_time > #{startTime}
+    </if>
+    <if test="endTime!='' and startTime=='' ">
+      AND t.template_setting_create_time &lt; #{endTime}
+    </if>
+    ORDER BY t.template_name
+  </select>
+
+  <select id="checkName">
+    SELECT count(*) FROM template WHERE template_name=#{tempName}
+  </select>
 </mapper>
