@@ -91,8 +91,25 @@
 
 <!--查询医生-->
   <select id="selectUser" resultMap="BaseResultMap">
-    SELECT *FROM  `user`
+    SELECT *FROM  `user` where occupation_id=12001
   </select>
+
+  <!--查询护士-->
+  <select id="selectNurse" resultMap="BaseResultMap">
+    SELECT *FROM  `user` where occupation_id=12002
+  </select>
+
+  <!--查询药师-->
+  <select id="selectApothecary" resultMap="BaseResultMap">
+    SELECT *FROM  `user` where occupation_id=12003
+  </select>
+
+  <!--查询技师-->
+  <select id="selectArtificer" resultMap="BaseResultMap">
+    SELECT *FROM  `user` where occupation_id=12004
+  </select>
+
+
 <!--已经在科室的人-->
   <select id="getUserByName" resultMap="super">
     SELECT  user_name,dictionary_name FROM `user` ,`dictionary`
