@@ -14,38 +14,9 @@ public interface UserService {
 
     int deleteByPrimaryKey(Integer userId);
 
-    /**
-     * 查询医生
-     * @return
-     */
-    List<User> selectUser();
-
-    /**
-     * 查询护士
-     * @return
-     */
-    List<User> selectNurse();
-
-    /**
-     * 查询药师
-     * @return
-     */
-    List<User> selectApothecary();
-
-    /**
-     * 查询技师
-     * @return
-     */
-    List<User> selectArtificer();
+    List<User> selectUser();//查询
 
     int updateByPrimaryKeySelective(User record);
-
-    /**
-     * //权限管理页面--查询
-     * @param occupationId
-     * @return
-     */
-    List<SuperUser> findAllUser(String occupationId);
 
     //批量删除
     int removeById(String ids);
@@ -63,5 +34,4 @@ public interface UserService {
     List<User> getUserOne(Integer userId);
 
     int insertUser(User record);
-
 }

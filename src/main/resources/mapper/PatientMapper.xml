@@ -279,10 +279,4 @@
       is_del = #{isDel,jdbcType=TINYINT}
     where patient_id = #{patientId,jdbcType=INTEGER}
   </update>
-
-    <!--根据科室查询病人-->
-    <select id="selectPatient"  resultMap="BaseResultMap">
-       SELECT patient_id from patient where department_id=#{dId}
-    </select>
-
 </mapper>

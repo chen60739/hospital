@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
-import sun.nio.cs.US_ASCII;
 
 import javax.jws.soap.SOAPBinding;
 import java.util.List;
@@ -29,29 +28,7 @@ public interface UserMapper {
 
     List<User> getUserByName(String dictionaryName,String userName);
 
-    /**
-     * 查询医生
-     * @return
-     */
     List<User> selectUser();
-
-    /**
-     * 查询护士
-     * @return
-     */
-    List<User> selectNurse();
-
-    /**
-     * 查询药师
-     * @return
-     */
-    List<User> selectApothecary();
-
-    /**
-     * 查询技师
-     * @return
-     */
-    List<User> selectArtificer();
 
     List<User> selectOne(Integer userId);//查询单条
 
@@ -62,9 +39,8 @@ public interface UserMapper {
 
     List<User> getUserOne(Integer userId);
 
-
-    //权限管理页面--查询
-    List<SuperUser> selectAllUser(@Param("occupationId") String occupationId);
+   /* //权限管理页面--查询
+    List<SuperUser> selectAllUser(@Param("occupationId") String occupationId);*/
     /*List<SuperUser> selectAllUser1();*/
 
     //批量删除

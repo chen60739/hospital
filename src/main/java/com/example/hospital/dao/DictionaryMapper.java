@@ -23,22 +23,11 @@ public interface DictionaryMapper {
 
     int updateByPrimaryKey(Dictionary record);
 
-    /**
-     * 查询科室
-     * @return
-     */
+    //查询科室
     List<Dictionary> selectAll();
-
-    /**
-     * //查询医院
-     * @return
-     */
+    //查询医院
     List<Dictionary> selectAll1();
-
-    /**
-     *  //查询级别
-     * @return
-     */
+    //查询级别
     List<Dictionary> selectAll2();
 
     //根据id查询权限名字

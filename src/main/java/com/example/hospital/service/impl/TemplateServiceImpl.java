@@ -1,10 +1,8 @@
 package com.example.hospital.service.impl;
 
-import com.example.hospital.dao.GroupsMapper;
 import com.example.hospital.dao.LableMapper;
 import com.example.hospital.dao.TemplateMapper;
 import com.example.hospital.dao.TemplateSetMapper;
-import com.example.hospital.dto.TemplateOverView;
 import com.example.hospital.model.Lable;
 import com.example.hospital.model.Template;
 import com.example.hospital.model.TemplateSet;
@@ -12,7 +10,10 @@ import com.example.hospital.service.TemplateService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author 陈奕璇
@@ -27,76 +28,9 @@ public class TemplateServiceImpl implements TemplateService {
     private TemplateMapper templateMapper;
     @Resource
     private TemplateSetMapper templateSetMapper;
-    @Resource
-    private GroupsMapper groupsMapper;
 
     @Override
-    public Map<String, String> updateTemp(Integer tempId, String lableId) {
-        Map<String,String> res = new HashMap<>();
-        Template old = templateMapper.selectByPrimaryKey(tempId);
-        old.setTemplateSettingCreateTime(new Date());
-        old.setTemplateSettingVersion(old.getTemplateSettingVersion()+1);
-        templateMapper.insert(old);
-        saveLables(old.getTemplateId(),lableId);
-        res.put("mes","success");
-        return res;
-    }
-
-    @Override
-    public Template selectOneTemplate(Integer tempId) {
-        Template template = templateMapper.selectByPrimaryKey(tempId);
-        return template;
-    }
-
-    @Override
-    public Map<String, String> removeTemplate(Integer groupId, Integer tempId) {
-        int i = groupsMapper.updateSelectTemplate(groupId,tempId);
-        Map<String,String> res = new HashMap<>();
-        if (i==1){
-            res.put("mes","成功");
-        }else{
-            res.put("mes","失败");
-        }
-        return res;
-    }
-
-    @Override
-    public List<TemplateOverView> templateOverviewData(String groupName, String startTime, String endTime, String tempName, String createPeople) {
-        List<TemplateOverView> list = templateMapper.templateOverviewData(groupName,startTime,endTime,tempName,createPeople);
-        return list;
-    }
-
-    @Override
-    public Map<String, String> setGroupSelectTemp(Integer groupId, String tempIds) {
-        Map<String,String> res = new HashMap<>();
-        int i = groupsMapper.setGroupTemp(groupId,tempIds);
-        if (i==1){
-            res.put("mes","成功");
-        }else{
-            res.put("mes","失败");
-        }
-        return res;
-    }
-
-    @Override
-    public Map<String, List> getTemp(Integer groupId, Integer departmentId) {
-        List<Template> list = templateMapper.getTemplate(departmentId);
-        String tempIds = groupsMapper.getSelectTemp(groupId);
-        List<String> idList = new ArrayList<>();
-        if(tempIds!=null) {
-            String[] ids = tempIds.split(",");
-            for (String id : ids) {
-                idList.add(id);
-            }
-        }
-        Map<String,List> res = new HashMap<>();
-        res.put("tempList",list);
-        res.put("tempIds",idList);
-        return res;
-    }
-
-    @Override
-    public Map<String, String> delTemplate(Integer id, Integer tempId) {
+    public Map<String, String> delTemplate(Integer tempId) {
         Map<String,String> res = new HashMap<>();
         int i = templateMapper.delTemplate(tempId);
         if (i==1){
@@ -138,26 +72,25 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public List<Template> getTemplateList(Integer groupId) {
-        List<Template> list = templateMapper.selectAll(groupId);
+    public List<Template> getTemplateList(Integer departmentId) {
+        List<Template> list = templateMapper.selectAll(departmentId);
         return list;
     }
 
     @Override
-    public Map<String, String> saveTemplate(String tempName, String lableId) {
+    public void saveTemplate(String tempName, String lableId) {
         Template template = new Template();
-        int i = templateMapper.checkName(tempName);
-        Map<String,String> res = new HashMap<>();
-        if (i==0){
-            template.setTemplateSettingCreateTime(new Date());
-            template.setTemplateName(tempName);
-            templateMapper.insert(template);
-            saveLables(template.getTemplateId(),lableId);
-            res.put("mes","success");
-        }else {
-            res.put("mes","模板已存在");
+        template.setTemplateSettingCreateTime(new Date());
+        template.setTemplateName(tempName);
+        templateMapper.insert(template);
+        String[] ids = lableId.split(",");
+        for (String id : ids) {
+            TemplateSet templateSet = new TemplateSet();
+            templateSet.setLableId(Integer.parseInt(id));
+            templateSet.setTempId(template.getTemplateId());
+            templateSetMapper.insert(templateSet);
+
         }
-        return res;
     }
 
     @Override
@@ -165,15 +98,4 @@ public class TemplateServiceImpl implements TemplateService {
         List<Lable> list = lableMapper.selectAll();
         return list;
     }
-
-    public void saveLables(Integer tempId,String lableId){
-        String[] ids = lableId.split(",");
-        for (String id : ids) {
-            TemplateSet templateSet = new TemplateSet();
-            templateSet.setLableId(Integer.parseInt(id));
-            templateSet.setTempId(tempId);
-            templateSetMapper.insert(templateSet);
-        }
-    }
-
 }

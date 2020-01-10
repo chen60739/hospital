@@ -5,8 +5,6 @@ import com.example.hospital.model.Groups;
 import com.example.hospital.model.Lable;
 import com.example.hospital.service.impl.GroupsServiceImpl;
 import com.example.hospital.service.impl.TemplateServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,11 +18,8 @@ import java.util.List;
  * @author 陈奕璇
  * @date 2019/12/18
  */
-
 @Controller
 public class IndexController {
-
-    public static final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
     private GroupsServiceImpl groupsService;
@@ -51,19 +46,12 @@ public class IndexController {
         return "template_design";
     }*/
 
-
     @RequestMapping("/one")
     public String one(@RequestParam("groupId") Integer groupId,
                       @RequestParam("departmentId") Integer departmentId,
                       Model model){
-        try {
-            model.addAttribute("groupId",groupId);
-            model.addAttribute("departmentId",departmentId);
-            LOGGER.info("IndexController-----one  成功" + departmentId);
-        }catch (Exception e){
-            LOGGER.info("IndexController-----one  失败");
-        }
-
+        model.addAttribute("groupId",groupId);
+        model.addAttribute("departmentId",departmentId);
         return "group_one";
     }
 
@@ -87,11 +75,8 @@ public class IndexController {
     }
 
     @RequestMapping("/templist")
-    public String templist(@RequestParam("departmentId") Integer departmentId,
-                           @RequestParam("groupId") Integer groupId,
-                           Model model){
+    public String templist(@RequestParam("departmentId") Integer departmentId,Model model){
         model.addAttribute("departmentId",departmentId);
-        model.addAttribute("groupId",groupId);
         return "template_list";
     }
 
@@ -142,11 +127,6 @@ public class IndexController {
     public List<Lable> getLableTree(){
         List<Lable> treeData = templateService.getTreeData();
         return treeData;
-    }
-
-    @RequestMapping("/exit")
-    public String exit(){
-        return "redirect:/";
     }
 
 }
