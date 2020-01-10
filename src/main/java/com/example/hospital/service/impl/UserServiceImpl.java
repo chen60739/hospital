@@ -1,12 +1,12 @@
 package com.example.hospital.service.impl;
 
 import com.example.hospital.dao.UserMapper;
-import com.example.hospital.dto.SuperUser;
 import com.example.hospital.model.User;
 import com.example.hospital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Service
@@ -64,6 +64,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUserOne(Integer userId) {
         return userMapper.getUserOne(userId);
+    }
+
+    @Override
+    public Map<String, String> checkUser(String phone, String password, HttpSession session) {
+        User user = userMapper.getUserByPhone(phone);
+        Map<String,String> res = new HashMap<>();
+        if (user != null) {
+            if (password.equals(user.getUserPwd())){
+                session.setAttribute("user",user);
+                res.put("mes","success");
+                res.put("address","/login");
+            }else {
+                res.put("mes","密码错误");
+            }
+        }else {
+            res.put("mes","用户不存在");
+        }
+        return res;
     }
 
     @Override

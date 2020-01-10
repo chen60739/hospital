@@ -1,9 +1,8 @@
 package com.example.hospital.service;
 
-import com.example.hospital.dto.SuperUser;
 import com.example.hospital.model.User;
 
-import java.util.HashMap;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -34,4 +33,13 @@ public interface UserService {
     List<User> getUserOne(Integer userId);
 
     int insertUser(User record);
+
+    /**
+     * 登录验证
+     * @param phone
+     * @param password
+     * @param session
+     * @return
+     */
+    Map<String,String> checkUser(String phone, String password, HttpSession session);
 }

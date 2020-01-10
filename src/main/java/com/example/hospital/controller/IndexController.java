@@ -3,18 +3,24 @@ package com.example.hospital.controller;
 import com.example.hospital.model.Dictionary;
 import com.example.hospital.model.Groups;
 import com.example.hospital.model.Lable;
+import com.example.hospital.model.User;
 import com.example.hospital.service.impl.GroupsServiceImpl;
 import com.example.hospital.service.impl.TemplateServiceImpl;
+import com.example.hospital.service.impl.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 陈奕璇
@@ -30,6 +36,8 @@ public class IndexController {
     private GroupsServiceImpl groupsService;
     @Autowired
     private TemplateServiceImpl templateService;
+    @Autowired
+    private UserServiceImpl userService;
 
     @RequestMapping("/groupManagement")
     public String group(){
@@ -82,8 +90,22 @@ public class IndexController {
     }
 
     @RequestMapping("/login")
-    public String login(){
-        return "main";
+    public String login(HttpSession session){
+        Object user = session.getAttribute("user");
+        if (user != null) {
+            return "main";
+        }
+        return "redirect:/";
+    }
+
+    @RequestMapping("/checkLogin")
+    @ResponseBody
+    public Map<String, String> checkLogin(@RequestParam("phone") String phone,
+                                          @RequestParam("password") String password,
+                                          HttpSession session){
+        Map<String, String> res = userService.checkUser(phone,password,session);
+        return res;
+
     }
 
     @RequestMapping("/templist")
@@ -145,7 +167,8 @@ public class IndexController {
     }
 
     @RequestMapping("/exit")
-    public String exit(){
+    public String exit(HttpSession session){
+        session.removeAttribute("user");
         return "redirect:/";
     }
 
