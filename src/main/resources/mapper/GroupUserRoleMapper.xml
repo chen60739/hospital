@@ -127,15 +127,16 @@
   <!--权限管理页面   查询-->
   <select id="selectAllGroupUser" resultMap="super">
     select d.dictionary_name as dname,d2.dictionary_name as dname2,d3.dictionary_name as dname3,g.group_role_id,g.group_user_id,g.id,g.group_id,select_role.menu_name,user.department_id,user.user_name,user.user_id
-    FROM `group_user_role` g,`user`,`dictionary` d,`dictionary` d2,`dictionary` d3,`select_role`
+    FROM `group_user_role` g,`user`,`dictionary` d,`dictionary` d2,`dictionary` d3,`select_role`,`groups`
     where g.group_user_id=user.user_id
     AND g.group_role_id=d.dictionary_id
     AND g.grade_id=select_role.role_id
     AND g.group_occupation_id=d3.dictionary_id
     AND user.department_id=d2.dictionary_id
+    AND g.group_id=groups.group_id
     AND g.is_del=0
     <if test="occupationId!=null and occupationId!=''">
-      AND d.dictionary_name like CONCAT("%",#{occupationId},"%")
+      AND d3.dictionary_name like CONCAT("%",#{occupationId},"%")
     </if>
   </select>
 
