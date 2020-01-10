@@ -144,4 +144,9 @@ public class IndexController {
         return treeData;
     }
 
+    @RequestMapping("/exit")
+    public String exit(){
+        return "redirect:/";
+    }
+
 }
