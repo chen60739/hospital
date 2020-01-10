@@ -90,8 +90,25 @@
 
 <!--查询医生-->
   <select id="selectUser" resultMap="BaseResultMap">
-    SELECT *FROM  `user`
+    SELECT *FROM  `user` where occupation_id=12001
   </select>
+
+  <!--查询护士-->
+  <select id="selectNurse" resultMap="BaseResultMap">
+    SELECT *FROM  `user` where occupation_id=12002
+  </select>
+
+  <!--查询药师-->
+  <select id="selectApothecary" resultMap="BaseResultMap">
+    SELECT *FROM  `user` where occupation_id=12003
+  </select>
+
+  <!--查询技师-->
+  <select id="selectArtificer" resultMap="BaseResultMap">
+    SELECT *FROM  `user` where occupation_id=12004
+  </select>
+
+
 <!--已经在科室的人-->
   <select id="getUserByName" resultMap="super">
     SELECT  user_name,dictionary_name FROM `user` ,`dictionary`
@@ -128,7 +145,7 @@
       group_id, occupation_id)
     values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
       #{userSex,jdbcType=TINYINT}, #{userPhone,jdbcType=CHAR}, #{userEmail,jdbcType=VARCHAR}, 
-      #{departmentId,jdbcType=INTEGER}, 10002,#{createTime}, null, 0, 1, 1,12003)
+      #{departmentId,jdbcType=INTEGER}, 10002,#{createTime},#{createTime}, 0, 1, 1,12001)
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.User">
     insert into `user`
@@ -299,6 +316,7 @@
   <update id="deleteByPrimaryKey">
     UPDATE user SET is_del=1 WHERE user_id=#{userId}
   </update>
+
 
   <!--权限管理页面   查询-->
   <select id="selectAllUser" resultMap="super">

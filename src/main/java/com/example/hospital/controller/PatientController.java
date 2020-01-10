@@ -7,6 +7,7 @@ import com.example.hospital.service.PatientService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -67,4 +68,5 @@ public class PatientController {
         model.addAttribute("groupId",groupId);
         return "group_one";
     }
+
 }

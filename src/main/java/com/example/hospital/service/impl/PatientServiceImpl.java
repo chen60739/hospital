@@ -54,4 +54,9 @@ public class PatientServiceImpl implements PatientService {
     public void insert(Patient patient) {
         patientMapper.insert(patient);
     }
+
+    @Override
+    public List<Patient> selectPatient(Integer dId) {
+        return patientMapper.selectPatient(dId);
+    }
 }
