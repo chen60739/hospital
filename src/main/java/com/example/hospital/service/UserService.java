@@ -1,9 +1,8 @@
 package com.example.hospital.service;
 
-import com.example.hospital.dto.SuperUser;
 import com.example.hospital.model.User;
 
-import java.util.HashMap;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -14,43 +13,15 @@ public interface UserService {
 
     int deleteByPrimaryKey(Integer userId);
 
-    /**
-     * 查询医生
-     * @return
-     */
-    List<User> selectUser();
-
-    /**
-     * 查询护士
-     * @return
-     */
-    List<User> selectNurse();
-
-    /**
-     * 查询药师
-     * @return
-     */
-    List<User> selectApothecary();
-
-    /**
-     * 查询技师
-     * @return
-     */
-    List<User> selectArtificer();
+    List<User> selectUser();//查询
 
     int updateByPrimaryKeySelective(User record);
-
-    /**
-     * //权限管理页面--查询
-     * @param occupationId
-     * @return
-     */
-    List<SuperUser> findAllUser(String occupationId);
 
     //批量删除
     int removeById(String ids);
 
     User selectByPrimaryKey(Integer userId);//查询单条
+
 
     List<User> selectOne(Integer userId);//查询单条
 
@@ -63,4 +34,12 @@ public interface UserService {
 
     int insertUser(User record);
 
+    /**
+     * 登录验证
+     * @param phone
+     * @param password
+     * @param session
+     * @return
+     */
+    Map<String,String> checkUser(String phone, String password, HttpSession session);
 }

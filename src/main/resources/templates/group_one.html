@@ -31,7 +31,7 @@
                     <div class="col-xs-12 col-md-12">
                         <button type="button" class="btn btn-info"><a href="/groupPower" style="color: white">权限管理</a></button>
                         <button type="button" class="btn btn-info"><a href="/intoGroup" style="color: white">入组管理</a></button>
-                        <button type="button" class="btn btn-info"><a th:href="@{/templist(departmentId=${departmentId},groupId=${groupId})}" style="color: white">模板设置</a></button>
+                        <button type="button" class="btn btn-info"><a th:href="@{'/templist?departmentId='+${departmentId}}" style="color: white">模板设置</a></button>
                         <button type="button" class="btn btn-info"><a href="/followUpSetting" style="color: white">随访规则设定</a></button>
                         <button type="button" class="btn btn-info"><a href="/plan" style="color: white">诊疗方案</a></button>
                     </div>

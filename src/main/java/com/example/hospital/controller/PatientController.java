@@ -30,7 +30,6 @@ public class PatientController {
     @RequestMapping("/findPatients")
     @ResponseBody
     public List<SuperPatient> findPatients(SuperPatient superPatient,String preTime,String sufTime,Integer groupId) throws ParseException {
-        System.out.println("=性别");
         List<SuperPatient> list=patientService.findPatients(superPatient,preTime,sufTime,groupId);
         return list;
     }

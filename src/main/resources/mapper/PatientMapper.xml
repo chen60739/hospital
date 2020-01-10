@@ -155,7 +155,7 @@
       patient_birthday, nation_id, outpatient_service, 
       hospitalization_number, disease_name, disease, 
       result_level, is_del)
-    values (#{patientId,jdbcType=INTEGER}, #{patientName,jdbcType=VARCHAR}, #{patientSex,jdbcType=VARCHAR},
+    values (#{patientId,jdbcType=INTEGER}, #{patientName,jdbcType=VARCHAR}, #{patientSex,jdbcType=VARCHAR}, 
       #{patientBirthday,jdbcType=TIMESTAMP}, #{nationId,jdbcType=INTEGER}, #{outpatientService,jdbcType=INTEGER}, 
       #{hospitalizationNumber,jdbcType=INTEGER}, #{diseaseName,jdbcType=VARCHAR}, #{disease,jdbcType=VARCHAR}, 
       #{resultLevel,jdbcType=VARCHAR}, #{isDel,jdbcType=TINYINT})

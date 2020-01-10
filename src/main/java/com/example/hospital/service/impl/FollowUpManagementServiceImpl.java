@@ -4,6 +4,7 @@ import com.example.hospital.dao.FollowUpMapper;
 import com.example.hospital.dao.PatientMapper;
 import com.example.hospital.dto.CalendarFollowUp;
 import com.example.hospital.dto.FollowUpPatient;
+import com.example.hospital.dto.SupFollowUp;
 import com.example.hospital.service.FollowUpManagementService;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,7 @@ public class FollowUpManagementServiceImpl implements FollowUpManagementService 
         return data;
     }
 
+
     @Override
     public String changeFollowState(Integer followId, Boolean followState) {
         int i = followUpMapper.changeFollowState(followId,followState);
@@ -60,5 +62,10 @@ public class FollowUpManagementServiceImpl implements FollowUpManagementService 
             return "修改成功";
         }
         return "修改失败";
+    }
+
+    @Override
+    public List<SupFollowUp> findFollowUp() {
+        return followUpMapper.selectFollowUp();
     }
 }

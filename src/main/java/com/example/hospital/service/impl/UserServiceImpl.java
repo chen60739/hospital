@@ -1,12 +1,12 @@
 package com.example.hospital.service.impl;
 
 import com.example.hospital.dao.UserMapper;
-import com.example.hospital.dto.SuperUser;
 import com.example.hospital.model.User;
 import com.example.hospital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @Service
@@ -30,40 +30,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.deleteByPrimaryKey(userId);
     }
 
-    /**
-     * 查询医生
-     * @return
-     */
     @Override
     public List<User> selectUser() {
        return userMapper.selectUser();
-    }
-
-    /**
-     * 查询护士
-     * @return
-     */
-    @Override
-    public List<User> selectNurse() {
-        return userMapper.selectNurse();
-    }
-
-    /**
-     * 查询药师
-     * @return
-     */
-    @Override
-    public List<User> selectApothecary() {
-        return userMapper.selectApothecary();
-    }
-
-    /**
-     * 查询技师
-     * @return
-     */
-    @Override
-    public List<User> selectArtificer() {
-        return userMapper.selectArtificer();
     }
 
 
@@ -97,27 +66,38 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserOne(userId);
     }
 
-    /**
-     * 插入用户
-     * @param record
-     * @return
-     */
+    @Override
+    public Map<String, String> checkUser(String phone, String password, HttpSession session) {
+        User user = userMapper.getUserByPhone(phone);
+        Map<String,String> res = new HashMap<>();
+        if (user != null) {
+            if (password.equals(user.getUserPwd())){
+                session.setAttribute("user",user);
+                res.put("mes","success");
+                res.put("address","/login");
+            }else {
+                res.put("mes","密码错误");
+            }
+        }else {
+            res.put("mes","用户不存在");
+        }
+        return res;
+    }
+
     @Override
     public int insertUser(User record) {
         record.setCreateTime(new Date());
         return userMapper.insertUser(record);
     }
 
-
-    @Override
+ /*   @Override
     public List<SuperUser> findAllUser(String occupationId) {
         System.out.println(occupationId);
         return userMapper.selectAllUser(occupationId);
-    }
+    }*/
 
     @Override
     public int removeById(String ids) {
         return userMapper.deleteById(ids);
     }
-
 }

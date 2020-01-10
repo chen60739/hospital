@@ -84,15 +84,4 @@
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT	* FROM `lable`
     </select>
-
-    <select id="selectSome" resultMap="BaseResultMap">
-            SELECT
-          l.*
-      FROM
-          lable l,
-          template_set s
-      WHERE
-          l.lable_id = s.lable_id
-      AND s.temp_id = #{tempId}
-    </select>
 </mapper>

@@ -39,27 +39,4 @@ public interface GroupsMapper {
      * @return
      */
     List<Groups> selectAll();
-
-    /**
-     * 设置小组所选的模板id
-     * @param groupId 小组id
-     * @param tempIds 模板id
-     * @return
-     */
-    int setGroupTemp(@Param("groupId") Integer groupId,@Param("tempIds") String tempIds);
-
-    /**
-     * 获取小组已选使用的模板id
-     * @param groupId 小组id
-     * @return
-     */
-    String getSelectTemp(Integer groupId);
-
-    /**
-     * 移除小组所选的某个模板
-     * @param groupId
-     * @param tempId
-     * @return
-     */
-    int updateSelectTemplate(@Param("groupId") Integer groupId,@Param("tempId") Integer tempId);
 }
