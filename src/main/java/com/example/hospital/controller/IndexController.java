@@ -149,4 +149,9 @@ public class IndexController {
         return "redirect:/";
     }
 
+    @RequestMapping("/accountSet")
+    public String accountSet(){
+        return "account_settings";
+    }
+
 }
