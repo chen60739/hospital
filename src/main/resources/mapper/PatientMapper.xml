@@ -290,23 +290,23 @@
     </select>
 
     <!--查询医生下的病人-->
-    <select id="selectPatientByDoctor"  resultMap="BaseResultMap">
-       SELECT patient_id from patient where lead_id=12001
+    <select id="selectPatient"  resultMap="BaseResultMap">
+       SELECT patient_id from patient where department_id=#{dId}
     </select>
 
     <!--查询护士下的病人-->
-    <select id="selectPatientByNurse"  resultMap="BaseResultMap">
-       SELECT patient_id from patient where lead_id=12002
+    <select id="selectPatient"  resultMap="BaseResultMap">
+       SELECT patient_id from patient where department_id=#{dId}
     </select>
 
     <!--查询药师下的病人-->
-    <select id="selectPatientByApothecary"  resultMap="BaseResultMap">
-       SELECT patient_id from patient where lead_id=12003
+    <select id="selectPatient"  resultMap="BaseResultMap">
+       SELECT patient_id from patient where department_id=#{dId}
     </select>
 
     <!--查询技师下的病人-->
-    <select id="selectPatientByArtificer"  resultMap="BaseResultMap">
-       SELECT patient_id from patient where lead_id=12004
+    <select id="selectPatient"  resultMap="BaseResultMap">
+       SELECT patient_id from patient where department_id=#{dId}
     </select>
 
 </mapper>

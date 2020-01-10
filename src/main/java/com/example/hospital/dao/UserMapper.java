@@ -28,7 +28,29 @@ public interface UserMapper {
 
     List<User> getUserByName(String dictionaryName,String userName);
 
+    /**
+     * 查询医生
+     * @return
+     */
     List<User> selectUser();
+
+    /**
+     * 查询护士
+     * @return
+     */
+    List<User> selectNurse();
+
+    /**
+     * 查询药师
+     * @return
+     */
+    List<User> selectApothecary();
+
+    /**
+     * 查询技师
+     * @return
+     */
+    List<User> selectArtificer();
 
     List<User> selectOne(Integer userId);//查询单条
 
@@ -39,8 +61,14 @@ public interface UserMapper {
 
     List<User> getUserOne(Integer userId);
 
-   /* //权限管理页面--查询
-    List<SuperUser> selectAllUser(@Param("occupationId") String occupationId);*/
+    /**
+     *  //入组管理查询医生
+     * @return
+     */
+    List<User> selectDoctor();
+
+    //权限管理页面--查询
+    List<SuperUser> selectAllUser(@Param("occupationId") String occupationId);
     /*List<SuperUser> selectAllUser1();*/
 
     /**
