@@ -23,8 +23,6 @@ public interface UserService {
 
     User selectByPrimaryKey(Integer userId);//查询单条
 
-    User selectOne(Integer userId);//查询单条
-
 
     List<User> selectOne(Integer userId);//查询单条
 

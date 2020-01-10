@@ -72,11 +72,11 @@ public class UserServiceImpl implements UserService {
         return userMapper.insertUser(record);
     }
 
-    @Override
+ /*   @Override
     public List<SuperUser> findAllUser(String occupationId) {
         System.out.println(occupationId);
         return userMapper.selectAllUser(occupationId);
-    }
+    }*/
 
     @Override
     public int removeById(String ids) {
