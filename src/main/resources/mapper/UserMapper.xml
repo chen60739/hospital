@@ -325,4 +325,8 @@
   <select id="selectNameById" resultMap="BaseResultMap">
     SELECT  user_name from `user` WHERE user_id=#{id}
   </select>
+
+  <select id="getUserByPhone" resultMap="BaseResultMap">
+    SELECT * FROM `user` WHERE user_phone=#{phone}
+  </select>
 </mapper>

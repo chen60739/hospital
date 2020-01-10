@@ -142,6 +142,7 @@
             }
         </style>
         <link rel="stylesheet" href="../static/css/hospital.css">
+        <script src="/js/jquery-3.4.1.min.js"></script>
         <!--[if IE]>
         <script src="http://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <![endif]-->
@@ -151,14 +152,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-offset-3 col-md-6">
-                    <form class="form-horizontal" action="/login">
+                    <form class="form-horizontal" action="/login" onsubmit="return check()">
                         <span class="heading">用户登录</span>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="inputEmail3" placeholder="用户名">
+                            <input type="text" class="form-control" id="phone" placeholder="手机号">
                             <i class="fa fa-user"></i>
                         </div>
                         <div class="form-group help">
-                            <input type="password" class="form-control" id="inputPassword3" placeholder="密　码">
+                            <input type="password" class="form-control" id="password" placeholder="密　码">
                             <i class="fa fa-lock"></i>
                         </div>
                         <div class="form-group">
@@ -167,7 +168,7 @@
                                 <label for="checkbox1"></label>
                             </div>
                             <span class="text">Remember me</span>
-                            <button type="submit" class="btn btn-default">登录</button>
+                            <button type="button" id="login" class="btn btn-default">登录</button>
                         </div>
                     </form>
                 </div>
@@ -175,4 +176,23 @@
         </div>
     </div>
 </body>
+<script>
+    $('#login').click(function () {
+        var phone = $('#phone').val();
+        var password = $('#password').val();
+        if(phone==''){
+            alert("请输入账号");
+        }else if (password==''){
+            alert("请输入密码");
+        }else {
+            $.getJSON('/checkLogin',{"phone":phone,"password":password},function (res) {
+                if (res.mes=='success'){
+                    window.location.href=res.address;
+                }else {
+                    alert(res.mes);
+                }
+            })
+        }
+    })
+</script>
 </html>

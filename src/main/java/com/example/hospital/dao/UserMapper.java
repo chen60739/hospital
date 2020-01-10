@@ -43,9 +43,24 @@ public interface UserMapper {
     List<SuperUser> selectAllUser(@Param("occupationId") String occupationId);*/
     /*List<SuperUser> selectAllUser1();*/
 
-    //批量删除
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
     int deleteById(@Param("ids") String ids);
 
-    //根据id查询用户
+    /**
+     * 根据id查询用户
+     * @param id
+     * @return
+     */
     User selectNameById(@Param("id")String id);
+
+    /**
+     * 通过手机号查找用户
+     * @param phone
+     * @return
+     */
+    User getUserByPhone(String phone);
 }
