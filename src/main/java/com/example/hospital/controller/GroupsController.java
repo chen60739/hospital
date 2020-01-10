@@ -21,15 +21,7 @@ public class GroupsController {
     GroupsService groupsService;
 
 
-    /**
-     * 随访组管理查询
-     * @param groupPrincipal
-     * @param dictionaryId
-     * @param groupState
-     * @param time1
-     * @param time2
-     * @return
-     */
+    //随访组管理查询
     @RequestMapping("findAllGroups")
     public List<Groups> findAllGroups(String groupPrincipal,String dictionaryId,Integer groupState,String time1,String time2){
         List<Groups> allGroups = groupsService.findAllGroups(groupPrincipal,dictionaryId,groupState,time1,time2);

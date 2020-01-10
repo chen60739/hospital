@@ -1,6 +1,7 @@
 package com.example.hospital.dao;
 
 import com.example.hospital.dto.CalendarFollowUp;
+import com.example.hospital.dto.SupFollowUp;
 import com.example.hospital.model.FollowUp;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -33,4 +34,10 @@ public interface FollowUpMapper {
     List<CalendarFollowUp> calendarData();
 
     List<Date> getDistinctFollowTime();
+
+    /**
+     * 查询完整的随访计划
+     * @return
+     */
+    List<SupFollowUp> selectFollowUp();
 }

@@ -5,6 +5,7 @@ import com.example.hospital.model.User;
 import com.example.hospital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,24 +14,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @Author 陈云强
- * @data
- */
-
 @Controller
 public class UserController {
     @Autowired
     private UserService userService;
 
-    /**
-     * 权限页面的查询
-     * @param dictionaryName
-     * @param userName
-     * @return
-     */
     @ResponseBody
-    @RequestMapping("/getUser")
+    @RequestMapping("/getUser")//权限页面
     public List<User> getUser(String dictionaryName,String userName){
         System.out.println(dictionaryName);
         List<User> users =userService.getUser(dictionaryName,userName);
@@ -44,59 +34,18 @@ public class UserController {
         return list;
     }
 
-    /**
-     * 删除用户界面的个人信息
-     * @param userId
-     * @return
-     */
+
     @RequestMapping("/deleteUser")
     public String deleteUser(@RequestParam("userId")Integer userId){
         userService.deleteByPrimaryKey(userId);
         return "redirect:power";
     }
 
-    /**
-     * 查询医生
-     * @return
-     */
     @ResponseBody
     @RequestMapping("/selectUser")
     public List<User> selectUser(){
        List<User> users= userService.selectUser();
         return users;
-    }
-
-    /**
-     * 查询护士
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/selectNurse")
-    public List<User> selectNurse(){
-        List<User> nurse= userService.selectNurse();
-        return nurse;
-    }
-
-    /**
-     * 查询药师
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/selectApothecary")
-    public List<User> selectApothecary(){
-        List<User> apothecary= userService.selectApothecary();
-        return apothecary;
-    }
-
-    /**
-     * 查询技师
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/selectArtificer")
-    public List<User> selectArtificer(){
-        List<User> artificer= userService.selectArtificer();
-        return artificer;
     }
 
     @RequestMapping("/updateInsert")
@@ -118,18 +67,8 @@ public class UserController {
         return list;
     }
 
-    /**
-     * 查询用户界面，包括条件查询
-     * @param userId
-     * @param userName
-     * @param userSex
-     * @param userPhone
-     * @param userEmail
-     * @param dictionaryName
-     * @return
-     */
     @ResponseBody
-    @RequestMapping("/getUserAll")
+    @RequestMapping("/getUserAll")//用户界面查询
     public List<User> getUserAll(Integer userId,String userName,Integer userSex,
                                  String userPhone,String userEmail,
                                  String dictionaryName){
@@ -139,12 +78,6 @@ public class UserController {
         System.out.println(dictionaryName);
         return userAll;
     }
-
-    /**
-     * 用户管理界面插入用户
-     * @param user
-     * @return
-     */
     @RequestMapping("/insertUser")
     public String insertUser(User user){
         System.out.println(user);
@@ -152,25 +85,14 @@ public class UserController {
         return "redirect:user";
     }
 
-    /**
-     * 用户管理界面修改用户
-     * @param user
-     * @return
-     */
+
     @RequestMapping("/updateUser")
     public String updateUser(User user){
         userService.updateUser(user);
         return "redirect:user";
     }
-
-    @RequestMapping("findAllUser")
-    @ResponseBody
-    public List<SuperUser> findAllUser(String occupationId){
-        return userService.findAllUser(occupationId);
-    }
-
     //批量删除
-    @RequestMapping("removeById1")
+    @RequestMapping("removeById2")
     @ResponseBody
     public String  removeById1(String ids){
         System.out.println(ids);
@@ -188,11 +110,6 @@ public class UserController {
 
     }
 
-    /**
-     * 根据id查询单个用户
-     * @param userId
-     * @return
-     */
     @ResponseBody
     @RequestMapping("/selectUserOne")
     public List<User> selectUserOne(Integer userId){

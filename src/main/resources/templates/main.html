@@ -245,7 +245,7 @@
         selectHospital();
         selectLevel1();
         selectdepartment1();
-        edit();
+        /*edit();*/
         var tableColumns = [
             {checkbox: true},
             {field: 'groupId',title:'编号',visible:false,align:'center', sortable: true},
@@ -388,7 +388,7 @@
         })
     }
     //编辑回显
-    function edit(){
+    /*function edit(){*/
         var edit=$("#edit");
         edit.click(function(){
             var info =$('#tableL01').bootstrapTable('getSelections');
@@ -450,7 +450,7 @@
 
 
         })
-    }
+    /*}*/
     //保存修改
     function save(){
         var info =$('#tableL01').bootstrapTable('getSelections')[0];
@@ -484,7 +484,6 @@
             "controlGroup":controlGroup,
             "background":background,
         },function(rs){
-            console.log(rs)
             if(rs=1){
                 $("#myModal").modal('hide')//取消模态框
                 $("#tableL01").bootstrapTable('refresh', rs);

@@ -260,22 +260,4 @@
       #{controlGroup}, #{background}, #{isDel}
       )
   </insert>
-  
-  <update id="setGroupTemp">
-        UPDATE groups
-    SET group_template_ids = #{tempIds}
-    WHERE
-        group_id = #{groupId}
-  </update>
-
-  <select id="getSelectTemp" resultType="string">
-    SELECT group_template_ids FROM groups WHERE group_id=#{groupId}
-  </select>
-
-  <update id="updateSelectTemplate">
-        UPDATE groups
-    SET group_template_ids = REPLACE (group_template_ids, #{tempId}, '')
-    WHERE
-        group_id = #{groupId}
-  </update>
 </mapper>

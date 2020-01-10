@@ -47,7 +47,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">随访组名称</div>
-                                    <input type="text" id="groupName" class="form-control" placeholder="Amount">
+                                    <input type="text" class="form-control" placeholder="Amount">
                                 </div>
                             </div>
                         </div>
@@ -55,9 +55,9 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">创建日期</div>
-                                    <input type="date" id="startTime" class="form-control" placeholder="Amount">
+                                    <input type="date" class="form-control" placeholder="Amount">
                                     <div class="input-group-addon">~</div>
-                                    <input type="date" id="endTime" class="form-control" placeholder="Amount">
+                                    <input type="date" class="form-control" placeholder="Amount">
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">模板名称</div>
-                                    <input type="text" id="tempName" class="form-control" placeholder="Amount">
+                                    <input type="date" class="form-control" placeholder="Amount">
                                 </div>
                             </div>
                         </div>
@@ -75,13 +75,13 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">创建者</div>
-                                    <input type="text" id="createPeople" class="form-control" placeholder="Amount">
+                                    <input type="date" class="form-control" placeholder="Amount">
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-4" >
-                            <button type="reset" id="clean" class="btn btn-info">清空</button>
-                            <button type="submit" id="search" class="btn btn-info">检索</button>
+                            <button type="reset" class="btn btn-info">清空</button>
+                            <button type="submit" class="btn btn-info">检索</button>
                         </div>
                     </div>
                 </div>
@@ -157,31 +157,38 @@
 
     $(function () {
         var tableColumns = [
-            {field: 'templateName', title: '模板名称',align:'center'},
-            {field: 'groupName', title: '随访组名称',align:'center'},
-            {field: 'updateTime', title: '更新日期',align:'center'},
-            {field: 'updatePeople', title: '更新者',align:'center'},
-            {field: 'templateSettingVersion', title: '版本号',align:'center'},
-            {field: 'peopleName', title: '创建者',align:'center'},
-            {field: 'templateSettingCreateTime', title: '创建日期',align:'center'},
-            {field: 'templateSettingState', title: '状态',align:'center',formatter:function (value,row) {
-                var herf = '<a href="design?tempId='+row.templateId+'&departmentId='+row.groupDepartmentId+'">';
-                switch (value) {
-                        case 0:
-                            return herf+'当前版本'+'</a>';
-                        case 1:
-                            return herf+'未发布'+'</a>';
-                        case 2:
-                            return herf+'历史版本'+'</a>';
-                    }
+            {field: 'name', title: '模板名称',align:'center'},
+            {field: 'lv', title: '随访组名称',align:'center'},
+            {field: 'person', title: '更新日期',align:'center'},
+            {field: 'state', title: '更新者',align:'center'},
+            {field: 'class', title: '版本号',align:'center'},
+            {field: 'creatTime', title: '创建者',align:'center'},
+            {field: 'class', title: '创建日期',align:'center'},
+            {field: 'class', title: '状态',align:'center',formatter:function (value) {
+                    return '<a href="/design">'+value+'</a>'
                 }}
             ];
+        var data1 = [{"name":"内分泌随访",
+            "lv":"60%",
+            "person":"张三",
+            "state":"开放",
+            "class":"内分泌科",
+            "creatTime":"2018-11-12"},
+            {"name":"内分泌随访",
+                "lv":"40%",
+                "person":"xx",
+                "state":"开放",
+                "class":"内分泌科",
+                "creatTime":"2018-11-12"
+            }];
 
         $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
 
         $('#tableL01').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
-            url:"/templateOverviewData",
+            data:data1, //通过ajax返回的数据
+            width:300,
+            height:268,
             method: 'get',
             pageNumber: 1,
             theadClasses: "thead-blue",
@@ -196,65 +203,9 @@
             showExport: false,
             showFooter: true,
             clickToSelect: true,
-            queryParams:function queryParams(params){
-                var param = {
-                    groupName:$('#groupName').val(),
-                    startTime:$('#startTime').val(),
-                    endTime:$('#endTime').val(),
-                    tempName:$('#tempName').val(),
-                    createPeople:$('#createPeople').val(),
-                }
-                return param;
-            },
-            onLoadSuccess : function(data) {
-                var data = $('#tableL01').bootstrapTable('getData', true);
-                //合并单元格
-                mergeCells(data, "templateName","", 1);
-            },
-            onPageChange : function () {
-                var data = $('#tableL01').bootstrapTable('getData', true);
-                //合并单元格
-                mergeCells(data, "templateName", 1);
-            }
         });
 
     })
-
-    $('#search').click(function () {
-        $('#tableL01').bootstrapTable('refresh');
-    })
-
-    $('#clean').click(function () {
-        $("input").val('');
-    })
-
-    function mergeCells(data,fieldName,colspan){
-        //声明一个map计算相同属性值在data对象出现的次数和
-        var sortMap = new Map();
-        for(var i = 0 ; i < data.length ; i++){
-            for(var prop in data[i]){
-                if(prop == fieldName){
-                    var key = data[i][prop];
-                    if (sortMap.has(key)) {
-                        sortMap.set(key, sortMap.get(key) * 1 + 1);
-                    } else {
-                        sortMap.set(key, 1);
-                    }
-                    break;
-                }
-            }
-        }
-        
-        for(var prop in sortMap){
-            console.log(prop,sortMap[prop])
-        }
-        var index = 0;
-        sortMap.forEach(function (value,key) {
-            var count = sortMap.get(key) * 1;
-            $('#tableL01').bootstrapTable('mergeCells',{index:index, field:fieldName, colspan: colspan, rowspan: count});
-            index += count;
-        })
-    }
 
 </script>
 </html>

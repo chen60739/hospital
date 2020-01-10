@@ -30,40 +30,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.deleteByPrimaryKey(userId);
     }
 
-    /**
-     * 查询医生
-     * @return
-     */
     @Override
     public List<User> selectUser() {
        return userMapper.selectUser();
-    }
-
-    /**
-     * 查询护士
-     * @return
-     */
-    @Override
-    public List<User> selectNurse() {
-        return userMapper.selectNurse();
-    }
-
-    /**
-     * 查询药师
-     * @return
-     */
-    @Override
-    public List<User> selectApothecary() {
-        return userMapper.selectApothecary();
-    }
-
-    /**
-     * 查询技师
-     * @return
-     */
-    @Override
-    public List<User> selectArtificer() {
-        return userMapper.selectArtificer();
     }
 
 
@@ -97,27 +66,20 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserOne(userId);
     }
 
-    /**
-     * 插入用户
-     * @param record
-     * @return
-     */
     @Override
     public int insertUser(User record) {
         record.setCreateTime(new Date());
         return userMapper.insertUser(record);
     }
 
-
-    @Override
+ /*   @Override
     public List<SuperUser> findAllUser(String occupationId) {
         System.out.println(occupationId);
         return userMapper.selectAllUser(occupationId);
-    }
+    }*/
 
     @Override
     public int removeById(String ids) {
         return userMapper.deleteById(ids);
     }
-
 }

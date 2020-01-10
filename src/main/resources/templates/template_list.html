@@ -15,26 +15,7 @@
     <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
     <link rel="stylesheet" href="/css/selectcheck.css">
     <script src="/js/selectcheck.js"></script>
-    <style>
-        .btnrow{
-            padding-top: 10px;
-            padding-left: 35px;
-        }
-        .btn-info{
-            width: 100px;
-        }
-        .btndian{
-            width: 30px;
-            height: 17px;
-            padding:0px;
-        }
-        .follow-btn{
-            margin-left: -9px;
-            margin-top: 10px
-        }
-    </style>
 </head>
-
 <body>
 <div th:replace="navigation :: nav"></div>
 <div class="container-fluid main">
@@ -46,8 +27,7 @@
                 <hr>
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
-                        <button type="button" class="btn btn-info"><a th:href="@{'/design?tempId=&departmentId='+${departmentId}}" class="btn-a">创建模板</a></button>
-                        <button type="button" class="btn btn-info" id="selectTemp">选择模板</button>
+                        <button type="button" class="btn btn-info"><a th:href="@{'/design?tempId=&departmentId='+${departmentId}}" style="color: white">创建模板</a></button>
                     </div>
                     <hr>
                 </div>
@@ -58,10 +38,14 @@
 
         </div>
     </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination" id="qian">
+        </ul>
+    </nav>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="pub" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -78,73 +62,8 @@
         </div>
     </div>
 </div>
-<!-- 查看模板 -->
-<div class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="tempName">共享到</h4>
-            </div>
-            <div class="modal-body" id="lableBox">
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--通用模板选择弹出页面-->
-<div th:replace="template_selection :: temp"></div>
 </body>
 <script th:inline="javascript">
-
-    $('#selectTemp').click(function () {
-        $('#tempBox1').empty();
-        $('#tempBox2').empty();
-        $.getJSON('/getTemp',{"groupId":[[${groupId}]],"departmentId":[[${departmentId}]]},function (res) {
-            var tlist = res.tempList;
-            var checked = res.tempIds;
-            for(var i=0;i<tlist.length;i++){
-                var temp ='<div class="checkbox">\n' +
-                    '                                <label>\n' +
-                    '                                    <input type="checkbox" value="'+tlist[i].templateId+'">\n' +
-                    '                                    '+tlist[i].templateName+'\n' +
-                    '                                    <button class="btn btn-info btndian"><a href="/design?tempId='+tlist[i].templateId+'&&departmentId='+[[${departmentId}]]+'" class="btn-a"><i class="fa fa-ellipsis-h"></i></a></button>\n' +
-                    '                                </label>\n' +
-                    '                            </div>';
-                if (i%2==0){
-                    $('#tempBox1').append(temp);
-                }else {
-                    $('#tempBox2').append(temp);
-                }
-            }
-            for (var a=0;a<checked.length;a++){
-                $('input:checkbox').each(function () {
-                    if ($(this).val()==checked[a]) {
-                        $(this).attr("checked",true);
-                    }
-                })
-            }
-            $('#myModal').modal('show');
-        })
-    })
-
-    $('#tSave').click(function () {
-        var tempIds='';
-        $('input:checked').each(function (index) {
-            if (index==0){
-                tempIds+=$(this).val();
-            }else {
-                tempIds+=','+$(this).val();
-            }
-        })
-        $.getJSON('/saveGroupSelectTemp',{"groupId":[[${groupId}]],"tempIds":tempIds},function (res) {
-            alert(res.mes);
-            $('#myModal').modal('toggle');
-            $('#table').bootstrapTable('refresh');
-        })
-    })
 
     $(function () {
         var tableColumns = [
@@ -176,17 +95,10 @@
 
         window.operateEvents = {
             'click .RoleOfLook': function (e, value, row, index) {
-                $('#lableBox').empty();
-                $('#tempName').text(row.templateName);
-                $.getJSON('/getLables',{"tempId":row.templateId},function (res) {
-                    for(var i=0;i<res.length;i++){
-                        $('#lableBox').append(tableList(res[i].lableType,res[i].lableName));
-                    }
-                })
-                $('#view').modal();
+                window.location.href="/design?tempId="+row.templateId+"&departmentId="+[[${departmentId}]];
             },
             'click .RoleOfB': function (e, value, row, index) {
-                window.location.href="/design?tempId="+row.templateId+"&departmentId="+[[${departmentId}]];
+                alert("B");
             },
             'click .RoleOfC': function (e, value, row, index) {
                 $('#range').empty();
@@ -206,7 +118,7 @@
                     $('#range').fSelect();
                     $('#range').fSelect('destroy');
                     $('#range').fSelect('create');
-                    $('#pub').modal();
+                    $('#myModal').modal();
                 })
 
                 $('#pSave').click(function () {
@@ -219,15 +131,15 @@
                         }
                     });
                     $.getJSON('/setTempRange',{"tempId":row.templateId,"departmentIds":departmentIds},function (res) {
-                        $('#pub').modal('toggle');
+                        $('#myModal').modal('toggle');
                         alert(res.mes);
                         $('#table').bootstrapTable('refresh');
                     })
                 })
             },
             'click .RoleOfD': function (e, value, row, index) {
-                if(confirm("确定取消引用？")){
-                    $.getJSON('/removeTemplate',{"tempId":row.templateId,"groupId":[[${groupId}]]},function (res) {
+                if(confirm("真的要删除么？")){
+                    $.getJSON('/delTemplate',{"tempId":row.templateId},function (res) {
                         alert(res.mes);
                         $('#table').bootstrapTable('refresh');
                     })
@@ -241,7 +153,7 @@
         $('#table').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
             method: 'get',
-            url:"/tempListDate?groupId="+[[${groupId}]],
+            url:"/tempListDate?departmentId="+[[${departmentId}]],
             pageNumber: 1,
             theadClasses: "thead-blue",
             cache: false,
@@ -319,91 +231,6 @@
         }
 
     })
-
-    function tableList(type,name,id){
-        var content = "";
-        var tou = '<div class="form-group draggable ui-draggable dropped" id="info"><div class="row"><div class="col-sm-7">';
-        switch (type) {
-            case "title":
-                var title = '<h5 id="'+id+'">'+name+'</h5><hr>';
-                content = tou + title + '</div>';
-                break;
-            case "date":
-                var title = '<div class="input-group"><span class="input-group-addon" id="'+id+'">'+name+'</span><input type="date" class="form-control"></div>';
-                content = tou + title + '</div></div>';
-                break;
-            case "input":
-                var title = '<div class="input-group"><span class="input-group-addon" id="'+id+'">'+name+'</span><input type="text" class="form-control" placeholder="请输入"></div>';
-                content = tou + title + '</div></div> ';
-                break;
-            case "select":
-                var title = '<div class="input-group"><span class="input-group-addon" id="'+id+'">'+name+'</span><select class="form-control"><option>请选择</option></select></div>';
-                content = tou + title + '</div></div>';
-                break;
-            case "number":
-                var title = '<div class="input-group"><span class="input-group-addon" id="'+id+'">'+name+'</span><input type="number" class="form-control" placeholder="请输入"></div>';
-                content = tou + title + '</div></div>';
-                break;
-            case "textarea":
-                //多行文本
-                var textarea = '<textarea class="form-control" placeholder="请输入文本"></textarea>';
-                content = '<div class="form-group draggable ui-draggable dropped"><label class="col-sm-2 control-label">多行文本：</label><div class="col-sm-7">' + textarea + '</div><p class="tools col-sm-3"><a class="edit-link" name="textarea" title="设置"><i class="fa fa-cog fa-fw"></i></a><a class="remove-link"><i class="fa fa-trash-o"></i></a><label class="labcheck"><input type="checkbox"> 必填</label></p></div>';
-                break;
-            case "radio":
-                //单选框
-                var radom = Math.ceil(Math.random() * 100000);
-                var radio = '<label class="radio-inline"><input type="radio" value="默认1" name="rad' + radom + '" checked> 默认1</label><label class="radio-inline"><input type="radio" name="rad' + radom + '" value="默认2"> 默认2</label>';
-                content = '<div class="form-group draggable ui-draggable dropped"><div class="col-sm-7"><label>单选：</label></div><div class="col-sm-7">' + radio + '</div><p class="tools col-sm-3"><button type="button" class="btn btn-default edit" name="radio">';
-                break;
-            case "checkbox":
-                //多选框
-                var checkbox = '<label class="radio-inline"><input type="checkbox" name="默认1" value="默认1"> 默认1</label><label class="radio-inline""><input type="checkbox" name="默认2" value="默认2"> 默认2</label>';
-                content = '<div class="form-group draggable ui-draggable dropped"><div class="col-sm-7"><label>多选：</label></div><div class="col-sm-7">' + checkbox + '</div><p class="tools col-sm-3"><button type="button" class="btn btn-default edit" name="checkbox">';
-                break;
-            case "datetime":
-                //时间
-                var datetime = '<input readonly="" class="form-control form_datetime" type="text" style="border: 1px solid #e5e6e7;">';
-                content = '<div class="form-group draggable ui-draggable dropped"><label class="col-sm-2 control-label">文本：</label><div class="col-sm-7">' + datetime + '</div><p class="tools col-sm-3"><a class="edit-link" name="datetime" title="设置"><i class="fa fa-cog fa-fw"></i></a><a class="remove-link"><i class="fa fa-trash-o"></i></a></p></div>';
-                break;
-            case "file":
-                //上传
-                var file = '<input class="file uploadfile" type="file" multiple data-min-file-count="1">';
-                content = '<div class="form-group draggable ui-draggable dropped"><label class="col-sm-2 control-label">上传：</label><div class="col-sm-7">' + file + '</div><p class="tools col-sm-3"><a class="edit-link" name="file" title="设置"><i class="fa fa-cog fa-fw"></i></a><a class="remove-link"><i class="fa fa-trash-o"></i></a></p></div>';
-                break;
-            case "picker":
-                //省市区
-                var picker = '<form class="form-inline"><div class="distpicker"><div class="form-group" style="margin:0px; padding-right:10px;"><label class="sr-only" for="province10">Province</label><select class="form-control" id="province10"></select></div><div class="form-group" style="margin:0px; padding-right:10px;"><label class="sr-only" for="city10">City</label><select class="form-control" id="city10"></select></div><div class="form-group" style="margin:0px; padding-right:10px;"><label class="sr-only" for="district10">District</label><select class="form-control" id="district10"></select></div></div></form>';
-                content = '<div class="form-group draggable ui-draggable dropped"><label class="col-sm-2 control-label">省市区：</label><div class="col-sm-7">' + picker + '</div><p class="tools col-sm-3"><a class="edit-link" name="picker" title="设置"><i class="fa fa-cog fa-fw"></i></a><a class="remove-link"><i class="fa fa-trash-o"></i></a></p></div>';
-                break;
-            case "name":
-                //姓名
-                var text = '<input type="text" class="form-control" placeholder="请输入你的姓名">';
-                content = '<div class="form-group draggable ui-draggable dropped"><label class="col-sm-2 control-label">姓名：</label><div class="col-sm-7">' + text + '</div><p class="tools col-sm-3"><a class="edit-link" name="text" title="设置"><i class="fa fa-cog fa-fw"></i></a><a class="remove-link"><i class="fa fa-trash-o"></i></a><label class="labcheck"><input type="checkbox"> 必填</label></p></div>';
-                break;
-            case "phone":
-                //电话
-                var text = '<input type="text" class="form-control" placeholder="请输入你的电话">';
-                content = '<div class="form-group draggable ui-draggable dropped"><label class="col-sm-2 control-label">电话：</label><div class="col-sm-7">' + text + '</div><p class="tools col-sm-3"><a class="edit-link" name="text" title="设置"><i class="fa fa-cog fa-fw"></i></a><a class="remove-link"><i class="fa fa-trash-o"></i></a><label class="labcheck"><input type="checkbox"> 必填</label></p></div>';
-                break;
-            case "email":
-                //邮箱
-                var text = '<input type="text" class="form-control" placeholder="请输入你的邮箱">';
-                content = '<div class="form-group draggable ui-draggable dropped"><label class="col-sm-2 control-label">邮箱：</label><div class="col-sm-7">' + text + '</div><p class="tools col-sm-3"><a class="edit-link" name="text" title="设置"><i class="fa fa-cog fa-fw"></i></a><a class="remove-link"><i class="fa fa-trash-o"></i></a><label class="labcheck"><input type="checkbox"> 必填</label></p></div>';
-                break;
-            case "card":
-                //身份证
-                var text = '<input type="text" class="form-control" placeholder="请输入你的身份证">';
-                content = '<div class="form-group draggable ui-draggable dropped"><label class="col-sm-2 control-label">身份证：</label><div class="col-sm-7">' + text + '</div><p class="tools col-sm-3"><a class="edit-link" name="text" title="设置"><i class="fa fa-cog fa-fw"></i></a><a class="remove-link"><i class="fa fa-trash-o"></i></a><label class="labcheck"><input type="checkbox"> 必填</label></p></div>';
-                break;
-            case "sex":
-                //性别
-                var radom = Math.ceil(Math.random() * 100000);
-                var radio = '<label class="radio-inline"><input type="radio" value="男" name="rad' + radom + '" checked> 男</label><label class="radio-inline"><input type="radio" name="rad' + radom + '" value="女"> 女</label>';
-                content = '<div class="form-group draggable ui-draggable dropped"><label class="col-sm-2 control-label">性别：</label><div class="col-sm-7">' + radio + '</div><p class="tools col-sm-3"><a class="edit-link" name="radio" title="设置"><i class="fa fa-cog fa-fw"></i></a><a class="remove-link"><i class="fa fa-trash-o"></i></a></p></div>';
-                break;
-        }
-        return content;
-    }
 
 </script>
 </html>

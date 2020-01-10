@@ -95,8 +95,8 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="input-group-addon">科室</div>
-                                            <select class="form-control">
-                                                <option>-请选择-</option>
+                                            <select class="form-control" id="administrative" onchange="search1()">
+                                                <option value="">-请选择-</option>
                                             </select>
                                         </div>
                                     </div>
@@ -107,24 +107,20 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="input-group-addon">姓名</div>
-                                            <input type="text" class="form-control" placeholder="请输入姓名">
+                                            <input type="text" class="form-control" placeholder="请输入姓名" id="name1">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-5">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <button class="btn btn-info"><i class="fa fa-search"></i></button>
+                                            <button class="btn btn-info" ><i class="fa fa-search" onclick="search1()"></i></button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <select id='public-methods' multiple='multiple'>
-                                <option value='elem_1'>elem 1</option>
-                                <option value='elem_2'>elem 2</option>
-                                <option value='elem_3'>elem 3</option>
-                                <option value='elem_4'>elem 4</option>
-                                <option value='elem_1000'>elem 100</option>
+                            <select id='public-methods' multiple='multiple' class="multiple">
+                                <!--<option value='elem_1'>elem 1</option>-->
                             </select>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="profile">
@@ -132,47 +128,47 @@
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">管理随访组
+                                            <input type="checkbox" class="role" value="10001">管理随访组
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">病例管理
+                                            <input type="checkbox" class="role" value="10002">病例管理
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">数据录入
+                                            <input type="checkbox" class="role" value="10003">数据录入
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">修改其他创建者数据
+                                            <input type="checkbox" class="role" value="10004">修改其他创建者数据
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">查看隐私数据
+                                            <input type="checkbox" class="role" value="10005">查看隐私数据
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">统计分析
+                                            <input type="checkbox" class="role" value="10006">统计分析
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">随访规则设置
+                                            <input type="checkbox" class="role" value="10007">随访规则设置
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">查看
+                                            <input type="checkbox" class="role" value="10008">查看
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">检索
+                                            <input type="checkbox" class="role" value="10009">检索
                                         </label>
                                     </div>
                                 </div>
@@ -184,11 +180,12 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">保存</button>
+                <button type="button" class="btn btn-primary" id="save">保存</button>
             </div>
         </div>
     </div>
 </div>
+<input id="groupUserId" type="hidden" value="">
 </body>
 <script>
     $('#public-methods').multiSelect({
@@ -205,16 +202,20 @@
     });
 
     $(function () {
+
+
+
+        selectDiceionary();
         var tableColumns = [
             {checkbox:true},
             {field: 'selectRole.menuName', title: '角色级别',align:'center', sortable: true},
             {field: 'd1', title: '角色名称',align:'center', sortable: true},
-            {field: 'power', title: '权限及用户设定',align:'center',
-                formatter: function(){
+            {field: 'power', title: '权限及用户设定',align:'center',events: 'operateEvents',
+                formatter: function(value,row){
                     return '<button type="button" data-toggle="modal" data-target="#myModal" class="RoleOfPower btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-gear"></i></button>';
                 }},
-            {field: 'userName', title: '用户',align:'center', sortable: true},
-            {field: 'd2', title: '权限',align:'center', sortable: true},
+            {field: 'groupUserId', title: '用户',align:'center', sortable: true},
+            {field: 'groupRoleId', title: '权限',align:'center', sortable: true},
             {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
         ];
         /*var data1 = [{"name":"内分泌随访",
@@ -232,30 +233,42 @@
             }];*/
 
         window.operateEvents = {
+            //科室选中
+            'click .RoleOfPower': function (e, value, row, index) {
+                $("#groupUserId").val(row.id)
+                $("#administrative").children("option").each(function(){
+                    var  depement =$("#administrative").val(row.departmentid);
+                    var text=$(this).val();
+                    if(depement==text){
+                        $(this).attr("selected","selected");
+                    }
+                })
+                //根据科室回显姓名
+                /*administrative()*/
+                search1();
+            },
             'click .RoleOfEdit': function (e, value, row, index) {
                 alert("A");
             },
+            //删除单条语句
             'click .RoleOfDel': function (e, value, row, index) {
-                var  rows=$("#tableL01").bootstrapTable('getSelections')//要删除的数据
-                if(rows.length == 0){
-                    alert("请选择要删除的记录！");
-                    return ;
-                }else {
-                    confirm("是否确认删除？")
-                    var ids="";
-                    $(rows).each(function(){
-                        ids+=this.userId+",";
-                    });
-                    $.ajax({
-                        url:"removeById1",
-                        data:{"ids":ids},
-                        type:"post",
-                        success:function(data){
-                            $("#tableL01").bootstrapTable('refresh', data);
+                console.log(e)
+                console.log(value),console.log(row),console.log(index)
+                var ids="";
+                $(row).each(function(){
+                    ids+=this.id+",";
+                });
+                $.ajax({
+                    url:"removeById1",
+                    data:{"ids":ids},
+                    type:"post",
+                    success:function(data){
+                        $("#tableL01").bootstrapTable('refresh', data);
 
-                        }
-                    })
-                }
+                    }
+                })
+
+
             }
         };
 
@@ -266,17 +279,13 @@
                 '<button type="button" class="RoleOfDel btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-trash"></i></button>'
             ].join('');
         }
-
-
-
-
         /*$.get("findAllUser",function (data) {*/
             $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格+
             $('#tableL01').bootstrapTable({//表格初始化
                 columns: tableColumns,  //表头
                 /* data:data1, //通过ajax返回的数据*/
                 width:300,
-                height:268,
+                height:368,
                 url:"findAllUser",
                 method: 'get',
                 pageNumber: 1,
@@ -326,6 +335,9 @@
             }
             return l
         };*/
+        //科室选中
+
+
     })
 
     //清空
@@ -346,7 +358,7 @@
             confirm("是否确认删除？")
             var ids="";
             $(rows).each(function(){
-                ids+=this.userId+",";
+                ids+=this.id+",";
             });
             $.ajax({
                 url:"removeById1",
@@ -360,6 +372,90 @@
         }
 
     }
+
+    //设定用户 --回显科室
+    function selectDiceionary(){
+        $.get("findAllDepartment",{},function(rs){
+            if(rs !=null){
+                var aa=$("#administrative");
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].dictionaryId+">"+rs[i].dictionaryName+"</option>");
+                    aa.append(varoption);
+                }
+            }
+        })
+    }
+    //改变科室查询名字--根据科室查询名字
+    function search1() {
+        var a =$("#administrative").val();
+        var name1 =$("#name1").val();
+        $.get("findNameByDepartmentId",{"departmentId":a,"userName":name1},function(rs){
+            $("#public-methods").empty();
+            var varoption = "";
+            for (var i = 0; i < rs.length; i++) {
+                varoption += "<option value='"+rs[i].userId+"'>" + rs[i].userName+ "</option>";
+            }
+            $("#public-methods").append(varoption);
+
+            //刷新multiSelect框
+            $('#public-methods').multiSelect('refresh');
+        })
+    }
+   /* //修改用户
+    $("#save").click(function(){
+        var aa=$('#public-methods').val();
+        var bb="";
+        for (var i=0;i<aa.length;i++){
+            bb+=aa[i]+",";
+        }
+        $.get("changeGroupUser",{
+            "groupUserId":bb
+        },function (rs) {
+            if(rs=1){
+                $("#myModal").modal('hide')//取消模态框
+                $("#tableL01").bootstrapTable('refresh', rs);
+            }
+        })
+    })*/
+
+    //修改用户--添加权限
+    $("#save").click(function(){
+
+        var voteList = [];
+        var qq="";
+        $(".role").each(function(){
+            if($(this).is(':checked')==true){
+                voteList.push($(this).val());
+            }
+        })
+        for (var z=0;z<voteList.length;z++){
+            qq+=voteList[z]+",";
+        }
+        var aa=$('#public-methods').val();
+        var bb="";
+        var id=$("#groupUserId").val();
+        for (var i=0;i<aa.length;i++){
+            bb+=aa[i]+",";
+        }
+
+        if (aa!=null && aa!="" && $("input[class='role']:checked").length != 0){
+            $.get("changeGroupUser",{
+                "groupUserId":bb,
+                "id":id,
+                "groupRoleId":qq,
+            },function (rs) {
+                if(rs="success"){
+                    $("#myModal").modal('hide')//取消模态框
+                    $(".role").prop("checked",false);
+                    $("#tableL01").bootstrapTable('refresh', rs);
+                }
+            })
+        }else {
+            alert("请设置权限和用户")
+            return false;
+        }
+    })
+
 
 </script>
 

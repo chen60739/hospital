@@ -20,11 +20,4 @@ public interface LableMapper {
     int updateByPrimaryKey(Lable record);
 
     List<Lable> selectAll();
-
-    /**
-     * 通过模板id查找
-     * @param tempId
-     * @return
-     */
-    List<Lable> selectSome(Integer tempId);
 }
