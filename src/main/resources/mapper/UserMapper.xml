@@ -20,6 +20,17 @@
   </resultMap>
   <resultMap id="super" type="com.example.hospital.dto.SuperUser" extends="BaseResultMap">
     <result column="dictionary_name" jdbcType="VARCHAR" property="dictionaryName" />
+    <result column="dname" property="d1"></result>
+    <result column="dname2" property="d2"></result>
+    <result column="dname3" property="d3"></result>
+
+
+    <association property="selectRole" javaType="com.example.hospital.model.SelectRole">
+      <id column="select_role_id" jdbcType="INTEGER" property="selectRoleId" />
+      <result column="role_id" jdbcType="INTEGER" property="roleId" />
+      <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+      <result column="menu" jdbcType="VARCHAR" property="menu" />
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
   user_id, user_name, user_pwd, user_sex, user_phone, user_email, department_id, role_id,
@@ -29,28 +40,76 @@
   <select id="getUser" resultMap="super">
     SELECT user_id, user_name,dictionary_name FROM `user` ,`dictionary`
     <where>
-      department_id=dictionary_id
+      department_id=dictionary_id and is_del=0
       <if test="dictionaryName!= null and dictionaryName != ''">
-        and dictionary_name = #{dictionaryName}
+        and dictionary_id = #{dictionaryName}
       </if>
       <if test="userName!= null and userName != ''">
-        and user_name = #{userName}
+      and user_id = #{userName}
       </if>
+
+    </where>
+  </select>
+  <!-- 查询单条回显数据-->
+  <select id="selectOne" resultMap="super">
+    SELECT user_id, user_name,dictionary_name FROM `user` ,`dictionary`
+    <where>
+      department_id=dictionary_id
+      <if test="userName!= null and userName != ''">
+        and user_id = #{userId}
+      </if>
+
+    </where>
+  </select>
+<!--用户界面查询-->
+  <select id="getUserAll" resultMap="super">
+    SELECT user_id, user_name,user_sex,user_phone,user_email,dictionary_name FROM `user` ,`dictionary`
+    <where>
+      department_id=dictionary_id and is_del=0
+      <if test="userId!= null and userId != ''">
+        and user_id = #{userId}
+      </if>
+      <if test="userName!= null and userName != ''">
+        and user_name like concat('%',#{userName},'%')
+      </if>
+      <if test="userSex!= null ">
+        and user_sex = #{userSex}
+      </if>
+      <if test="userPhone!= null and userPhone != ''">
+        and user_phone like concat('%', #{userPhone},'%')
+      </if>
+      <if test="userEmail!= null and userEmail != ''">
+        and user_email like concat('%', #{userEmail},'%')
+      </if>
+      <if test="dictionaryName!= null and dictionaryName != ''">
+        and dictionary_id = #{dictionaryName}
+      </if>
+
     </where>
   </select>
 
-  <select id="selectUser" resultMap="super">
-    SELECT user_name,dictionary_name FROM `user` ,`dictionary`
-    <where>
-      department_id=dictionary_id
-      <if test="dictionaryName!= null and dictionaryName != ''">
-        and dictionary_name = #{dictionaryName}
-      </if>
-      <if test="userName!= null and userName != ''">
-        and user_name = #{userName}
-      </if>
-    </where>
+
+<!--查询医生-->
+  <select id="selectUser" resultMap="BaseResultMap">
+    SELECT *FROM  `user` where occupation_id=12001
   </select>
+
+  <!--查询护士-->
+  <select id="selectNurse" resultMap="BaseResultMap">
+    SELECT *FROM  `user` where occupation_id=12002
+  </select>
+
+  <!--查询药师-->
+  <select id="selectApothecary" resultMap="BaseResultMap">
+    SELECT *FROM  `user` where occupation_id=12003
+  </select>
+
+  <!--查询技师-->
+  <select id="selectArtificer" resultMap="BaseResultMap">
+    SELECT *FROM  `user` where occupation_id=12004
+  </select>
+
+
 <!--已经在科室的人-->
   <select id="getUserByName" resultMap="super">
     SELECT  user_name,dictionary_name FROM `user` ,`dictionary`
@@ -64,39 +123,33 @@
       </if>
     </where>
   </select>
- <!-- 没在科室的人-->
-  <select id="getUserByNull" resultMap="super">
-    SELECT  user_name FROM `user` where
-      department_id = null
-  </select>
+
 
 
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user
+    from `user`
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user
+  <!--<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `user`
     where user_id = #{userId,jdbcType=INTEGER}
-  </delete>
+  </delete>-->
 
-  <insert id="insert" parameterType="com.example.hospital.model.User">
-    insert into user (user_id, user_name, user_pwd, 
+  <insert id="insertUser" parameterType="com.example.hospital.model.User">
+    insert into `user` (user_id, user_name, user_pwd,
       user_sex, user_phone, user_email, 
       department_id, role_id, create_time, 
       modified_time, is_del, grade_id, 
       group_id, occupation_id)
     values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
       #{userSex,jdbcType=TINYINT}, #{userPhone,jdbcType=CHAR}, #{userEmail,jdbcType=VARCHAR}, 
-      #{departmentId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{modifiedTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=TINYINT}, #{gradeId,jdbcType=INTEGER}, 
-      #{groupId,jdbcType=INTEGER}, #{occupationId,jdbcType=INTEGER})
+      #{departmentId,jdbcType=INTEGER}, 10002,#{createTime}, #{createTime}, 0, 1, 1,12003)
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.User">
-    insert into user
+    insert into `user`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userId != null">
         user_id,
@@ -186,8 +239,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.User">
-    update user
+  <update id="updateByPrimaryKeySe" parameterType="com.example.hospital.model.User">
+    update `user`
     <set>
       <if test="userName != null">
         user_name = #{userName,jdbcType=VARCHAR},
@@ -231,21 +284,66 @@
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.User">
-    update user
-    set user_name = #{userName,jdbcType=VARCHAR},
-      user_pwd = #{userPwd,jdbcType=VARCHAR},
-      user_sex = #{userSex,jdbcType=TINYINT},
-      user_phone = #{userPhone,jdbcType=CHAR},
-      user_email = #{userEmail,jdbcType=VARCHAR},
-      department_id = #{departmentId,jdbcType=INTEGER},
-      role_id = #{roleId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
-      is_del = #{isDel,jdbcType=TINYINT},
-      grade_id = #{gradeId,jdbcType=INTEGER},
-      group_id = #{groupId,jdbcType=INTEGER},
-      occupation_id = #{occupationId,jdbcType=INTEGER}
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.User">
+    update `user`
+    set department_id = #{departmentId,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+
+<update id="updateUser" parameterType="com.example.hospital.model.User">
+    update `user` set
+    user_id = #{userId,jdbcType=INTEGER} ,
+    user_name = #{userName,jdbcType=VARCHAR},
+    user_sex = #{userSex,jdbcType=TINYINT},
+    user_phone = #{userPhone,jdbcType=CHAR},
+    user_email = #{userEmail,jdbcType=VARCHAR},
+    department_id = #{departmentId,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
+  <!--用户界面查询-->
+  <select id="getUserOne" resultMap="super">
+    SELECT user_id, user_name,user_sex,user_phone,user_email,dictionary_name FROM `user` ,`dictionary`
+    <where>
+      department_id=dictionary_id and is_del=0
+      <if test="userId!= null and userId != ''">
+        and user_id = #{userId}
+      </if>
+
+    </where>
+  </select>
+
+  <!--删除用户-->
+  <update id="deleteByPrimaryKey">
+    UPDATE user SET is_del=1 WHERE user_id=#{userId}
+  </update>
+
+  <!--权限管理页面   查询-->
+  <!--&lt;!&ndash;权限管理页面   查询&ndash;&gt;
+  <select id="selectAllUser" resultMap="super">
+    select d.dictionary_name as dname,d2.dictionary_name as dname2,d3.dictionary_name as dname3 ,user.user_name,select_role.menu_name,user.user_id,user.department_id
+    from user,dictionary d,select_role,dictionary d2,dictionary d3
+    where user.occupation_id=d.dictionary_id
+    AND user.grade_id=select_role.role_id
+    AND user.role_id =d2.dictionary_id
+    AND user.department_id =d3.dictionary_id
+    AND user.is_del=0
+    <if test="occupationId!=null and occupationId!=''">
+      AND d.dictionary_name = #{occupationId}
+    </if>
+  </select>-->
+
+  <!--批量删除-->
+  <update id="deleteById">
+    UPDATE `user` SET is_del=1 WHERE user_id=#{ids}
+  </update>
+
+  <!--根据id 查询用户-->
+  <select id="selectNameById" resultMap="BaseResultMap">
+    SELECT  user_name from `user` WHERE user_id=#{id}
+  </select>
+
+  <select id="getUserByPhone" resultMap="BaseResultMap">
+    SELECT * FROM `user` WHERE user_phone=#{phone}
+  </select>
 </mapper>

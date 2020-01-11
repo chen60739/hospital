@@ -41,7 +41,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">角色名称</div>
-                                    <input type="email" class="form-control" placeholder="请输入角色名称">
+                                    <input type="email" class="form-control" placeholder="请输入角色名称" id="name">
                                 </div>
                             </div>
                         </div>
@@ -49,13 +49,13 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-addon">备注</div>
-                                    <input type="email" class="form-control" placeholder="请输入备注">
+                                    <input type="email" class="form-control" placeholder="请输入备注" id="remark">
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-4 col-lg-offset-1">
-                            <button type="reset" class="btn btn-info">清空</button>
-                            <button type="submit" class="btn btn-info">检索</button>
+                            <button type="reset" class="btn btn-info" id="empty" onclick="empty()">清空</button>
+                            <button type="submit" class="btn btn-info" id="search">检索</button>
                         </div>
                     </div>
                 </div>
@@ -70,8 +70,8 @@
     </div>
 </div>
 <div id="toolbar">
-    <button type="button" class="btn btn-info">新增</button>
-    <button type="button" class="btn btn-danger">删除</button>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal1">新增</button>
+    <button type="button" class="btn btn-danger" onclick="remove()">删除</button>
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -95,8 +95,8 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="input-group-addon">科室</div>
-                                            <select class="form-control">
-                                                <option>-请选择-</option>
+                                            <select class="form-control" id="administrative" onchange="search1()">
+                                                <option value="">-请选择-</option>
                                             </select>
                                         </div>
                                     </div>
@@ -107,24 +107,20 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="input-group-addon">姓名</div>
-                                            <input type="text" class="form-control" placeholder="请输入姓名">
+                                            <input type="text" class="form-control" placeholder="请输入姓名" id="name1">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-5">
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <button class="btn btn-info"><i class="fa fa-search"></i></button>
+                                            <button class="btn btn-info" ><i class="fa fa-search" onclick="search1()"></i></button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <select id='public-methods' multiple='multiple'>
-                                <option value='elem_1'>elem 1</option>
-                                <option value='elem_2'>elem 2</option>
-                                <option value='elem_3'>elem 3</option>
-                                <option value='elem_4'>elem 4</option>
-                                <option value='elem_1000'>elem 100</option>
+                            <select id='public-methods' multiple='multiple' class="multiple">
+                                <!--<option value='elem_1'>elem 1</option>-->
                             </select>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="profile">
@@ -132,47 +128,47 @@
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">管理随访组
+                                            <input type="checkbox" class="role" value="10001">管理随访组
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">病例管理
+                                            <input type="checkbox" class="role" value="10002">病例管理
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">数据录入
+                                            <input type="checkbox" class="role" value="10003">数据录入
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">修改其他创建者数据
+                                            <input type="checkbox" class="role" value="10004">修改其他创建者数据
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">查看隐私数据
+                                            <input type="checkbox" class="role" value="10005">查看隐私数据
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">统计分析
+                                            <input type="checkbox" class="role" value="10006">统计分析
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">随访规则设置
+                                            <input type="checkbox" class="role" value="10007">随访规则设置
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">查看
+                                            <input type="checkbox" class="role" value="10008">查看
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox">检索
+                                            <input type="checkbox" class="role" value="10009">检索
                                         </label>
                                     </div>
                                 </div>
@@ -184,7 +180,56 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">保存</button>
+                <button type="button" class="btn btn-primary" id="save">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input id="groupUserId" type="hidden" value="">
+
+
+
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel1">随访组编辑</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">责任医院</div>
+                                <select class="form-control" id="hospital1">
+                                    <option value="">-请选择-</option>
+                                    <option value="1">二级</option>
+                                    <option value="3">三级</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">责任科室</div>
+                                <select class="form-control" id="department1">
+                                    <option value="">-请选择-</option>
+                                    <option value="12001">医生</option>
+                                    <option value="12002">护士</option>
+                                    <option value="12003">技师</option>
+                                    <option value="12004">药师</option>
+                                    <option value="12005">随访员</option>
+                                    <option value="12006">组长</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" id="save1" data-toggle="modal" data-target="#myModal" onclick="save()">保存</button>
             </div>
         </div>
     </div>
@@ -205,19 +250,23 @@
     });
 
     $(function () {
+
+
+
+        selectDiceionary();
         var tableColumns = [
             {checkbox:true},
-            {field: 'name', title: '角色级别',align:'center', sortable: true},
-            {field: 'class', title: '角色名称',align:'center', sortable: true},
-            {field: 'power', title: '权限及用户设定',align:'center',
-                formatter: function(){
+            {field: 'selectRole.menuName', title: '角色级别',align:'center', sortable: true},
+            {field: 'd3', title: '角色名称',align:'center', sortable: true},
+            {field: 'power', title: '权限及用户设定',align:'center',events: 'operateEvents',
+                formatter: function(value,row){
                     return '<button type="button" data-toggle="modal" data-target="#myModal" class="RoleOfPower btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-gear"></i></button>';
                 }},
-            {field: 'class', title: '用户',align:'center', sortable: true},
-            {field: 'class', title: '权限',align:'center', sortable: true},
+            {field: 'groupUserId', title: '用户',align:'center', sortable: true},
+            {field: 'groupRoleId', title: '权限',align:'center', sortable: true},
             {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
         ];
-        var data1 = [{"name":"内分泌随访",
+        /*var data1 = [{"name":"内分泌随访",
             "lv":"60%",
             "person":"张三",
             "state":"开放",
@@ -229,14 +278,45 @@
                 "state":"开放",
                 "class":"内分泌科",
                 "creatTime":"2018-11-12"
-            }];
+            }];*/
 
         window.operateEvents = {
+            //科室选中
+            'click .RoleOfPower': function (e, value, row, index) {
+                $("#groupUserId").val(row.id)
+                $("#administrative").children("option").each(function(){
+                    var  depement =$("#administrative").val(row.departmentid);
+                    var text=$(this).val();
+                    if(depement==text){
+                        $(this).attr("selected","selected");
+                    }
+                })
+                //根据科室回显姓名
+                /*administrative()*/
+                search1();
+            },
             'click .RoleOfEdit': function (e, value, row, index) {
                 alert("A");
             },
+            //删除单条语句
             'click .RoleOfDel': function (e, value, row, index) {
-                alert("B");
+                console.log(e)
+                console.log(value),console.log(row),console.log(index)
+                var ids="";
+                $(row).each(function(){
+                    ids+=this.id+",";
+                });
+                $.ajax({
+                    url:"removeById1",
+                    data:{"ids":ids},
+                    type:"post",
+                    success:function(data){
+                        $("#tableL01").bootstrapTable('refresh', data);
+
+                    }
+                })
+
+
             }
         };
 
@@ -247,39 +327,178 @@
                 '<button type="button" class="RoleOfDel btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-trash"></i></button>'
             ].join('');
         }
-
-
-        $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
-
-        $('#tableL01').bootstrapTable({//表格初始化
-            columns: tableColumns,  //表头
-            data:data1, //通过ajax返回的数据
-            width:300,
-            height:268,
-            method: 'get',
-            pageNumber: 1,
-            cache: false,
-            striped: true,
-            pagination: true,
-            sidePagination: 'client',
-            pageSize: 5,//单页记录数
-            pageList: [5, 10, 20, 30],//可选择单页记录数
-            search: false,
-            theadClasses: "thead-blue",
-            showRefresh: false,
-            showExport: false,
-            showFooter: true,
-            // exportTypes: ['csv', 'txt', 'xml'],
-            clickToSelect: true,
-            toolbar:"#toolbar",
-            /*onClickCell: function(params){
-                location.href="/one";
-            }*/
-        });
-
+        /*$.get("findAllUser",function (data) {*/
+            $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格+
+            $('#tableL01').bootstrapTable({//表格初始化
+                columns: tableColumns,  //表头
+                /* data:data1, //通过ajax返回的数据*/
+                width:300,
+                height:368,
+                url:"findAllUser",
+                method: 'get',
+                pageNumber: 1,
+                cache: false,
+                striped: true,
+                pagination: true,
+                sidePagination: 'client',
+                pageSize: 5,//单页记录数
+                pageList: [5, 10, 20, 30],//可选择单页记录数
+                search: false,
+                theadClasses: "thead-blue",
+                showRefresh: false,
+                showExport: false,
+                showFooter: true,
+                // exportTypes: ['csv', 'txt', 'xml'],
+                clickToSelect: true,
+                toolbar:"#toolbar",
+                /*data:formatData(data),*/
+                /*onClickCell: function(params){
+                    location.href="/one";
+                }*/
+                queryParams: function queryParams(params){
+                    var param = {
+                        occupationId:$("#name").val(),
+                        groupId:$("")
+                    };
+                    return param;
+                },
+            });
+            $(document).on('click', "#search",function(){
+                $('#tableL01').bootstrapTable('refresh');
+            });
+        /*})*/
+        // 格式化数据
+        /*var formatData = function (data) {
+            var l = [];
+            var d;
+            for (var i = 0; i < data.superUsers.length && data.superUsers1.length; i++) {
+                var m = data.superUsers[i]
+                var mm=data.superUsers1[i]
+                    d = {
+                   "menuName":m.selectRole.menuName,    //角色级别
+                    "dictionaryName":m.dictionaryName,  //角色名称
+                    "userName":m.userName,              //用户
+                         "dictionaryName1":mm.dictionaryName,//权限
+                }
+                l.push(d)
+            }
+            return l
+        };*/
+        //科室选中
 
 
     })
+
+    //清空
+    function empty(){
+        $("#name").val("");
+        $("#remark").val("");
+        $("input[name='btSelectAll']").prop("checked",false);
+        $("input[name='btSelectItem']").prop("checked",false);
+    }
+
+    //批量删除
+    function remove(){
+        var  rows=$("#tableL01").bootstrapTable('getSelections')//要删除的数据
+        if(rows.length == 0){
+            alert("请选择要删除的记录！");
+            return ;
+        }else {
+            confirm("是否确认删除？")
+            var ids="";
+            $(rows).each(function(){
+                ids+=this.id+",";
+            });
+            $.ajax({
+                url:"removeById1",
+                data:{"ids":ids},
+                type:"post",
+                success:function(data){
+                    $("#tableL01").bootstrapTable('refresh', data);
+
+                }
+            })
+        }
+
+    }
+
+    //设定用户 --回显科室
+    function selectDiceionary(){
+        $.get("findAllDepartment",{},function(rs){
+            if(rs !=null){
+                var aa=$("#administrative");
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].dictionaryId+">"+rs[i].dictionaryName+"</option>");
+                    aa.append(varoption);
+                }
+            }
+        })
+    }
+    //改变科室查询名字--根据科室查询名字
+    function search1() {
+        var a =$("#administrative").val();
+        var name1 =$("#name1").val();
+        $.get("findNameByDepartmentId",{"departmentId":a,"userName":name1},function(rs){
+            $("#public-methods").empty();
+            var varoption = "";
+            for (var i = 0; i < rs.length; i++) {
+                varoption += "<option value='"+rs[i].userId+"'>" + rs[i].userName+ "</option>";
+            }
+            $("#public-methods").append(varoption);
+
+            //刷新multiSelect框
+            $('#public-methods').multiSelect('refresh');
+        })
+    }
+   /* //修改用户
+    $("#save").click(function(){
+        var aa=$('#public-methods').val();
+        var bb="";
+        for (var i=0;i<aa.length;i++){
+            bb+=aa[i]+",";
+        }
+        $.get("changeGroupUser",{
+            "groupUserId":bb
+        },function (rs) {
+            if(rs=1){
+                $("#myModal").modal('hide')//取消模态框
+                $("#tableL01").bootstrapTable('refresh', rs);
+            }
+        })
+    })*/
+
+    //修改用户--添加权限
+    $("#save").click(function(){
+
+        var voteList = [];
+        var qq="";
+        $(".role").each(function(){
+            if($(this).is(':checked')==true){
+                voteList.push($(this).val());
+            }
+        })
+        for (var z=0;z<voteList.length;z++){
+            qq+=voteList[z]+",";
+        }
+        var aa=$('#public-methods').val();
+        var bb="";
+        var id=$("#groupUserId").val();
+        for (var i=0;i<aa.length;i++){
+            bb+=aa[i]+",";
+        }
+        $.get("changeGroupUser",{
+            "groupUserId":bb,
+            "id":id,
+            "groupRoleId":qq,
+        },function (rs) {
+            if(rs="success"){
+                $("#myModal").modal('hide')//取消模态框
+                $(".role").prop("checked",false);
+                $("#tableL01").bootstrapTable('refresh', rs);
+            }
+        })
+    })
+
 
 </script>
 

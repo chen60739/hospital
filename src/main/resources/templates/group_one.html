@@ -12,6 +12,11 @@
     <script src="/js/bootstrap-table-zh-CN.js"></script>
     <link rel="stylesheet" href="/css/hospital.css">
     <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
+    <link rel="stylesheet" href="/plugs/bootstrap-fileinput/css/fileinput.css">
+    <script src="/plugs/bootstrap-fileinput/js/fileinput.js"></script>
+    <link rel="stylesheet" href="/plugs/bootstrap-fileinput/themes/explorer-fas/theme.css">
+    <script src="/plugs/bootstrap-fileinput/themes/explorer-fas/theme.js"></script>
+    <script src="/plugs/bootstrap-fileinput/locales/zh.js"></script>
 </head>
 <body>
 <div th:replace="navigation :: nav"></div>
@@ -26,7 +31,7 @@
                     <div class="col-xs-12 col-md-12">
                         <button type="button" class="btn btn-info"><a href="/groupPower" style="color: white">权限管理</a></button>
                         <button type="button" class="btn btn-info"><a href="/intoGroup" style="color: white">入组管理</a></button>
-                        <button type="button" class="btn btn-info"><a href="/templist" style="color: white">模板设置</a></button>
+                        <button type="button" class="btn btn-info"><a th:href="@{/templist(departmentId=${departmentId},groupId=${groupId})}" style="color: white">模板设置</a></button>
                         <button type="button" class="btn btn-info"><a href="/followUpSetting" style="color: white">随访规则设定</a></button>
                         <button type="button" class="btn btn-info"><a href="/plan" style="color: white">诊疗方案</a></button>
                     </div>
@@ -103,8 +108,8 @@
 </div>
 <div id="toolbar">
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">新增</button>
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">编辑</button>
-    <button type="button" class="btn btn-danger">删除</button>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal1">编辑</button>
+    <button type="button" class="btn btn-danger" onclick="del()">删除</button>
 </div>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -115,42 +120,87 @@
                 <h4 class="modal-title" id="myModalLabel">新建患者</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-5 col-xs-offset-1">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">住院号</div>
-                                <input type="text" class="form-control">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">自定义患者</a></li>
+                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">导入Excel文件</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">住院号</div>
+                                        <input type="text" class="form-control" id="outPatientService2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">姓名</div>
+                                        <input type="text" class="form-control" id="PName">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon" >门诊号</div>
+                                        <input type="text" class="form-control" id="Number">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">出生日期</div>
+                                        <input type="date" class="form-control" id="birthday">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">性别</div>
+                                        <select class="form-control" id="sex1">
+                                            <option value="">-请选择-</option>
+                                            <option value="1">男</option>
+                                            <option value="0">女</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-5">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">姓名</div>
-                                <input type="text" class="form-control">
+                    <div role="tabpanel" class="tab-pane" id="profile">
+                        <form enctype="multipart/form-data">
+                            <div class="file-loading">
+                                <input id="kv-explorer" type="file" multiple accept=".xls,.xlsx">
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xs-5 col-xs-offset-1">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">门诊号</div>
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-5">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">出生日期</div>
-                                <input type="date" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" onclick="add()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel1">编辑</h4>
+            </div>
+            <div class="modal-body">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-info">确定</button>
@@ -160,83 +210,130 @@
 </div>
 </body>
 <script>
-            var tableColumns = [
-                {checkbox: true},
-                {field: 'outpatientService', title: '门诊号/住院号',align:'center', sortable: true},
-                {field: 'patientName', title: '姓名',align:'center', sortable: true},
-                {field: 'patientSex', title: '性别',align:'center' ,sortable: true,formatter:function (value) {
-                        if(value==1){
-                            return "男";
-                        }else{
-                            return "女";
-                        }
-                    }},
-                {field: 'patientBirthday', title: '年龄',align:'center', sortable: true,formatter:function (value) {
-                        var d=new Date();
-                        var nowyear=d.getFullYear()
-                        var birArr = value.split("-");
-                        var birYear = birArr[0];
-                        return nowyear-birYear+"岁";
-                    }},
-                {field: 'planningGroups.inGroupTime', title: '入组时间',align:'center', sortable: true},
-                {field: 'operate', title: '查看',align:'center', events: 'operateEvents',formatter: operateFormatter}
-            ];
-
-            window.operateEvents = {
-                'click .RoleOfA': function (e, value, row, index) {
-                    window.location.href="/patient";
+    var tableColumns = [
+        {checkbox: true},
+        {field: 'patientId',title:'编号',visible:false,align:'center', sortable: true},
+        {field: 'outpatientService', title: '门诊号/住院号',align:'center', sortable: true},
+        {field: 'patientName', title: '姓名',align:'center', sortable: true},
+        {field: 'patientSex', title: '性别',align:'center' ,sortable: true,formatter:function (value) {
+                if(value==1){
+                    return "男";
+                }else{
+                    return "女";
                 }
+            }},
+        {field: 'patientBirthday', title: '年龄',align:'center', sortable: true,formatter:function (value) {
+                var d=new Date();
+                var nowyear=d.getFullYear()
+                var birArr = value.split("-");
+                var birYear = birArr[0];
+                return nowyear-birYear+"岁";
+            }},
+        {field: 'planningGroups.inGroupTime', title: '入组时间',align:'center', sortable: true},
+        {field: 'operate', title: '查看',align:'center', events: 'operateEvents',formatter: operateFormatter}
+    ];
+
+    window.operateEvents = {
+        'click .RoleOfA': function (e, value, row, index) {
+            window.location.href="/patient?patientId="+row.patientId+"&groupId="+row.planningGroups.pgroupId;
+        }
+    };
+
+
+    function operateFormatter(value, row, index) {
+        return [
+            '<button type="button" class="RoleOfA btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>'
+        ].join('');
+    }
+    $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
+    $('#tableL01').bootstrapTable({//表格初始化
+        columns: tableColumns,  //表头
+        url:'/findPatients',
+        method: 'get',
+        pageNumber: 1,//初始化加载第一页
+        cache: false,
+        striped: true,
+        pagination: true,
+        sidePagination: 'client',
+        pageSize: 3,//单页记录数
+        pageList: [3, 5, 10, 20],//可选择单页记录数
+        search: false,
+        theadClasses: "thead-blue",
+        showRefresh: false,
+        showExport: false,
+        showFooter: true,
+        silent:true,
+        // exportTypes: ['csv', 'txt', 'xml'],
+        clickToSelect: true,
+        toolbar:'#toolbar',
+        //得到查询的参数
+        queryParams:function queryParams(params) {
+            var param = {
+                groupId:$('#groupId').val(),//小组Id
+                outpatientService:$('#outpatientService').val(),//门诊号
+                hospitalizationNumber:$('#hospitalizationNumber').val(),//住院号
+                patientSex: $('#sex').val(),//性别
+                preTime: $('#preTime').val(),//前时间
+                sufTime: $('#sufTime').val(),//后时间
+                patientName: $('#patientName').val()//姓名
             };
+            return param;
+        }
+    });
+
+    $(document).on('click','#search',function () {
+        $('#tableL01').bootstrapTable('refresh');
+    })
+    $("#searchReset").click(function () {
+        $("input[type=text]").val('');
+        document.getElementById("sex").options.selectedIndex=0;
+        $("#sex").selectpicker('refresh');
+    })
 
 
-            function operateFormatter(value, row, index) {
-                return [
-                    '<button type="button" class="RoleOfA btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>'
-                ].join('');
-            }
-            $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格
-        $('#tableL01').bootstrapTable({//表格初始化
-            columns: tableColumns,  //表头
-            url:'/findPatients',
-            method: 'get',
-            pageNumber: 1,//初始化加载第一页
-            cache: false,
-            striped: true,
-            pagination: true,
-            sidePagination: 'client',
-            pageSize: 3,//单页记录数
-            pageList: [3, 5, 10, 20],//可选择单页记录数
-            search: false,
-            theadClasses: "thead-blue",
-            showRefresh: false,
-            showExport: false,
-            showFooter: true,
-            silent:true,
-            // exportTypes: ['csv', 'txt', 'xml'],
-            clickToSelect: true,
-            toolbar:'#toolbar',
-            //得到查询的参数
-            queryParams:function queryParams(params) {
-                var param = {
-                    groupId:$('#groupId').val(),//小组Id
-                    outpatientService:$('#outpatientService').val(),//门诊号
-                    hospitalizationNumber:$('#hospitalizationNumber').val(),//住院号
-                    patientSex: $('#sex').val(),//性别
-                    preTime: $('#preTime').val(),//前时间
-                    sufTime: $('#sufTime').val(),//后时间
-                    patientName: $('#patientName').val()//姓名
-                };
-                return param;
-            }
+    $(document).ready(function () {
+        $("#kv-explorer").fileinput({
+            'theme': 'explorer-fas',
+            'uploadUrl': '#',
+            language:'zh',
+            overwriteInitial: false,
+            initialPreviewAsData: true,
+            allowedFileExtensions : ['xls', 'xlsx','txt'],
         });
+    });
+</script>
+<script>
+    function del(){
+        if(!confirm("是否确认删除？"))
+            return ;
+        var  rows=$("#tableL01").bootstrapTable('getSelections')//要删除的数据
+        if(rows.length == 0){
+            alert("请选择要删除的记录！");
+            return ;
+        }else {
+            var ids="";
+            $(rows).each(function(){
+                ids+=this.patientId+",";
+            });
+            $.ajax({
+                url:"delById",
+                data:{"ids":ids},
+                type:"post",
+                success:function(data){
+                    $("#tableL01").bootstrapTable('refresh', data);
+                }
+            })
+        }
 
-        $(document).on('click','#search',function () {
-            $('#tableL01').bootstrapTable('refresh');
-        })
-        $("#searchReset").click(function () {
-            $("input[type=text]").val('');
-            document.getElementById("sex").options.selectedIndex=0;
-            $("#sex").selectpicker('refresh');
-        })
+    }
+    function  add() {
+        var outpatientService2 =$('#outpatientService2').val();
+        var pName=$('#PName').val();
+        var Number=$('#Number').val();
+        var birthday=$('#birthday').val();
+        var groupId=$('#groupId').val();
+        var sex=$('#sex1').val();
+        location.href="patientAdd?outpatientService2="+outpatientService2+"&pName="+pName+"&Number="+Number+"&birthday="+birthday+"&groupId="+groupId+"&sex="+sex;
+    }
 </script>
 </html>

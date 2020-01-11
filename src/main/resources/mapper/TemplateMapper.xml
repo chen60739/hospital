@@ -3,12 +3,19 @@
 <mapper namespace="com.example.hospital.dao.TemplateMapper">
   <resultMap id="BaseResultMap" type="com.example.hospital.model.Template">
     <id column="template_id" jdbcType="INTEGER" property="templateId" />
-    <result column="template_value" jdbcType="VARCHAR" property="templateValue" />
-    <result column="l_id" jdbcType="INTEGER" property="lId" />
-    <result column="template_name_id" jdbcType="INTEGER" property="templateNameId" />
+    <result column="template_name" jdbcType="VARCHAR" property="templateName" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="template_setting_create_time" jdbcType="TIMESTAMP" property="templateSettingCreateTime" />
+    <result column="update_people" jdbcType="INTEGER" property="updatePeople" />
+    <result column="create_people" jdbcType="INTEGER" property="createPeople" />
+    <result column="template_setting_version" jdbcType="INTEGER" property="templateSettingVersion" />
+    <result column="template_setting_state" jdbcType="TINYINT" property="templateSettingState" />
+    <result column="template_range" jdbcType="VARCHAR" property="templateRange" />
+    <result column="is_del" jdbcType="TINYINT" property="isDel" />
   </resultMap>
   <sql id="Base_Column_List">
-    template_id, template_value, l_id, template_name_id
+    template_id, template_name, update_time, template_setting_create_time, update_people,
+    create_people, template_setting_version, template_setting_state,template_range,is_del
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -20,11 +27,15 @@
     delete from `template`
     where template_id = #{templateId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.example.hospital.model.Template">
-    insert into `template` (template_id, template_value, l_id,
-      template_name_id)
-    values (#{templateId,jdbcType=INTEGER}, #{templateValue,jdbcType=VARCHAR}, #{lId,jdbcType=INTEGER}, 
-      #{templateNameId,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.example.hospital.model.Template" useGeneratedKeys="true" keyProperty="templateId">
+    insert into `template` ( update_time,
+      template_setting_create_time, update_people, 
+      create_people, template_setting_version, template_setting_state, 
+      template_name)
+    values ( #{updateTime,jdbcType=TIMESTAMP},
+      #{templateSettingCreateTime,jdbcType=TIMESTAMP}, #{updatePeople,jdbcType=INTEGER}, 
+      #{createPeople,jdbcType=INTEGER}, #{templateSettingVersion,jdbcType=INTEGER}, #{templateSettingState,jdbcType=TINYINT}, 
+      #{templateName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.example.hospital.model.Template">
     insert into `template`
@@ -32,51 +43,181 @@
       <if test="templateId != null">
         template_id,
       </if>
-      <if test="templateValue != null">
-        template_value,
+      <if test="updateTime != null">
+        update_time,
       </if>
-      <if test="lId != null">
-        l_id,
+      <if test="templateSettingCreateTime != null">
+        template_setting_create_time,
       </if>
-      <if test="templateNameId != null">
-        template_name_id,
+      <if test="updatePeople != null">
+        update_people,
+      </if>
+      <if test="createPeople != null">
+        create_people,
+      </if>
+      <if test="templateSettingVersion != null">
+        template_setting_version,
+      </if>
+      <if test="templateSettingState != null">
+        template_setting_state,
+      </if>
+      <if test="templateName != null">
+        template_name,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="templateId != null">
         #{templateId,jdbcType=INTEGER},
       </if>
-      <if test="templateValue != null">
-        #{templateValue,jdbcType=VARCHAR},
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="lId != null">
-        #{lId,jdbcType=INTEGER},
+      <if test="templateSettingCreateTime != null">
+        #{templateSettingCreateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="templateNameId != null">
-        #{templateNameId,jdbcType=INTEGER},
+      <if test="updatePeople != null">
+        #{updatePeople,jdbcType=INTEGER},
+      </if>
+      <if test="createPeople != null">
+        #{createPeople,jdbcType=INTEGER},
+      </if>
+      <if test="templateSettingVersion != null">
+        #{templateSettingVersion,jdbcType=INTEGER},
+      </if>
+      <if test="templateSettingState != null">
+        #{templateSettingState,jdbcType=TINYINT},
+      </if>
+      <if test="templateName != null">
+        #{templateName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Template">
     update `template`
     <set>
-      <if test="templateValue != null">
-        template_value = #{templateValue,jdbcType=VARCHAR},
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="lId != null">
-        l_id = #{lId,jdbcType=INTEGER},
+      <if test="templateSettingCreateTime != null">
+        template_setting_create_time = #{templateSettingCreateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="templateNameId != null">
-        template_name_id = #{templateNameId,jdbcType=INTEGER},
+      <if test="updatePeople != null">
+        update_people = #{updatePeople,jdbcType=INTEGER},
+      </if>
+      <if test="createPeople != null">
+        create_people = #{createPeople,jdbcType=INTEGER},
+      </if>
+      <if test="templateSettingVersion != null">
+        template_setting_version = #{templateSettingVersion,jdbcType=INTEGER},
+      </if>
+      <if test="templateSettingState != null">
+        template_setting_state = #{templateSettingState,jdbcType=TINYINT},
+      </if>
+      <if test="templateName != null">
+        template_name = #{templateName,jdbcType=VARCHAR},
       </if>
     </set>
     where template_id = #{templateId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Template">
     update `template`
-    set template_value = #{templateValue,jdbcType=VARCHAR},
-      l_id = #{lId,jdbcType=INTEGER},
-      template_name_id = #{templateNameId,jdbcType=INTEGER}
+    set  = update_time = #{updateTime,jdbcType=TIMESTAMP},
+      template_setting_create_time = #{templateSettingCreateTime,jdbcType=TIMESTAMP},
+      update_people = #{updatePeople,jdbcType=INTEGER},
+      create_people = #{createPeople,jdbcType=INTEGER},
+      template_setting_version = #{templateSettingVersion,jdbcType=INTEGER},
+      template_setting_state = #{templateSettingState,jdbcType=TINYINT},
+      template_name = #{templateName,jdbcType=VARCHAR}
     where template_id = #{templateId,jdbcType=INTEGER}
   </update>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        t.*
+    FROM
+        `template` t,
+        `groups` g
+    WHERE
+        FIND_IN_SET(
+            t.template_id,
+            g.group_template_ids
+        )
+    AND g.group_id = #{groupId}
+  </select>
+
+  <update id="setRange">
+        UPDATE `template`
+    SET template_range = #{departmentIds}
+    WHERE
+        template_id = #{tempId}
+  </update>
+
+  <update id="changeTemplateState">
+        UPDATE `template`
+    SET template_setting_state = 0
+    WHERE
+        template_id = #{tempId}
+  </update>
+  
+  <update id="delTemplate">
+    UPDATE `template`
+    SET is_del = 1
+    WHERE
+        template_id = #{tempId}
+  </update>
+
+  <select id="getTemplate" resultMap="BaseResultMap">
+        SELECT
+        *
+    FROM
+        `template`
+    WHERE
+        FIND_IN_SET(2, template_range)
+    OR FIND_IN_SET(#{departmentId}, template_range)
+  </select>
+
+  <resultMap id="overview" type="com.example.hospital.dto.TemplateOverView" extends="BaseResultMap">
+    <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
+    <result column="people_name" jdbcType="VARCHAR" property="peopleName"/>
+    <result column="group_department_id" jdbcType="INTEGER" property="groupDepartmentId" />
+  </resultMap>
+
+  <select id="templateOverviewData" resultMap="overview">
+        SELECT
+        t.*,
+        g.group_name,
+        g.group_department_id,
+        u.user_name AS people_name
+    FROM
+        `groups` g,
+        `template` t,
+        `user` u
+    WHERE
+        t.group_id = g.group_id
+      AND t.create_people=u.user_id
+      AND t.is_del = 0
+    <if test="createPeople!='' ">
+      AND u.user_name LIKE CONCAT('%',#{createPeople},'%')
+    </if>
+    <if test="groupName != '' ">
+      AND g.group_name LIKE CONCAT('%',#{groupName},'%')
+    </if>
+    <if test="tempName!='' ">
+      AND t.template_name LIKE CONCAT('%',#{tempName},'%')
+    </if>
+    <if test="startTime!='' and endTime!='' ">
+      AND t.template_setting_create_time BETWEEN #{startTime} AND #{endTime}
+    </if>
+    <if test="startTime!='' and endTime=='' ">
+      AND t.template_setting_create_time > #{startTime}
+    </if>
+    <if test="endTime!='' and startTime=='' ">
+      AND t.template_setting_create_time &lt; #{endTime}
+    </if>
+    ORDER BY t.template_name
+  </select>
+
+  <select id="checkName">
+    SELECT count(*) FROM template WHERE template_name=#{tempName}
+  </select>
 </mapper>

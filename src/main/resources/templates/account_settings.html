@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>随访组管理</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/hospital.css">
+</head>
+<body>
+<div th:replace="navigation :: nav"></div>
+<div class="container-fluid main" style="height: 550px">
+    <div class="row" style="margin-top: 50px">
+        <div class="col-xs-4 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">旧密码</div>
+                    <input type="text" class="form-control" id="old" placeholder="请输入旧密码">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">新密码</div>
+                    <input type="text" class="form-control" id="new" placeholder="6-16位字母、数字、符号">
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-lg-offset-2">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">确认新密码</div>
+                    <input type="text" class="form-control" id="" placeholder="请再次输入新密码">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <button class="btn-info btn" style="margin-left: 350px">保存</button>
+    </div>
+</div>
+</body>
+<script>
+
+</script>
+
+</html>

@@ -3,6 +3,7 @@ package com.example.hospital.service.impl;
 
 import com.example.hospital.dao.PatientMapper;
 import com.example.hospital.dto.SuperPatient;
+import com.example.hospital.model.Patient;
 import com.example.hospital.service.PatientService;
 
 import org.springframework.stereotype.Service;
@@ -42,5 +43,26 @@ public class PatientServiceImpl implements PatientService {
             }
         }
         return list;
+    }
+
+    @Override
+    public int delById(String ids) {
+        return patientMapper.deleteById(ids);
+    }
+
+    @Override
+    public Patient selectById(Integer patientId) {
+        Patient patient = patientMapper.selectByPrimaryKey(patientId);
+        return patient;
+    }
+
+    @Override
+    public void insert(Patient patient) {
+        patientMapper.insert(patient);
+    }
+
+    @Override
+    public List<Patient> selectPatientByDepartment(Integer dId) {
+        return patientMapper.selectPatientByDepartment(dId);
     }
 }

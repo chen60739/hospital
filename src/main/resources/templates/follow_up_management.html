@@ -114,6 +114,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-8 col-xs-offset-2">
+                        <button class="btn btn-info" id="searchReset">清空</button>
                         <button class="btn btn-info" id="search">筛选</button>
                     </div>
                 </div>
@@ -179,9 +180,13 @@
                 }},
             {field: 'inGroupTime', title: '入组时间',align:'center', sortable: true},
             {field: 'followTime', title: '下次随访日期',align:'center', sortable: true},
-            {field: 'followState', title: '状态',align:'center', formatter:function (value) {
-                    return '<input type="checkbox" class="toggle-demo" value="'+value+'"  data-toggle="toggle" data-onstyle="info">'
-                }},
+            {field: 'followState', title: '状态',align:'center', formatter:function (value,row) {
+                if (value){
+                    return '<input type="checkbox" class="toggle-demo" id="'+row.followId+'" value="'+value+'"  data-toggle="toggle" data-onstyle="info" checked>'
+                }else {
+                    return '<input type="checkbox" class="toggle-demo" id="' + row.followId + '" value="' + value + '"  data-toggle="toggle" data-onstyle="info">'
+                }
+            }},
             {field: 'operate', title: '预览',align:'center',formatter:function (value) {
                     return '<button type="button" class="RoleOfA btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-search"></i></button>'
                 }
@@ -227,30 +232,36 @@
                 });
 
                 $('.toggle-demo').change(function() {
+                    var followId = $(this).attr('id');
+                    var followState;
                     if($(this).val()=='true'){
                         $(this).val(false);
+                        followState = false;
                     }else {
                         $(this).val(true);
+                        followState = true;
                     }
-                    var a = $(this).val();
-                    alert(a);
+                    $.getJSON('/changeFollowState',{'followId':followId,'followState':followState},function (res) {
+                        alert(res.mes);
+                    })
                 })
             }
-            /*onClickCell: function(params){
-                location.href="/one";
-            }*/
         });
 
         $(document).on('click','#search',function () {
             $('#tableL01').bootstrapTable('refresh');
         })
 
+        $("#searchReset").click(function () {
+            $("input").val('');
+            $("select").each(function(){
+                $(this).find("option").eq(0).prop("selected",true)
+            });
+        })
+
     })
 
-
     document.addEventListener('DOMContentLoaded', function() {
-        var initialLocaleCode = 'en';
-        var localeSelectorEl = document.getElementById('locale-selector');
         var calendarEl = document.getElementById('calendar');
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -274,12 +285,57 @@
             eventLimit: true, // allow "more" link when too many events
             //handleWindowResize: true,
             contentHeight: 380,
-            events: [
-                {
-                    title: '随访计划',
-                    start: '2019-12-23',
-                },
-            ],
+            events:function(info, successCallback,failureCallback) {
+                $.ajax({
+                    url:'/calendarFollowUpData',
+                    success:function (data) {
+                        var events = [];
+                        var time = data.time;
+                        var list = data.list;
+                        for (var i = 0;i<time.length;i++){
+                            var count = 0;
+                            var yes = 0;
+                            for (var j=0;j<list.length;j++){
+                                if (list[j].followTime==time[i]){
+                                    count++;
+                                    if (list[j].followState) {
+                                        yes++;
+                                    }
+                                    events.push({
+                                        title: list[j].patientName,
+                                        start: list[j].followTime // will be parsed
+                                    });
+                                }
+                            }
+                            var a = (yes/count).toPrecision(3);
+                            var plan = accMul(a,100);
+                            var num = count + '/'+ yes +' '+ plan+'%';
+                            if (plan!=100){
+                                events.push({
+                                    title: num,
+                                    start: time[i], // will be parsed
+                                    textColor:'red',
+                                    color:'#eeeeee',
+                                    editable:false
+
+                                });
+                            }else {
+                                events.push({
+                                    title: num,
+                                    start: time[i],
+                                    textColor:'#0ab503',
+                                    color:'#eeeeee',
+                                    editable:false
+                                });
+                            }
+                        }
+                        successCallback(events);
+                    },
+                    error:function () {
+                        alert('xx');
+                    }
+                })
+            },
             dateClick: function(info) {
                 /*alert('Clicked on: ' + info.dateStr);
                 alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
@@ -287,6 +343,30 @@
                 calendar.addEvent()
             }
         });
+
+        /**
+         ** 乘法函数，用来得到精确的乘法结果
+         ** 说明：javascript的乘法结果会有误差，在两个浮点数相乘的时候会比较明显。这个函数返回较为精确的乘法结果。
+         ** 调用：accMul(arg1,arg2)
+         ** 返回值：arg1乘以 arg2的精确结果
+         **/
+        function accMul(arg1, arg2) {
+            var m = 0,
+                s1 = arg1.toString(),
+                s2 = arg2.toString();
+            try {
+                m += s1.split(".")[1].length;
+            } catch (e) {}
+            try {
+                m += s2.split(".")[1].length;
+            } catch (e) {}
+            return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+        }
+
+        // 给Number类型增加一个mul方法，调用起来更加方便。
+        Number.prototype.mul = function (arg) {
+            return accMul(arg, this);
+        };
 
         calendar.render();
 

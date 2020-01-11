@@ -24,7 +24,7 @@ public interface GroupsService {
     List<Dictionary> findAll2();
 
     //批量删除
-    int removeById(String ids);
+    int removeById(String  ids);
 
     //修改随访组列表
     int changeOne(Groups groups);

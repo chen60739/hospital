@@ -8,6 +8,11 @@
     <result column="follow_patient_id" jdbcType="INTEGER" property="followPatientId" />
     <result column="follow_state" jdbcType="TINYINT" property="followState" />
   </resultMap>
+  
+  <resultMap id="sub" type="com.example.hospital.dto.SupFollowUp" extends="BaseResultMap">
+    <result column="dictionary_name" property="dictionaryName" jdbcType="VARCHAR"></result>
+    <result column="group_name" property="groupName" jdbcType="VARCHAR"></result>
+  </resultMap>
   <sql id="Base_Column_List">
     follow_id, follow_time, follow_group_id, follow_patient_id, follow_state
   </sql>
@@ -90,4 +95,40 @@
       follow_state = #{followState,jdbcType=TINYINT}
     where follow_id = #{followId,jdbcType=INTEGER}
   </update>
+  
+  <update id="changeFollowState">
+    update follow_up
+    set follow_state = #{followState,jdbcType=TINYINT}
+    where follow_id = #{followId,jdbcType=INTEGER}
+  </update>
+  
+  <resultMap id="calendarMap" type="com.example.hospital.dto.CalendarFollowUp" extends="BaseResultMap">
+    <result column="patient_name" property="patientName" jdbcType="VARCHAR"></result>
+  </resultMap>
+  
+  <select id="calendarData" resultMap="calendarMap">
+          SELECT
+          f.*, p.patient_name
+      FROM
+          follow_up f,
+          patient p
+      WHERE
+          f.follow_patient_id = p.patient_id
+  </select>
+  
+  <select id="getDistinctFollowTime" resultType="date">
+    SELECT DISTINCT f.follow_time
+      FROM
+          follow_up f,
+          patient p
+      WHERE
+          f.follow_patient_id = p.patient_id
+  </select>
+  <!--查询完整的随访组-->
+  <select id="selectFollowUp" resultMap="sub">
+    select follow_up.*,dictionary.dictionary_name,groups.group_name
+      from follow_up,dictionary,groups
+        WHERE follow_up.follow_group_id =groups.group_id
+	      AND follow_up.follow_department_id = dictionary.dictionary_id
+  </select>
 </mapper>

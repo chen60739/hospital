@@ -1,5 +1,8 @@
 package com.example.hospital.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,6 +14,8 @@ public class FollowUp implements Serializable,Cloneable{
     /** 主键 */
     private Integer followId ;
     /** 随访时间 */
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date followTime ;
     /** 随访组id */
     private Integer followGroupId ;

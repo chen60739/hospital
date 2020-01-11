@@ -26,8 +26,8 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">科室名称</div>
-                                <select class="form-control">
-                                    <option>-请选择科室-</option>
+                                <select class="form-control" id="dictionaryName">
+                                    <option value="">-请选择科室-</option>
                                 </select>
                             </div>
                         </div>
@@ -36,15 +36,15 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">人员名称</div>
-                                <select class="form-control">
-                                    <option>-请选择人员-</option>
+                                <select class="form-control" id="userName">
+                                    <option value="">-请选择人员-</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-3 col-lg-offset-1">
-                        <button type="reset" class="btn btn-info">清空</button>
-                        <button type="submit" class="btn btn-info">检索</button>
+                        <button type="button" class="btn btn-info" onclick="bb()">清空</button>
+                        <button type="submit" class="btn btn-info" id="search">检索</button>
                     </div>
                 </div>
             </div>
@@ -56,9 +56,9 @@
         </div>
     </div>
 </div>
-<div id="toolbar">
+<!--<div id="toolbar">
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">新增</button>
-</div>
+</div>-->
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -74,8 +74,8 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">科室名称</div>
-                                <select class="form-control">
-                                    <option>-请选择科室-</option>
+                                <select class="form-control" id="keshi">
+                                    <option value="" >-请选择科室-</option>
                                 </select>
                             </div>
                         </div>
@@ -86,8 +86,8 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">人员名称</div>
-                                <select class="form-control">
-                                    <option>-请选择人员-</option>
+                                <select class="form-control" id="renyuan" >
+                                    <option value="" >-请选择人员-</option>
                                 </select>
                             </div>
                         </div>
@@ -95,44 +95,51 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info">保存</button>
+                <button type="submit" class="btn btn-info" onclick="bao()">保存</button>
             </div>
         </div>
     </div>
 </div>
 </body>
-<script>
+<script >
+
     $(function () {
+
         var tableColumns = [
                 {field: 'userId', title: '序号',align:'center', sortable: true},
                 {field: 'dictionaryName', title: '科室',align:'center', sortable: true},
                 {field: 'userName', title: '人员',align:'center', sortable: true},
                 {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
             ];
-       /* var data1 = [{"userId":"内分泌随访",
-            "lv":"60%",
-            "person":"张三",
-            "state":"开放",
-            "class":"内分泌科",
-            "creatTime":"2018-11-12"},
-            {"name":"内分泌随访",
-                "lv":"40%",
-                "person":"xx",
-                "state":"开放",
-                "class":"内分泌科",
-                "creatTime":"2018-11-12"
-            }];*/
 
         window.operateEvents = {
             'click .RoleOfDel': function (e, value, row, index) {
-                alert("B");
+                if(confirm("确定要删除？")){
+                    location.href="deleteUser?userId="+row.userId;
+                }
+            },
+            'click .RoleOfUpdate': function (e, value, row, index) {
+                $.get("selectOne?userId="+row.userId,{},function(rs) {
+                    $("#keshi option").each(function () {
+                        if(rs[0].dictionaryName==$(this).text()){
+                            $(this).prop("selected",true);
+                        }
+                    })
+                    $("#renyuan option").each(function () {
+                        if(rs[0].userName==$(this).text()){
+                            $(this).prop("selected",true);
+                        }
+                    })
+                })
+
             }
         };
 
 
         function operateFormatter(value, row, index) {
+
             return [
-                '<button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
+                '<button type="button" id="edit"  data-toggle="modal" data-target="#myModal" class="RoleOfUpdate btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
                 '<button type="button" class="RoleOfDel btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-trash"></i></button>'
             ].join('');
         }
@@ -143,8 +150,6 @@
         $('#tableL01').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
            // data:data1, //通过ajax返回的数据
-            width:300,
-            height:268,
             method: 'get',
             url:'getUser',
             pageNumber: 1,
@@ -165,11 +170,74 @@
             /*onClickCell: function(params){
                 location.href="/one";
             }*/
+
+            queryParams: function queryParams(params){
+                var param = {
+                    dictionaryName:$("#dictionaryName").val(),
+                    userName:$("#userName").val(),
+                };
+                return param;
+            }
         });
 
+        $(document).on('click', "#search",function(){
+            $('#tableL01').bootstrapTable('refresh');
+        });
 
+        selectDictionary();
+        selectUser();
 
     })
+    function selectDictionary(){
+        $.get("findAllDepartment",{},function(rs){
+            if(rs !=null){
+                var aa=$("#dictionaryName");
+                var bb=$("#keshi");
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].dictionaryId+">"+rs[i].dictionaryName+"</option>");
+                    aa.append(varoption);
+                }
+
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].dictionaryId+">"+rs[i].dictionaryName+"</option>");
+                    bb.append(varoption);
+                }
+            }
+
+        })
+    }
+
+    function selectUser(){
+        $.get("selectUser",{},function(rs){
+            if(rs !=null){
+                var aa=$("#userName");
+                var bb=$("#renyuan");
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].userId+">"+rs[i].userName+"</option>");
+                    aa.append(varoption);
+                }
+
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].userId+">"+rs[i].userName+"</option>");
+                    bb.append(varoption);
+                }
+            }
+
+        })
+    }
+
+    function bb() {//清空选择框
+            //$("select:first option:first").prop("selected",true );
+           $("#dictionaryName").val("");
+           $("#userName").val("");
+    }
+    //插入数据
+    function bao() {
+       var userId= $("#renyuan").val();
+        var keshi= $("#keshi").val();
+        location.href="updateInsert?userId="+userId+"&departmentId="+keshi;
+    }
+
 
 </script>
 

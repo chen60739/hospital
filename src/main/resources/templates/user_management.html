@@ -26,7 +26,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">用户ID</div>
-                                <input type="text" class="form-control" placeholder="请输入用户ID">
+                                <input type="text" id="userId" name="userId" class="form-control" placeholder="请输入用户ID">
                             </div>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">姓名</div>
-                                <input type="text" class="form-control" placeholder="请输入姓名">
+                                <input type="text" id="userName" name="userName" class="form-control" placeholder="请输入姓名">
                             </div>
                         </div>
                     </div>
@@ -42,10 +42,10 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">性别</div>
-                                <select class="form-control">
-                                    <option>-请选择-</option>
-                                    <option>男</option>
-                                    <option>女</option>
+                                <select id="userSex" class="form-control">
+                                    <option value="">-请选择-</option>
+                                    <option value="1">男</option>
+                                    <option value="0">女</option>
                                 </select>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">电话</div>
-                                <input type="text" class="form-control" placeholder="请输入电话">
+                                <input type="text" id="userPhone" class="form-control" placeholder="请输入电话">
                             </div>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">邮箱</div>
-                                <input type="email" class="form-control" placeholder="请输入邮箱">
+                                <input type="email" id="userEmail" class="form-control" placeholder="请输入邮箱">
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">密码</div>
-                                <input type="email" class="form-control" placeholder="请输入密码">
+                                <input type="email" id="userPwd" class="form-control" placeholder="请输入密码">
                             </div>
                         </div>
                     </div>
@@ -80,15 +80,16 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">科室</div>
-                                <select class="form-control">
-                                    <option>-请选择-</option>
+                                <select class="form-control" id="dictionaryName">
+                                    <option value="">-请选择-</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-2 col-lg-offset-1">
-                        <button type="reset" class="btn btn-info">清空</button>
-                        <button type="submit" class="btn btn-info">检索</button>
+                        <button type="button" class="btn btn-info" onclick="update()">保存</button>
+                        <button type="button" class="btn btn-info" onclick="bb()">清空</button>
+                        <button type="submit" class="btn btn-info"  id="search">检索</button>
                     </div>
                 </div>
             </div>
@@ -101,23 +102,25 @@
     </div>
 </div>
 <div id="toolbar">
-    <button type="button" class="btn btn-info">新增</button>
-    <button type="button" class="btn btn-danger">删除</button>
+    <button type="button" class="btn btn-info" onclick="insert()">新增</button>
+    <button type="button" class="btn btn-danger" onclick="remove()">删除</button>
 </div>
 </body>
 <script>
     $(function () {
         var tableColumns = [
             {checkbox:true},
-            {field: 'name', title: '用户ID',align:'center'},
-            {field: 'class', title: '用户姓名',align:'center'},
-            {field: 'class', title: '性别',align:'center'},
-            {field: 'class', title: '电话',align:'center'},
-            {field: 'class', title: '邮箱',align:'center'},
-            {field: 'class', title: '科室',align:'center'},
+            {field: 'userId', title: '用户ID',align:'center'},
+            {field: 'userName', title: '用户姓名',align:'center'},
+            {field: 'userSex', title: '性别',align:'center',formatter:function (value, row, index) {
+                    return value==true||value=='true' ? '男' : '女';
+                }},
+            {field: 'userPhone', title: '电话',align:'center'},
+            {field: 'userEmail', title: '邮箱',align:'center'},
+            {field: 'dictionaryName', title: '科室',align:'center'},
             {field: 'edit', title: '编辑',align:'center', events: 'operateEvents',formatter: operateFormatter}
         ];
-        var data1 = [{"name":"内分泌随访",
+        /*var data1 = [{"name":"内分泌随访",
             "lv":"60%",
             "person":"张三",
             "state":"开放",
@@ -129,11 +132,38 @@
                 "state":"开放",
                 "class":"内分泌科",
                 "creatTime":"2018-11-12"
-            }];
+            }];*/
 
-        window.operateEvents = {
+        window.operateEvents = {//修改回显
             'click .RoleOfEdit': function (e, value, row, index) {
-                alert("A");
+                $.get("selectUserOne?userId="+row.userId,{},function(rs) {
+                    $("#userId").val(rs[0].userId);
+                    $("#userName").val(rs[0].userName);
+                    $("#userSex option").each(function () {
+                        if (rs[0].userSex == true){
+                            if ($(this).text()== "男"){
+                                $(this).prop("selected","selected");
+                                return false;
+                            }
+                        }
+                        if (rs[0].userSex == false){
+                            if ($(this).text()== "女"){
+                                $(this).prop("selected","selected");
+                                return false;
+                            }
+
+                        }
+                    })
+                    $("#userPhone").val(rs[0].userPhone);
+                    $("#userEmail").val(rs[0].userEmail);
+                    $("#dictionaryName").val(rs[0].dictionaryName);
+                    $("#dictionaryName option").each(function () {
+                        if(rs[0].dictionaryName==$(this).text()){
+                            $(this).prop("selected",true);
+                        }
+                    })
+                })
+
             },
         };
 
@@ -141,6 +171,7 @@
         function operateFormatter(value, row, index) {
             return [
                 '<button type="button" class="RoleOfEdit btn btn-default  btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>'
+
             ].join('');
         }
 
@@ -149,10 +180,11 @@
 
         $('#tableL01').bootstrapTable({//表格初始化
             columns: tableColumns,  //表头
-            data:data1, //通过ajax返回的数据
+           // data:data1, //通过ajax返回的数据
             width:300,
-            height:268,
+            height:350,
             method: 'get',
+            url:'getUserAll',
             pageNumber: 1,
             cache: false,
             striped: true,
@@ -168,11 +200,110 @@
             // exportTypes: ['csv', 'txt', 'xml'],
             clickToSelect: true,
             toolbar:"#toolbar",
+
+            queryParams: function queryParams(params){
+                var param = {
+                    userId:$("#userId").val(),
+                    userName:$("#userName").val(),
+                    userSex:$("#userSex").val(),
+                    userPhone:$("#userPhone").val(),
+                    userEmail:$("#userEmail").val(),
+                    dictionaryName:$("#dictionaryName").val(),
+                };
+                return param;
+            }
+        });
+        $(document).on('click', "#search",function(){
+            $('#tableL01').bootstrapTable('refresh');
         });
 
-
+        selectDictionary();
 
     })
+    function selectDictionary(){
+        $.get("findAllDepartment",{},function(rs){
+            if(rs !=null){
+                var aa=$("#dictionaryName");
+
+                for(var i=0;i<rs.length;i++){
+                    var varoption=$("<option value="+rs[i].dictionaryId+">"+rs[i].dictionaryName+"</option>");
+                    aa.append(varoption);
+                }
+            }
+
+        })
+    }
+
+    function bb() {//清空选择框
+            $("#userId").val("");
+            $("#userName").val("");
+            $("#userSex").val("");
+            $("#userPhone").val("");
+            $("#userEmail").val("");
+            $("#userPwd").val("");
+            $("#dictionaryName").val("");
+    }
+
+    //修改数据
+    function update() {
+            var userId= $("#userId").val();
+            var userName=$("#userName").val();
+            var userSex=$("#userSex").val();
+            var  userPhone=$("#userPhone").val();
+            var userEmail=$("#userEmail").val();
+            var dictionaryName=$("#dictionaryName").val();
+        $.get("updateUser",{
+            "userId":userId,"userName":userName,"userSex":userSex,
+            "userPhone":userPhone,"userEmail":userEmail,"departmentId":dictionaryName
+        },function(rs){
+           location.href="/user";
+        })
+    }
+
+    //插入数据
+    function insert() {
+        var userId= $("#userId").val();
+        var userName=$("#userName").val();
+        var userSex=$("#userSex").val();
+        var userPwd=$("#userPwd").val();
+        var  userPhone=$("#userPhone").val();
+        var userEmail=$("#userEmail").val();
+        var dictionaryName=$("#dictionaryName").val();
+        $.get("insertUser",{
+            "userId":userId,"userName":userName,"userSex":userSex,"userPwd":userPwd,
+            "userPhone":userPhone,"userEmail":userEmail,"departmentId":dictionaryName
+        },function(rs){
+            location.href="/user";
+        })
+    }
+
+    //批量删除
+    function remove(){
+        if(!confirm("是否确认删除？"))
+            return ;
+        var  rows=$("#tableL01").bootstrapTable('getSelections')//要删除的数据
+        if(rows.length == 0){
+            alert("请选择要删除的记录！");
+            return ;
+        }else {
+            var ids="";
+            $(rows).each(function(){
+                ids+=this.userId+",";
+            });
+            $.ajax({
+                url:"removeById1",
+                data:{"ids":ids},
+                type:"post",
+                success:function(data){
+                    $("#tableL01").bootstrapTable('refresh', data);
+
+                }
+            })
+        }
+
+    }
+
+
 
 </script>
 

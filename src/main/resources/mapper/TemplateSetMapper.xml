@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.dao.TemplateSetMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.TemplateSet">
+    <id column="temp_set_id" jdbcType="INTEGER" property="tempSetId" />
+    <result column="temp_id" jdbcType="VARCHAR" property="tempId" />
+    <result column="lable_id" jdbcType="INTEGER" property="lableId" />
+    <result column="temp_lable_key" jdbcType="VARCHAR" property="templableKey" />
+    <result column="temp_lable_value" jdbcType="VARCHAR" property="templableValue" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    temp_set_id, temp_id, lable_id, temp_lable_key, temp_lable_value,
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `template_set`
+    where temp_set_id = #{tempSetId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `template_set`
+    where temp_set_id = #{tempSetId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.TemplateSet">
+    insert into `template_set` (temp_lable_value, lable_id,
+      temp_id,temp_lable_key)
+    values ( #{templableValue,jdbcType=VARCHAR}, #{lableId,jdbcType=INTEGER},
+      #{tempId,jdbcType=INTEGER}, #{templableKey,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.TemplateSet">
+    insert into `template_set`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tempSetId != null">
+        temp_set_id,
+      </if>
+      <if test="templableValue != null">
+        temp_lable_value,
+      </if>
+      <if test="templablekey != null">
+        temp_lable_key,
+      </if>
+      <if test="lableId != null">
+        lable_id,
+      </if>
+      <if test="tempId != null">
+        temp_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tempSetId != null">
+        #{tempSetId,jdbcType=INTEGER},
+      </if>
+      <if test="templableValue != null">
+        #{templableValue,jdbcType=VARCHAR},
+      </if>
+      <if test="templablekey != null">
+        #{templableKey,jdbcType=VARCHAR},
+      </if>
+      <if test="lableId != null">
+        #{lableId,jdbcType=INTEGER},
+      </if>
+      <if test="tempId != null">
+        #{tempId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.TemplateSet">
+    update `template_set`
+    <set>
+      <if test="templableValue != null">
+        temp_lable_value = #{templableValue,jdbcType=VARCHAR},
+      </if>
+      <if test="templableKey != null">
+        temp_lable_key = #{templableKey,jdbcType=VARCHAR},
+      </if>
+      <if test="lableId != null">
+        lable_id = #{lableId,jdbcType=INTEGER},
+      </if>
+      <if test="tempId != null">
+        temp_id = #{tempId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where temp_set_id = #{tempSetId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.TemplateSet">
+    update `template_set`
+    set temp_lable_value = #{templableValue,jdbcType=VARCHAR},
+      temp_lable_key = #{templableKey,jdbcType=VARCHAR},
+      lable_id = #{lableId,jdbcType=INTEGER},
+      temp_id = #{tempId,jdbcType=INTEGER}
+    where temp_set_id = #{tempSetId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByTempId" resultMap="BaseResultMap">
+    SELECT * FROM `template_set` WHERE temp_id=#{tempId}
+  </select>
+</mapper>

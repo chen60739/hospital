@@ -1,5 +1,8 @@
 package com.example.hospital.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,6 +18,8 @@ public class  Patient implements Serializable,Cloneable{
     /** 性别 */
     private Integer patientSex ;
     /** 出生日期 */
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date patientBirthday ;
     /** 民族0其他1汉族 */
     private Integer nationId ;
@@ -31,6 +36,27 @@ public class  Patient implements Serializable,Cloneable{
     /** 是否删除 */
     private Boolean isDel ;
 
+    /** 负责人*/
+    private Integer leadOff;
+    /** 科室ID */
+    private Integer departmentId ;
+
+    public Integer getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public Integer getLeadOff() {
+        return leadOff;
+    }
+
+    public void setLeadOff(Integer leadOff) {
+        this.leadOff = leadOff;
+    }
+
     /** 患者id */
     public Integer getPatientId(){
         return this.patientId;
@@ -45,7 +71,7 @@ public class  Patient implements Serializable,Cloneable{
     }
     /** 姓名 */
     public void setPatientName(String patientName){
-        this.patientName = patientName;
+        this.patientName = patientName==""?null:patientName;
     }
     /** 性别 */
     public Integer getPatientSex() { return patientSex; }
@@ -73,7 +99,7 @@ public class  Patient implements Serializable,Cloneable{
     }
     /** 门诊号 */
     public void setOutpatientService(String outpatientService) {
-        this.outpatientService = outpatientService;
+        this.outpatientService = outpatientService == "" ? null : outpatientService;
     }
     /** 住院号 */
     public String getHospitalizationNumber() {
@@ -81,7 +107,7 @@ public class  Patient implements Serializable,Cloneable{
     }
     /** 住院号 */
     public void setHospitalizationNumber(String hospitalizationNumber) {
-        this.hospitalizationNumber = hospitalizationNumber;
+        this.hospitalizationNumber = hospitalizationNumber == "" ? null : hospitalizationNumber;
     }
     /** 疾病名称 */
     public String getDiseaseName(){

@@ -102,4 +102,8 @@
   <select id="selectAll2" resultMap="BaseResultMap">
     select dictionary_name,dictionary_id from `dictionary` where one_id=21000
   </select>
+  <!--根据id  查询权限名称-->
+  <select id="selectGroupRoleName" resultMap="BaseResultMap">
+    SELECT  dictionary_name FROM `dictionary` WHERE  dictionary_id=#{id}
+  </select>
 </mapper>

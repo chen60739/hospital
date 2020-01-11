@@ -1,7 +1,9 @@
 package com.example.hospital.dao;
 
 import com.example.hospital.model.Dictionary;
+import com.example.hospital.model.GroupUserRole;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,4 +32,7 @@ public interface DictionaryMapper {
     List<Dictionary> selectAll1();
     //查询级别
     List<Dictionary> selectAll2();
+
+    //根据id查询权限名字
+    Dictionary selectGroupRoleName(@Param("id") String id);
 }

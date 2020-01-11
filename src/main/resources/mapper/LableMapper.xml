@@ -5,10 +5,11 @@
     <id column="lable_id" jdbcType="INTEGER" property="lableId" />
     <result column="lable_name" jdbcType="VARCHAR" property="lableName" />
     <result column="lable_type" jdbcType="VARCHAR" property="lableType" />
+    <result column="lable_upper_id" jdbcType="INTEGER" property="lableUpperId" />
     <result column="conditions" jdbcType="VARCHAR" property="conditions" />
   </resultMap>
   <sql id="Base_Column_List">
-    lable_id, lable_name, lable_type, conditions
+    lable_id, lable_name, lable_type,lable_upper_id, conditions
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -79,4 +80,19 @@
       conditions = #{conditions,jdbcType=VARCHAR}
     where lable_id = #{lableId,jdbcType=INTEGER}
   </update>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT	* FROM `lable`
+    </select>
+
+    <select id="selectSome" resultMap="BaseResultMap">
+            SELECT
+          l.*
+      FROM
+          lable l,
+          template_set s
+      WHERE
+          l.lable_id = s.lable_id
+      AND s.temp_id = #{tempId}
+    </select>
 </mapper>
