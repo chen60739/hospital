@@ -62,16 +62,6 @@ public interface UserMapper {
     List<User> getUserOne(Integer userId);
 
     /**
-     *  //入组管理查询医生
-     * @return
-     */
-    List<User> selectDoctor();
-
-    //权限管理页面--查询
-    List<SuperUser> selectAllUser(@Param("occupationId") String occupationId);
-    /*List<SuperUser> selectAllUser1();*/
-
-    /**
      * 批量删除
      * @param ids
      * @return

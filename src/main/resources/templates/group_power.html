@@ -202,7 +202,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">责任医院</div>
-                                <select class="form-control" id="hospital1">
+                                <select class="form-control" id="level">
                                     <option value="">-请选择-</option>
                                     <option value="1">二级</option>
                                     <option value="3">三级</option>
@@ -214,7 +214,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-addon">责任科室</div>
-                                <select class="form-control" id="department1">
+                                <select class="form-control" id="department">
                                     <option value="">-请选择-</option>
                                     <option value="12001">医生</option>
                                     <option value="12002">护士</option>
@@ -229,7 +229,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" id="save1" data-toggle="modal" data-target="#myModal" onclick="save()">保存</button>
+                <button type="button" class="btn btn-info" id="newSave">保存</button>
             </div>
         </div>
     </div>
@@ -495,6 +495,14 @@
                 $("#tableL01").bootstrapTable('refresh', rs);
             }
         })
+    })
+
+    $("#newSave").click(function () {
+        var level=$("#level option:selected").text();
+        var department=$("#department option:selected").text();
+        var rank={menuName:level}
+        $("#tableL01").bootstrapTable('insertRow', {index: 1, row: {d3:department,selectRole:rank}})
+        $("#myModal1").modal('hide')//取消模态框
     })
 
 
