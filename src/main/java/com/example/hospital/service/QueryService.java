@@ -1,5 +1,6 @@
 package com.example.hospital.service;
 
+import com.example.hospital.dto.SuperFollow;
 import com.example.hospital.dto.SuperProgramme;
 import com.example.hospital.model.*;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,37 @@ import java.util.List;
  * @date 2019/12/24
  */
 public interface QueryService {
+    int removeFollowByRuleId(Integer selectRuleId);
+    int changeFollowRule(FollowUpRule followUpRule);
+    int removeByRemindersId(Integer remindersId);
+    /**
+     * 添加随访规则
+     * @param followUpRule
+     * @return
+     */
+    int addFollowUpRule(FollowUpRule followUpRule);
+    /**
+     * 添加随访规则下的模板
+     * @param selectTemplate
+     * @return
+     */
+    int addFollowTemplate(SelectTemplate selectTemplate);
+    /**
+     * 添加随访规则下的提醒方式
+     * @param reminders
+     * @return
+     */
+    int addReminders(Reminders reminders);
+    /**
+     * 查询所有随访计划
+     * @return
+     */
+    List<SuperFollow> findAllFollow();
+    /**
+     * 查询提醒方式
+     * @return
+     */
+    List<Dictionary> findVisit();
     /**
      * 方案名查重
      * @param programmeName
@@ -46,7 +78,6 @@ public interface QueryService {
      * @return
      */
     List<Checked> findChecked(Integer checkedId);
-
     /**
      * 添加和删除方案里的 药品，检查和检验
      * @param medication

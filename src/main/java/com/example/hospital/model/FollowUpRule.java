@@ -19,17 +19,13 @@ public class FollowUpRule implements Serializable,Cloneable{
     /** 0  本就诊， 1  任意就诊 */
     private Boolean thatVisit ;
     /** 起始时间 */
-    private Date beginTime ;
+    private String beginTime ;
     /** 间隔时间 */
-    private Date intervalTime ;
+    private String intervalTime ;
     /** 持续次数 */
     private Integer baselineCount ;
     /** 提前通知天数 */
     private Integer advanceNotice ;
-    /** 选择模板表id */
-    private Integer ruleTemplateId ;
-    /** 提醒方式表id */
-    private Integer ruleRemindersId ;
     /** 节假日是否排期 0 否 1是 */
     private Boolean isScheduling ;
     /** 0 提前   1  延后 */
@@ -76,19 +72,17 @@ public class FollowUpRule implements Serializable,Cloneable{
         this.thatVisit = thatVisit;
     }
     /** 起始时间 */
-    public Date getBeginTime(){
+    public String getBeginTime(){
         return this.beginTime;
     }
     /** 起始时间 */
-    public void setBeginTime(Date beginTime){
+    public void setBeginTime(String beginTime){
         this.beginTime = beginTime;
     }
     /** 间隔时间 */
-    public Date getIntervalTime(){
-        return this.intervalTime;
-    }
+    public String getIntervalTime(){ return this.intervalTime; }
     /** 间隔时间 */
-    public void setIntervalTime(Date intervalTime){
+    public void setIntervalTime(String intervalTime){
         this.intervalTime = intervalTime;
     }
     /** 持续次数 */
@@ -106,22 +100,6 @@ public class FollowUpRule implements Serializable,Cloneable{
     /** 提前通知天数 */
     public void setAdvanceNotice(Integer advanceNotice){
         this.advanceNotice = advanceNotice;
-    }
-    /** 选择模板表id */
-    public Integer getRuleTemplateId(){
-        return this.ruleTemplateId;
-    }
-    /** 选择模板表id */
-    public void setRuleTemplateId(Integer ruleTemplateId){
-        this.ruleTemplateId = ruleTemplateId;
-    }
-    /** 提醒方式表id */
-    public Integer getRuleRemindersId(){
-        return this.ruleRemindersId;
-    }
-    /** 提醒方式表id */
-    public void setRuleRemindersId(Integer ruleRemindersId){
-        this.ruleRemindersId = ruleRemindersId;
     }
     /** 节假日是否排期 0 否 1是 */
     public Boolean getIsScheduling(){
@@ -152,8 +130,6 @@ public class FollowUpRule implements Serializable,Cloneable{
                 ", intervalTime=" + intervalTime +
                 ", baselineCount=" + baselineCount +
                 ", advanceNotice=" + advanceNotice +
-                ", ruleTemplateId=" + ruleTemplateId +
-                ", ruleRemindersId=" + ruleRemindersId +
                 ", isScheduling=" + isScheduling +
                 ", isPostpone=" + isPostpone +
                 '}';

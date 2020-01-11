@@ -62,8 +62,8 @@
                         <table border="1" align="center">
                             <tr>
                                 <td colspan="2" align="center">
-                                    <input id="fangan" placeholder="" name="programmeName" >
-                                    <button id="baocun" type="submit" class="btn btn-info btn-sm">保存</button>
+                                    <input class="fangan" placeholder="" name="programmeName" >
+                                    <button id="baocun" type="submit" class="btn btn-info btn-sm baocun">保存</button>
                                     <span id="#jymz" ></span>
 
                                 </td>
@@ -117,29 +117,6 @@
 </div>
 </body>
 <script>
-        var old;
-        $("#fangan").on('focus', function () {
-            old = this.value;
-        }).change(function() {
-            var programmeName = $(this).val();
-            programmeName.trim();
-        if (old==programmeName){
-            $("#baocun").attr("disabled",false);
-        }else{
-            $.post("changeProgrammeName",{"programmeName":programmeName},function (message) {
-                alert(message);
-                if(message==true){
-                    $("#jymz").text("✔");
-                    $("#jymz").css("color","green");
-                    $("#baocun").attr("disabled",false);
-                }else {
-                    $("#jymz").text("方案名已被使用！");
-                    $("#jymz").css("color","red");
-                    $("#baocun").attr("disabled","true");
-                }
-            });
-        }
-    });
     $(function () {
         var mmm = new Array();
         var iii = new Array();
@@ -172,7 +149,7 @@
                 var notice1 = res[0].notice;
                 if (i == 0) {
                     $("#programmeName").html(count);
-                    $("#fangan").val(count);
+                    $(".fangan").val(count);
                     $("#pid").val(programmeId);
                     $("#treatment").html(treatment1);
                     $("#operation").html(operation1);
@@ -226,8 +203,8 @@
                         "                    <table border=\"1\" align=\"center\">\n" +
                         "                       <tr>\n" +
                         "                         <td colspan=\"2\" align=\"center\">\n" +
-                        "                            <input id=\"fangan\" placeholder=\"请输入方案名\" value='"+count+"'  name=\"programmeName\" >\n" +
-                        "                            <button type=\"submit\" class=\"btn btn-info btn-sm\">保存</button>\n" +
+                        "                            <input class=\"fangan\" placeholder=\"请输入方案名\" value='"+count+"'  name=\"programmeName\" >\n" +
+                        "                            <button id=\"baocun\" type=\"submit\" class=\"btn btn-info btn-sm baocun\">保存</button>\n" +
                         "                           </td>\n" +
                         "                        </tr>\n" +
                         "                        <tr style=\"height: 70px\">\n" +
@@ -341,8 +318,8 @@
                 "                    <table border=\"1\" align=\"center\">\n" +
                 "                       <tr>\n" +
                 "                         <td colspan=\"2\" align=\"center\">\n" +
-                "                            <input id=\"fangan\" placeholder=\"请输入方案名称\" name=\"programmeName\" >\n" +
-                "                            <button type=\"submit\" class=\"btn btn-info btn-sm\">保存</button>\n" +
+                "                            <input class=\"fangan\" placeholder=\"请输入方案名称\" name=\"programmeName\" >\n" +
+                "                            <button id=\"baocun\" type=\"submit\" class=\"btn btn-info btn-sm baocun\">保存</button>\n" +
                 "                           </td>\n" +
                 "                        </tr>\n" +
                 "                        <tr style=\"height: 70px\">\n" +
@@ -480,7 +457,34 @@
             }
         });
 
-    })
+    });
+    var old;
+    $(document).on('focus',".fangan",function () {
+        old = this.value;
+        console.log(old);
+    });
+        $(document).on('change','.fangan',function () {
+        var programmeName = $(this).val();
+        programmeName.trim();
+        if (old==programmeName){
+            $(this).next().attr("disabled",false);
+        }else if(programmeName==""||programmeName==null){
+            $(this).next().attr("disabled","true");
+        }else {
+            $.post("changeProgrammeName",{"programmeName":programmeName},function (message) {
+                console.log(message);
+                if(message==true){
+                    $("#jymz").html("✔");
+                    $("#jymz").css("color","green");
+                    $(".baocun").attr("disabled",false);
+                }else {
+                    $("#jymz").html("方案名已被使用！");
+                    $("#jymz").css("color","red");
+                    $(".baocun").attr("disabled","true");
+                }
+            });
+        }
+    });
 
 </script>
 </html>

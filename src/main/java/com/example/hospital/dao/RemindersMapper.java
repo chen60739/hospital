@@ -5,11 +5,11 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface RemindersMapper {
-    int deleteByPrimaryKey(Integer remId);
+    int deleteByRemindersId(Integer remRemindersId);
 
     int insert(Reminders record);
 
-    int insertSelective(Reminders record);
+    int insertReminders(Reminders record);
 
     Reminders selectByPrimaryKey(Integer remId);
 

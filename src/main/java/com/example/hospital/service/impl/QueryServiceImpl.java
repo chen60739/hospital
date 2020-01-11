@@ -1,6 +1,7 @@
 package com.example.hospital.service.impl;
 
 import com.example.hospital.dao.*;
+import com.example.hospital.dto.SuperFollow;
 import com.example.hospital.dto.SuperProgramme;
 import com.example.hospital.model.*;
 import com.example.hospital.service.QueryService;
@@ -25,6 +26,52 @@ public class QueryServiceImpl implements QueryService {
     CheckedMapper checkedMapper;
     @Resource
     ProgrammeMapper programmeMapper;
+    @Resource
+    FollowUpRuleMapper followUpRuleMapper;
+    @Resource
+    SelectTemplateMapper selectTemplateMapper;
+    @Resource
+    RemindersMapper remindersMapper;
+
+    @Override
+    public int removeFollowByRuleId(Integer selectRuleId) {
+        return selectTemplateMapper.deleteByFollowUpRuleId(selectRuleId);
+    }
+
+    @Override
+    public int changeFollowRule(FollowUpRule followUpRule) {
+        return followUpRuleMapper.updateFollowRuleByid(followUpRule);
+    }
+
+    @Override
+    public int removeByRemindersId(Integer remindersId) {
+        return remindersMapper.deleteByRemindersId(remindersId);
+    }
+
+    @Override
+    public int addFollowUpRule(FollowUpRule followUpRule) {
+        return followUpRuleMapper.insertFollowUpRule(followUpRule);
+    }
+
+    @Override
+    public int addFollowTemplate(SelectTemplate selectTemplate) {
+        return selectTemplateMapper.insertFollowTemplate(selectTemplate);
+    }
+
+    @Override
+    public int addReminders(Reminders reminders) {
+        return remindersMapper.insertReminders(reminders);
+    }
+
+    @Override
+    public List<SuperFollow> findAllFollow() {
+        return followUpRuleMapper.selectAllFollow();
+    }
+
+    @Override
+    public List<Dictionary> findVisit() {
+        return dictionaryMapper.selectVisit();
+    }
 
     @Override
     public Programme getByProgrammeName(String programmeName) {
