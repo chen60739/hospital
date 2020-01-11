@@ -24,7 +24,7 @@ public interface GroupUserRoleMapper {
     int updateByPrimaryKey(GroupUserRole record);
 
     //权限管理页面--查询
-    List<SupGroupUserRole> selectAllGroupUser(@Param("occupationId") String occupationId);
+    List<SupGroupUserRole> selectAllGroupUser(@Param("occupationId") String occupationId,@Param("groupId")Integer groupId);
 
     //批量删除
     int deleteById(@Param("ids") String ids);

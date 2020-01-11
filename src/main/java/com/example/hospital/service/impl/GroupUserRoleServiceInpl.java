@@ -52,8 +52,8 @@ public class GroupUserRoleServiceInpl implements GroupUserRoleService {
 
 
     @Override
-    public List<SupGroupUserRole> findAllGroupUser(String occupationId) {
-        return groupUserRoleMapper.selectAllGroupUser(occupationId);
+    public List<SupGroupUserRole> findAllGroupUser(String occupationId,Integer groupId) {
+        return groupUserRoleMapper.selectAllGroupUser(occupationId,groupId);
     }
 
     @Override

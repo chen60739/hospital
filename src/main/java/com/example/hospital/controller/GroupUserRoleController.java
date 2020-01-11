@@ -23,9 +23,10 @@ public class GroupUserRoleController {
     GroupUserRoleService groupUserRoleService;
 
     @RequestMapping("findAllUser")
-    public List<SupGroupUserRole> findAllUser(String occupationId){
-        List<SupGroupUserRole> list = groupUserRoleService.findAllGroupUser(occupationId);
-        for (SupGroupUserRole sup:list ) {
+    public List<SupGroupUserRole> findAllUser(String occupationId,Integer groupId){
+        System.out.println(groupId);
+        List<SupGroupUserRole> list = groupUserRoleService.findAllGroupUser(occupationId,groupId);
+       for (SupGroupUserRole sup:list ) {
             String name = "";
             String role="";
             String[] split = sup.getGroupUserId().split(",");

@@ -315,8 +315,6 @@
 
                     }
                 })
-
-
             }
         };
 
@@ -358,7 +356,7 @@
                 queryParams: function queryParams(params){
                     var param = {
                         occupationId:$("#name").val(),
-                        groupId:$("")
+                        groupId:[[${groupId}]]
                     };
                     return param;
                 },

@@ -133,7 +133,7 @@
     AND g.grade_id=select_role.role_id
     AND g.group_occupation_id=d3.dictionary_id
     AND user.department_id=d2.dictionary_id
-    AND g.group_id=groups.group_id
+    AND g.group_id=#{groupId}
     AND g.is_del=0
     <if test="occupationId!=null and occupationId!=''">
       AND d3.dictionary_name like CONCAT("%",#{occupationId},"%")

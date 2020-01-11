@@ -16,7 +16,7 @@ import java.util.List;
 public interface GroupUserRoleService {
 
     //权限管理页面--查询
-    List<SupGroupUserRole> findAllGroupUser(String occupationId);
+    List<SupGroupUserRole> findAllGroupUser(String occupationId,Integer groupId);
 
     //批量删除
     int removeById(String ids);
