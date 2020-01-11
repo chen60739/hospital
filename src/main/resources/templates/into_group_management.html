@@ -231,11 +231,9 @@
 </body>
 <script>
     $(function () {
-
         $(document).on("click",".showPage",function () {
             showPage(this.value);
-        })
-
+        });
         function showPage(name) {
             var a = $("#planContainer").children("div");
             a.each(function () {
@@ -246,8 +244,6 @@
                 }
             })
         }
-
     })
-
 </script>
 </html>

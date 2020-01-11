@@ -9,13 +9,10 @@ import java.io.Serializable;
 public class SelectTemplate implements Serializable,Cloneable{
     /** 主键 */
     private Integer stId ;
-    /** 选择模板表 */
-    private Integer selectTemplateId ;
     /** 随访规则id */
     private Integer selectRuleId ;
     /** 模板id */
     private Integer templateId ;
-
     /** 主键 */
     public Integer getStId(){
         return this.stId;
@@ -23,14 +20,6 @@ public class SelectTemplate implements Serializable,Cloneable{
     /** 主键 */
     public void setStId(Integer stId){
         this.stId = stId;
-    }
-    /** 选择模板表 */
-    public Integer getSelectTemplateId(){
-        return this.selectTemplateId;
-    }
-    /** 选择模板表 */
-    public void setSelectTemplateId(Integer selectTemplateId){
-        this.selectTemplateId = selectTemplateId;
     }
     /** 随访规则id */
     public Integer getSelectRuleId(){
@@ -53,7 +42,6 @@ public class SelectTemplate implements Serializable,Cloneable{
     public String toString() {
         return "SelectTemplate{" +
                 "stId=" + stId +
-                ", selectTemplateId=" + selectTemplateId +
                 ", selectRuleId=" + selectRuleId +
                 ", templateId=" + templateId +
                 '}';

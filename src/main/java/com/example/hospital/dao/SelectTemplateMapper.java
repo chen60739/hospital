@@ -5,11 +5,11 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface SelectTemplateMapper {
-    int deleteByPrimaryKey(Integer stId);
+    int deleteByFollowUpRuleId(Integer selectRuleId);
 
     int insert(SelectTemplate record);
 
-    int insertSelective(SelectTemplate record);
+    int insertFollowTemplate(SelectTemplate record);
 
     SelectTemplate selectByPrimaryKey(Integer stId);
 

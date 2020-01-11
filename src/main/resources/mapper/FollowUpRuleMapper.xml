@@ -7,22 +7,36 @@
     <result column="is_in_hospital" jdbcType="TINYINT" property="isInHospital" />
     <result column="is_first" jdbcType="TINYINT" property="isFirst" />
     <result column="that_visit" jdbcType="TINYINT" property="thatVisit" />
-    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
-    <result column="interval_time" jdbcType="TIMESTAMP" property="intervalTime" />
+    <result column="begin_time" jdbcType="VARCHAR" property="beginTime" />
+    <result column="interval_time" jdbcType="VARCHAR" property="intervalTime" />
     <result column="baseline_count" jdbcType="INTEGER" property="baselineCount" />
     <result column="advance_notice" jdbcType="INTEGER" property="advanceNotice" />
-    <result column="rule_template_id" jdbcType="INTEGER" property="ruleTemplateId" />
-    <result column="rule_reminders_id" jdbcType="INTEGER" property="ruleRemindersId" />
     <result column="is_scheduling" jdbcType="TINYINT" property="isScheduling" />
     <result column="is_postpone" jdbcType="TINYINT" property="isPostpone" />
   </resultMap>
+  <resultMap id="super" type="com.example.hospital.dto.SuperFollow" extends="BaseResultMap">
+    <collection property="reminders" ofType="com.example.hospital.model.Reminders">
+      <id column="rem_id"  property="remId" />
+      <result column="reminders_id"  property="remindersId" />
+      <result column="reminders_dictionary_id"  property="remindersDictionaryId" />
+      <result column="reminders_occupation_id"  property="remindersOccupationId" />
+    </collection>
+    <collection property="selectTemplates" ofType="com.example.hospital.model.SelectTemplate">
+      <id column="st_id"  property="stId" />
+      <result column="select_rule_id"  property="selectRuleId" />
+      <result column="template_id"  property="templateId" />
+    </collection>
+  </resultMap>
   <sql id="Base_Column_List">
-    rule_id, benchmark_event, is_in_hospital, is_first, that_visit, begin_time, interval_time, 
-    baseline_count, advance_notice, rule_template_id, rule_reminders_id, is_scheduling, 
-    is_postpone
+    rule_id, benchmark_event, is_in_hospital, is_first, that_visit, begin_time, interval_time,
+    baseline_count, advance_notice, is_scheduling, is_postpone
   </sql>
+  <select id="selectAllFollow" resultMap="super">
+        SELECT * FROM `follow_up_rule` f left JOIN  `reminders` r on f.rule_id=r.reminders_id
+         left join `select_template` st on f.rule_id=st.select_rule_id
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `follow_up_rule`
     where rule_id = #{ruleId,jdbcType=INTEGER}
@@ -33,17 +47,15 @@
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.FollowUpRule">
     insert into `follow_up_rule` (rule_id, benchmark_event, is_in_hospital,
-      is_first, that_visit, begin_time, 
-      interval_time, baseline_count, advance_notice, 
-      rule_template_id, rule_reminders_id, is_scheduling, 
-      is_postpone)
-    values (#{ruleId,jdbcType=INTEGER}, #{benchmarkEvent,jdbcType=INTEGER}, #{isInHospital,jdbcType=TINYINT}, 
-      #{isFirst,jdbcType=TINYINT}, #{thatVisit,jdbcType=TINYINT}, #{beginTime,jdbcType=TIMESTAMP}, 
-      #{intervalTime,jdbcType=TIMESTAMP}, #{baselineCount,jdbcType=INTEGER}, #{advanceNotice,jdbcType=INTEGER}, 
-      #{ruleTemplateId,jdbcType=INTEGER}, #{ruleRemindersId,jdbcType=INTEGER}, #{isScheduling,jdbcType=TINYINT}, 
-      #{isPostpone,jdbcType=TINYINT})
+      is_first, that_visit, begin_time,
+      interval_time, baseline_count, advance_notice,
+      is_scheduling, is_postpone)
+    values (#{ruleId,jdbcType=INTEGER}, #{benchmarkEvent,jdbcType=INTEGER}, #{isInHospital,jdbcType=TINYINT},
+      #{isFirst,jdbcType=TINYINT}, #{thatVisit,jdbcType=TINYINT}, #{beginTime,jdbcType=VARCHAR},
+      #{intervalTime,jdbcType=VARCHAR}, #{baselineCount,jdbcType=INTEGER}, #{advanceNotice,jdbcType=INTEGER},
+      #{isScheduling,jdbcType=TINYINT}, #{isPostpone,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.example.hospital.model.FollowUpRule">
+  <insert id="insertFollowUpRule" parameterType="com.example.hospital.model.FollowUpRule">
     insert into `follow_up_rule`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="ruleId != null">
@@ -73,12 +85,6 @@
       <if test="advanceNotice != null">
         advance_notice,
       </if>
-      <if test="ruleTemplateId != null">
-        rule_template_id,
-      </if>
-      <if test="ruleRemindersId != null">
-        rule_reminders_id,
-      </if>
       <if test="isScheduling != null">
         is_scheduling,
       </if>
@@ -103,22 +109,16 @@
         #{thatVisit,jdbcType=TINYINT},
       </if>
       <if test="beginTime != null">
-        #{beginTime,jdbcType=TIMESTAMP},
+        #{beginTime,jdbcType=VARCHAR},
       </if>
       <if test="intervalTime != null">
-        #{intervalTime,jdbcType=TIMESTAMP},
+        #{intervalTime,jdbcType=VARCHAR},
       </if>
       <if test="baselineCount != null">
         #{baselineCount,jdbcType=INTEGER},
       </if>
       <if test="advanceNotice != null">
         #{advanceNotice,jdbcType=INTEGER},
-      </if>
-      <if test="ruleTemplateId != null">
-        #{ruleTemplateId,jdbcType=INTEGER},
-      </if>
-      <if test="ruleRemindersId != null">
-        #{ruleRemindersId,jdbcType=INTEGER},
       </if>
       <if test="isScheduling != null">
         #{isScheduling,jdbcType=TINYINT},
@@ -128,7 +128,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.FollowUpRule">
+  <update id="updateFollowRuleByid" parameterType="com.example.hospital.model.FollowUpRule">
     update `follow_up_rule`
     <set>
       <if test="benchmarkEvent != null">
@@ -144,22 +144,16 @@
         that_visit = #{thatVisit,jdbcType=TINYINT},
       </if>
       <if test="beginTime != null">
-        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+        begin_time = #{beginTime,jdbcType=VARCHAR},
       </if>
       <if test="intervalTime != null">
-        interval_time = #{intervalTime,jdbcType=TIMESTAMP},
+        interval_time = #{intervalTime,jdbcType=VARCHAR},
       </if>
       <if test="baselineCount != null">
         baseline_count = #{baselineCount,jdbcType=INTEGER},
       </if>
       <if test="advanceNotice != null">
         advance_notice = #{advanceNotice,jdbcType=INTEGER},
-      </if>
-      <if test="ruleTemplateId != null">
-        rule_template_id = #{ruleTemplateId,jdbcType=INTEGER},
-      </if>
-      <if test="ruleRemindersId != null">
-        rule_reminders_id = #{ruleRemindersId,jdbcType=INTEGER},
       </if>
       <if test="isScheduling != null">
         is_scheduling = #{isScheduling,jdbcType=TINYINT},
@@ -176,12 +170,10 @@
       is_in_hospital = #{isInHospital,jdbcType=TINYINT},
       is_first = #{isFirst,jdbcType=TINYINT},
       that_visit = #{thatVisit,jdbcType=TINYINT},
-      begin_time = #{beginTime,jdbcType=TIMESTAMP},
-      interval_time = #{intervalTime,jdbcType=TIMESTAMP},
+      begin_time = #{beginTime,jdbcType=VARCHAR},
+      interval_time = #{intervalTime,jdbcType=VARCHAR},
       baseline_count = #{baselineCount,jdbcType=INTEGER},
       advance_notice = #{advanceNotice,jdbcType=INTEGER},
-      rule_template_id = #{ruleTemplateId,jdbcType=INTEGER},
-      rule_reminders_id = #{ruleRemindersId,jdbcType=INTEGER},
       is_scheduling = #{isScheduling,jdbcType=TINYINT},
       is_postpone = #{isPostpone,jdbcType=TINYINT}
     where rule_id = #{ruleId,jdbcType=INTEGER}
