@@ -484,24 +484,36 @@
         for (var i=0;i<aa.length;i++){
             bb+=aa[i]+",";
         }
-        $.get("changeGroupUser",{
-            "groupUserId":bb,
-            "id":id,
-            "groupRoleId":qq,
-        },function (rs) {
-            if(rs="success"){
-                $("#myModal").modal('hide')//取消模态框
-                $(".role").prop("checked",false);
-                $("#tableL01").bootstrapTable('refresh', rs);
+
+        var cbs = $("input[type=checkbox]")
+        var checkNum = 0;
+        for (var i = 0; i < cbs.length; i++) {
+            if (cbs[i].checked) {
+                checkNum++;
             }
-        })
+        }
+        if (aa==null || aa=="" || checkNum==0 ){
+            alert("请选择用户和权限")
+        }else {
+            $.get("changeGroupUser",{
+                "groupUserId":bb,
+                "id":id,
+                "groupRoleId":qq,
+            },function (rs) {
+                if(rs="success"){
+                    $("#myModal").modal('hide')//取消模态框
+                    $(".role").prop("checked",false);
+                    $("#tableL01").bootstrapTable('refresh', rs);
+                }
+            })
+        }
     })
 
     $("#newSave").click(function () {
         var level=$("#level option:selected").text();
         var department=$("#department option:selected").text();
-        var rank={menuName:level}
-        $("#tableL01").bootstrapTable('insertRow', {index: 1, row: {d3:department,selectRole:rank}})
+        var qq={menuName:level}
+        $("#tableL01").bootstrapTable('insertRow', {index: 1, row: {d3:department}})
         $("#myModal1").modal('hide')//取消模态框
     })
 
