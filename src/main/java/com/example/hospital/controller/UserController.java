@@ -163,31 +163,6 @@ public class UserController {
         return "redirect:user";
     }
 
-    @RequestMapping("findAllUser")
-    @ResponseBody
-    public List<SuperUser> findAllUser(String occupationId){
-        return userService.findAllUser(occupationId);
-    }
-
-    //批量删除
-    @RequestMapping("removeById1")
-    @ResponseBody
-    public String  removeById1(String ids){
-        System.out.println(ids);
-        String substring = ids.substring(0, ids.length() - 1);
-        String[] split = substring.split(",");
-        try{
-            for (int i=0;i<split.length;i++){
-                userService.removeById(split[i]);
-            }
-            return "success";
-        }catch (NumberFormatException e){
-            e.printStackTrace();
-            return "error";
-        }
-
-    }
-
     /**
      * 根据id查询单个用户
      * @param userId
