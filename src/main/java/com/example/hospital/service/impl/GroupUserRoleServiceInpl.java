@@ -56,6 +56,11 @@ public class GroupUserRoleServiceInpl implements GroupUserRoleService {
         return groupUserRoleMapper.insertGroupUserRole(groupUserRole);
     }
 
+    @Override
+    public int changeOccupationGrade(GroupUserRole groupUserRole) {
+        return groupUserRoleMapper.updateOccupationGrade(groupUserRole);
+    }
+
 
     @Override
     public List<SupGroupUserRole> findAllGroupUser(String occupationId,Integer groupId) {

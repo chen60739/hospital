@@ -109,5 +109,9 @@ public class GroupUserRoleController {
     public int saveGroupUserRole(GroupUserRole groupUserRole){
         return groupUserRoleService.saveGroupUserRole(groupUserRole);
     }
+    @RequestMapping("updateOccupationGrade")
+    public int updateOccupationGrade(GroupUserRole groupUserRole){
+        return groupUserRoleService.changeOccupationGrade(groupUserRole);
+    }
 
 }

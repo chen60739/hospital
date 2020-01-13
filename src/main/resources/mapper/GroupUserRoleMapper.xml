@@ -167,9 +167,13 @@
   <insert id="updateGroupUserRole1">
     update `group_user_role` SET  group_role_id =#{groupRoleId} where id=#{id}
   </insert>
-  
+  <!--新增一条用户权限-->
   <insert id="insertGroupUserRole">
     insert into `group_user_role`(group_user_id,group_role_id,group_id,group_occupation_id,grade_id,is_del) VALUES(#{groupUserId},#{groupRoleId},#{groupId},#{groupOccupationId},#{gradeId},0)
   </insert>
+  <!--修改角色名称和等级-->
+  <update id="updateOccupationGrade">
+    update `group_user_role` SET group_occupation_id =#{groupOccupationId},grade_id =#{gradeId} where id=#{id}
+  </update>
 
 </mapper>

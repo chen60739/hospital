@@ -68,4 +68,11 @@ public interface GroupUserRoleService {
      */
     int saveGroupUserRole(GroupUserRole groupUserRole);
 
+    /**
+     * 修改角色级别和角色名称
+     * @param groupUserRole
+     * @return
+     */
+    int changeOccupationGrade(GroupUserRole groupUserRole);
+
 }
