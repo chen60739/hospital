@@ -6,11 +6,16 @@ package com.example.hospital.model;
  */
 public class GroupUserRole {
     private Integer id;
-    private String groupUserId;  //组用户id
-    private String groupRoleId;   //组权限id
-    private String groupId;    //组id
-    private Integer groupOccupationId;  //组角色id
-    private Integer gradeId;    //组等级id
+    /** 组用户id */
+    private String groupUserId;
+    /** 组权限id */
+    private String groupRoleId;
+    /** 组id */
+    private String groupId;
+    /** 组角色id */
+    private Integer groupOccupationId;
+    /** 组等级id */
+    private Integer gradeId;
     /** 是否删除 */
     private Boolean isDel ;
 
