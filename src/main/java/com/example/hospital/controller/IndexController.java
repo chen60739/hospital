@@ -132,8 +132,9 @@ public class IndexController {
     }
 
     @RequestMapping("/groupPower")
-    public String groupPower(Model model,Integer groupId){
+    public String groupPower(Model model,Integer groupId,Integer departmentId){
         model.addAttribute("groupId",groupId);
+        model.addAttribute("departmentId",departmentId);
         return "group_power";
     }
 
