@@ -42,7 +42,7 @@ public class GroupUserRoleController {
                 name+=aa+",";
             }
             String substring = name.substring(0, name.length() - 1);
-            sup.setGroupUserId(substring);
+            sup.setUserName(substring);
             for (String s1:split1){
                 Dictionary groupRoleName = groupUserRoleService.findGroupRoleName(s1);
                 String bb=groupRoleName.getDictionaryName();

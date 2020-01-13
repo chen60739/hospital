@@ -308,7 +308,7 @@
                 formatter: function(value,row){
                     return '<button type="button" data-toggle="modal" data-target="#myModal" class="RoleOfPower btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-gear"></i></button>';
                 }},
-            {field: 'groupUserId', title: '用户',align:'center', sortable: true},
+            {field: 'userName', title: '用户',align:'center', sortable: true},
             {field: 'groupRoleId', title: '权限',align:'center', sortable: true},
             {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
         ];
@@ -316,6 +316,12 @@
         window.operateEvents = {
             //科室选中
             'click .RoleOfPower': function (e, value, row, index) {
+                var op = '';
+                renId = (row.groupUserId).split(',');
+                ren = (row.userName).split(',');
+                $.each(renId,function (index) {
+                    op+='<option value="'+renId[index]+'" selected>'+ren[index]+'</option>'
+                })
                 $("#rowId").val(row.id)
                 $("#administrative").children("option").each(function(){
                     var text=$(this).val();
@@ -451,20 +457,41 @@
         })
     }
     //改变科室查询名字--根据科室查询名字
+    var renId;
+    var ren;
     function search1() {
         var varoption = "";
         $("#public-methods").find('option:selected').each(function () {
             varoption += '<option value="'+$(this).val()+'" selected>'+$(this).text()+'</option>';
         })
+        $("#public-methods").empty();
         var a =$("#administrative").val();
         var name1 =$("#name1").val();
+        $("#public-methods").append(varoption);
         $.get("findNameByDepartmentId",{"departmentId":a,"userName":name1},function(rs){
-            $("#public-methods").empty();
+            //$("#public-methods").empty();
+            varoption = "";
             for (var i = 0; i < rs.length; i++) {
+                if($("#public-methods").find('option[value=' + rs[i].userId + ']').length==1){
+                    continue;
+                }
                 varoption += "<option value='"+rs[i].userId+"'>" + rs[i].userName+ "</option>";
             }
             $("#public-methods").append(varoption);
-
+            for (var i = 0; i < renId.length; i++) {
+                var op = $("#public-methods").find('option[value=' + renId[i] + ']');
+                switch (op.length){
+                    case 0:
+                        $("#public-methods").append('<option value="' + renId[i] + '" selected>' + ren[i] + '</option>');
+                        break;
+                    case 1:
+                        $("#public-methods").find('option[value=' + renId[i] + ']').prop("selected", true);
+                        break;
+                    default:
+                        var a =$("#public-methods").find('option:not(:selected)[value=' + renId[i] + ']');
+                        a.remove()
+                }
+            }
             //刷新multiSelect框
             $('#public-methods').multiSelect('refresh');
         })
