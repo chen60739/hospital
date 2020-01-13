@@ -167,5 +167,9 @@
   <insert id="updateGroupUserRole1">
     update `group_user_role` SET  group_role_id =#{groupRoleId} where id=#{id}
   </insert>
+  
+  <insert id="insertGroupUserRole">
+    insert into `group_user_role`(group_user_id,group_role_id,group_id,group_occupation_id,grade_id,is_del) VALUES(#{groupUserId},#{groupRoleId},#{groupId},#{groupOccupationId},#{gradeId},0)
+  </insert>
 
 </mapper>
