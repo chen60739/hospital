@@ -435,6 +435,7 @@
     //改变科室查询名字--根据科室查询名字
     function search1() {
         var a =$("#administrative").val();
+        alert(a)
         var name1 =$("#name1").val();
         $.get("findNameByDepartmentId",{"departmentId":a,"userName":name1},function(rs){
             $("#public-methods").empty();
@@ -492,7 +493,9 @@
                 checkNum++;
             }
         }
-        if (aa==null || aa=="" || checkNum==0 ){
+        alert(aa)
+        alert(checkNum)
+        if (aa=="" || checkNum==0 ){
             alert("请选择用户和权限")
         }else {
             $.get("changeGroupUser",{
@@ -513,7 +516,7 @@
         var level=$("#level option:selected").text();
         var department=$("#department option:selected").text();
         var qq={menuName:level}
-        $("#tableL01").bootstrapTable('insertRow', {index: 1, row: {d3:department}})
+        $("#tableL01").bootstrapTable('insertRow', {index: 1, row: {d3:department,selectRole:qq}})
         $("#myModal1").modal('hide')//取消模态框
     })
 
