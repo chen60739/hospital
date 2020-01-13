@@ -69,6 +69,13 @@ public interface GroupUserRoleMapper {
      */
     int insertGroupUserRole(GroupUserRole groupUserRole);
 
+    /**
+     * 修改角色级别和角色名称
+     * @param groupUserRole
+     * @return
+     */
+    int updateOccupationGrade(GroupUserRole groupUserRole);
+
 
 
 

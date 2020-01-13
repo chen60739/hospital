@@ -188,7 +188,7 @@
 <input id="groupUserId" type="hidden" value="">
 
 
-
+<!--新增模态框-->
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -230,6 +230,52 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-info" id="newSave">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--编辑模态框-->
+<div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel2">随访组编辑</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">级别</div>
+                                <select class="form-control" id="updatelevel">
+                                    <option value="">-请选择-</option>
+                                    <option value="1">二级</option>
+                                    <option value="2">三级</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">角色名称</div>
+                                <select class="form-control" id="updatedepartment">
+                                    <option value="">-请选择-</option>
+                                    <option value="12001">医生</option>
+                                    <option value="12002">护士</option>
+                                    <option value="12003">技师</option>
+                                    <option value="12004">药师</option>
+                                    <option value="12005">随访员</option>
+                                    <option value="12006">组长</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" id="updateSave">保存</button>
             </div>
         </div>
     </div>
@@ -282,7 +328,21 @@
                 search1();
             },
             'click .RoleOfEdit': function (e, value, row, index) {
-                alert("A");
+                $("#rowId").val(row.id)
+                $("#updatedepartment").children("option").each(function(){
+                    var text=$(this).text();
+                    if(text==row.d3){
+                        $(this).prop("selected",true);
+                        return false;
+                    }
+                })
+                $("#updatelevel").children("option").each(function(){
+                    var text=$(this).text();
+                    if(text==row.selectRole.menuName){
+                        $(this).prop("selected",true);
+                        return false;
+                    }
+                })
             },
             //删除单条语句
             'click .RoleOfDel': function (e, value, row, index) {
@@ -307,7 +367,7 @@
 
         function operateFormatter(value, row, index) {
             return [
-                '<button type="button" class="RoleOfEdit btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
+                '<button type="button" class="RoleOfEdit btn btn-default btn-sm" style="margin-right:15px;" data-toggle="modal" data-target="#update"><i class="fa fa-pencil"></i></button>',
                 '<button type="button" class="RoleOfDel btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-trash"></i></button>'
             ].join('');
         }
@@ -474,6 +534,21 @@
             }
 
         }
+    })
+    $("#updateSave").click(function () {
+        var gradeId = $("#updatelevel").val();
+        var groupOccupationId=$("#updatedepartment").val();
+        var groupUserRoleId=$("#rowId").val()
+        $.get("updateOccupationGrade",{
+            "gradeId":gradeId,
+            "groupOccupationId":groupOccupationId,
+            "id":groupUserRoleId
+        },function(rs){
+            if(rs==1){
+                $("#update").modal('hide')//取消模态框
+                $("#tableL01").bootstrapTable('refresh', rs);
+            }
+        })
     })
 
     $("#newSave").click(function () {
