@@ -6,6 +6,7 @@ import com.example.hospital.dao.UserMapper;
 import com.example.hospital.dto.SupGroupUserRole;
 import com.example.hospital.dto.SuperUser;
 import com.example.hospital.model.Dictionary;
+import com.example.hospital.model.GroupUserRole;
 import com.example.hospital.model.User;
 import com.example.hospital.service.GroupUserRoleService;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,11 @@ public class GroupUserRoleServiceInpl implements GroupUserRoleService {
     @Override
     public User findNameById(String id) {
         return userMapper.selectNameById(id);
+    }
+
+    @Override
+    public int saveGroupUserRole(GroupUserRole groupUserRole) {
+        return groupUserRoleMapper.insertGroupUserRole(groupUserRole);
     }
 
 

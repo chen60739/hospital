@@ -201,11 +201,11 @@
                     <div class="col-xs-6">
                         <div class="form-group">
                             <div class="input-group">
-                                <div class="input-group-addon">责任医院</div>
+                                <div class="input-group-addon">级别</div>
                                 <select class="form-control" id="level">
                                     <option value="">-请选择-</option>
                                     <option value="1">二级</option>
-                                    <option value="3">三级</option>
+                                    <option value="2">三级</option>
                                 </select>
                             </div>
                         </div>
@@ -213,7 +213,7 @@
                     <div class="col-xs-6">
                         <div class="form-group">
                             <div class="input-group">
-                                <div class="input-group-addon">责任科室</div>
+                                <div class="input-group-addon">角色名称</div>
                                 <select class="form-control" id="department">
                                     <option value="">-请选择-</option>
                                     <option value="12001">医生</option>
@@ -234,6 +234,9 @@
         </div>
     </div>
 </div>
+<input type="hidden" id="rowId">
+<input type="hidden" id="groupOccupationId">
+<input type="hidden" id="gradeId">
 </body>
 <script th:inline="javascript">
     $('#public-methods').multiSelect({
@@ -273,6 +276,7 @@
                 $.each(renId,function (index) {
                     op+='<option value="'+renId[index]+'" selected>'+ren[index]+'</option>'
                 })
+                $("#rowId").val(row.id)
                 $("#administrative").children("option").each(function(){
                     var text=$(this).val();
                     if(text==[[${departmentId}]]){
@@ -435,7 +439,12 @@
 
     //修改用户--添加权限
     $("#save").click(function(){
+        var groupOccupationId = $("#groupOccupationId").val() //角色级别
+        var gradeId=$("#gradeId").val()         //角色名称
 
+
+        var groupUserRoleId=$("#rowId").val()//获取当前行的id
+        var groupId=[[${groupId}]]
         var voteList = [];
         var qq="";
         $(".role").each(function(){
@@ -448,7 +457,7 @@
         }
         var aa=$('#public-methods').val();
         var bb="";
-        var id=$("#groupUserId").val();
+        var id=$("#rowId").val();
         for (var i=0;i<aa.length;i++){
             bb+=aa[i]+",";
         }
@@ -463,21 +472,40 @@
         if (aa=="" || checkNum==0 ){
             alert("请选择用户和权限")
         }else {
-            $.get("changeGroupUser",{
-                "groupUserId":bb,
-                "id":id,
-                "groupRoleId":qq,
-            },function (rs) {
-                if(rs="success"){
-                    $("#myModal").modal('hide')//取消模态框
-                    $(".role").prop("checked",false);
-                    $("#tableL01").bootstrapTable('refresh', rs);
-                }
-            })
+            if (groupUserRoleId == ""){
+                $.get("saveGroupUserRole",{
+                    "groupUserId":bb,
+                    "groupRoleId":qq,
+                    "groupId":groupId,
+                    "groupOccupationId":groupOccupationId,
+                    "gradeId":gradeId
+                },function(rs){
+                    if(rs==1){
+                        $("#myModal").modal('hide')//取消模态框
+                        $(".role").prop("checked",false);
+                        $("#tableL01").bootstrapTable('refresh', rs);
+                    }
+                })
+            }else {
+                $.get("changeGroupUser",{
+                    "groupUserId":bb,
+                    "id":id,
+                    "groupRoleId":qq,
+                },function (rs) {
+                    if(rs="success"){
+                        $("#myModal").modal('hide')//取消模态框
+                        $(".role").prop("checked",false);
+                        $("#tableL01").bootstrapTable('refresh', rs);
+                    }
+                })
+            }
+
         }
     })
 
     $("#newSave").click(function () {
+        $("#groupOccupationId").val($("#department").val())
+        $("#gradeId").val($("#level").val())
         var level=$("#level option:selected").text();
         var department=$("#department option:selected").text();
         var qq={menuName:level};
