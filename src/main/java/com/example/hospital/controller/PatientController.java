@@ -50,7 +50,19 @@ public class PatientController {
         }
 
     }
-    //添加新的患者
+
+    /**
+     * 添加新的患者
+     * @param outpatientService2
+     * @param pName
+     * @param Number
+     * @param birthday
+     * @param sex
+     * @param groupId
+     * @param model
+     * @return
+     * @throws ParseException
+     */
     @RequestMapping("/patientAdd")
     public  String patientAdd(String outpatientService2, String pName, String Number, String birthday,Integer sex, Integer groupId, Model model) throws ParseException {
             System.out.println("进入患者添加方法中");
@@ -63,7 +75,7 @@ public class PatientController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date patientBirthday = sdf.parse(birthday);
         patient.setPatientBirthday(patientBirthday);
-        patientService.insert(patient);
+        patientService.insert(patient,groupId);
         model.addAttribute("groupId",groupId);
         return "group_one";
     }

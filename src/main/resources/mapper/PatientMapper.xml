@@ -150,7 +150,7 @@
     delete from `patient`
     where patient_id = #{patientId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.example.hospital.model.Patient">
+  <insert id="insert" parameterType="com.example.hospital.model.Patient" useGeneratedKeys="true" keyProperty="patientId">
     insert into `patient` (patient_id, patient_name, patient_sex,
       patient_birthday, nation_id, outpatient_service, 
       hospitalization_number, disease_name, disease, 
