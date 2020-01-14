@@ -1,7 +1,7 @@
 package com.example.hospital.service;
 
+import com.example.hospital.dto.LablePro;
 import com.example.hospital.dto.TemplateOverView;
-import com.example.hospital.model.Lable;
 import com.example.hospital.model.Template;
 import com.example.hospital.model.TemplateSet;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public interface TemplateService {
 
-    List<Lable> getTreeData();
+    List<LablePro> getTreeData();
 
     Map<String, String> saveTemplate(String tempName, String lableId);
 

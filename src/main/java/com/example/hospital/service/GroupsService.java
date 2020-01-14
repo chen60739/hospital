@@ -33,4 +33,11 @@ public interface GroupsService {
     int saveOne(Groups groups);
 
     List<Groups> selectAllGroups();
+
+    /**
+     * 通过Id查找组
+     * @param groupId
+     * @return
+     */
+    Groups selectByGroupId(Integer groupId);
 }

@@ -25,13 +25,13 @@
         <div class="col-xs-12 col-md-12">
             <div style="padding-top: 20px">
                 <a href="javascript:history.back(-1)"><span class="glyphicon glyphicon-arrow-left"></span>切换随访组</a>
-                <h3 align="center">随访组标题</h3>
+                <h3 align="center" th:text="${group.groupName}">随访组标题</h3>
                 <hr>
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
-                        <button type="button" class="btn btn-info"><a th:href="@{/groupPower(departmentId=${departmentId},groupId=${groupId})}" style="color: white">权限管理</a></button>
+                        <button type="button" class="btn btn-info"><a th:href="@{/groupPower(departmentId=${group.groupDepartmentId},groupId=${group.groupId})}" style="color: white">权限管理</a></button>
                         <button type="button" class="btn btn-info"><a href="/intoGroup" style="color: white">入组管理</a></button>
-                        <button type="button" class="btn btn-info"><a th:href="@{/templist(departmentId=${departmentId},groupId=${groupId})}" style="color: white">模板设置</a></button>
+                        <button type="button" class="btn btn-info"><a th:href="@{/templist(departmentId=${group.groupDepartmentId},groupId=${group.groupId})}" style="color: white">模板设置</a></button>
                         <button type="button" class="btn btn-info"><a href="/followUpSetting" style="color: white">随访规则设定</a></button>
                         <button type="button" class="btn btn-info"><a href="/plan" style="color: white">诊疗方案</a></button>
                     </div>
@@ -86,7 +86,7 @@
                                 <div class="input-group">
                                     <div class="input-group-addon">姓名</div>
                                     <input type="text" class="form-control" placeholder="请输入姓名" id="patientName">
-                                    <input type="hidden" id="groupId" th:value="${groupId}" >
+                                    <input type="hidden" id="groupId" th:value="${group.groupId}" >
                                 </div>
                             </div>
                         </div>

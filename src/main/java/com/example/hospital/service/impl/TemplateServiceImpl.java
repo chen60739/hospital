@@ -4,6 +4,7 @@ import com.example.hospital.dao.GroupsMapper;
 import com.example.hospital.dao.LableMapper;
 import com.example.hospital.dao.TemplateMapper;
 import com.example.hospital.dao.TemplateSetMapper;
+import com.example.hospital.dto.LablePro;
 import com.example.hospital.dto.TemplateOverView;
 import com.example.hospital.model.Lable;
 import com.example.hospital.model.Template;
@@ -121,8 +122,8 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Override
     public Map<String, String> setTempRange(Integer tempId, String departmentIds) {
-        Map<String,String> res = new HashMap<>();
         int i = templateMapper.setRange(tempId,departmentIds);
+        Map<String,String> res = new HashMap<>();
         if (i==1){
             res.put("mes","共享成功");
         }else{
@@ -161,8 +162,8 @@ public class TemplateServiceImpl implements TemplateService {
     }
 
     @Override
-    public List<Lable> getTreeData() {
-        List<Lable> list = lableMapper.selectAll();
+    public List<LablePro> getTreeData() {
+        List<LablePro> list = lableMapper.selectAll();
         return list;
     }
 
