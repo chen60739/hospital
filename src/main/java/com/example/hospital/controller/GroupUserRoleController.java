@@ -49,7 +49,8 @@ public class GroupUserRoleController {
                 role+=bb+",";
             }
             String substring1 = role.substring(0, role.length() - 1);
-            sup.setGroupRoleId(substring1);
+            /*sup.setGroupRoleId(substring1);*/
+            sup.setD1(substring1);
         }
         return list;
     }
