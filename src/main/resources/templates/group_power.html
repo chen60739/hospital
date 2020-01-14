@@ -128,47 +128,47 @@
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10001">管理随访组
+                                            <input type="checkbox" name="power" class="role" value="10001">管理随访组
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10002">病例管理
+                                            <input type="checkbox" name="power" class="role" value="10002">病例管理
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10003">数据录入
+                                            <input type="checkbox" name="power" class="role" value="10003">数据录入
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10004">修改其他创建者数据
+                                            <input type="checkbox" name="power"  class="role" value="10004">修改其他创建者数据
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10005">查看隐私数据
+                                            <input type="checkbox" name="power" class="role" value="10005">查看隐私数据
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10006">统计分析
+                                            <input type="checkbox" name="power" class="role" value="10006">统计分析
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10007">随访规则设置
+                                            <input type="checkbox" name="power" class="role" value="10007">随访规则设置
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10008">查看
+                                            <input type="checkbox" name="power" class="role" value="10008">查看
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10009">检索
+                                            <input type="checkbox" name="power" class="role" value="10009">检索
                                         </label>
                                     </div>
                                 </div>
@@ -309,13 +309,29 @@
                     return '<button type="button" data-toggle="modal" data-target="#myModal" class="RoleOfPower btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-gear"></i></button>';
                 }},
             {field: 'userName', title: '用户',align:'center', sortable: true},
-            {field: 'groupRoleId', title: '权限',align:'center', sortable: true},
+            {field: 'd1', title: '权限',align:'center', sortable: true},
             {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
         ];
 
         window.operateEvents = {
             //科室选中
             'click .RoleOfPower': function (e, value, row, index) {
+
+                $("input[name='power']").prop("checked", false)
+                var boxObj = $("input[name='power']");  //获取所有的复选框
+                var permissionsList =row.groupRoleId;
+                var permissions=permissionsList.split(",");
+                for (var i=0;i<boxObj.length;i++){
+                    for (var j=0;j<permissions.length;j++){
+                        if (boxObj[i].value==permissions[j]){
+                            boxObj[i].checked=true;
+                            break;
+                        }
+                    }
+                }
+
+
+
                 var op = '';
                 renId = (row.groupUserId).split(',');
                 ren = (row.userName).split(',');
@@ -352,8 +368,6 @@
             },
             //删除单条语句
             'click .RoleOfDel': function (e, value, row, index) {
-                console.log(e)
-                console.log(value),console.log(row),console.log(index)
                 var ids="";
                 $(row).each(function(){
                     ids+=this.id+",";

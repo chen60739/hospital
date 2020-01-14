@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +68,8 @@ public class GroupsController {
     //新增随访组列表
     @RequestMapping("saveOne")
     public  int saveOne(Groups groups){
-        System.out.println(groups);
+        /*groups.setGroupStartTime(groupStartTime);
+        System.out.println(groupStartTime);*/
         return groupsService.saveOne(groups);
     }
 }
