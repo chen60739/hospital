@@ -98,6 +98,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Map<String, String> changePwdById(Integer id, String pwd) {
+        int i = userMapper.updatePwdById(id,pwd);
+        Map<String,String> res = new HashMap<>();
+        if (i==1){
+            res.put("mes","成功");
+        }else{
+            res.put("mes","失败");
+        }
+        return res;
+    }
+
+    @Override
     public Map<String, String> checkUser(String phone, String password, HttpSession session) {
         User user = userMapper.getUserByPhone(phone);
         Map<String,String> res = new HashMap<>();
