@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/plugs/bootstrap-fileinput/themes/explorer-fas/theme.css">
     <script src="/plugs/bootstrap-fileinput/themes/explorer-fas/theme.js"></script>
     <script src="/plugs/bootstrap-fileinput/locales/zh.js"></script>
+    <script src="/js/grade.js"></script>
 </head>
 <body>
 <div th:replace="navigation :: nav"></div>
@@ -32,8 +33,8 @@
                         <button type="button" class="btn btn-info"><a href="/groupPower" style="color: white">权限管理</a></button>
                         <button type="button" class="btn btn-info"><a href="/intoGroup" style="color: white">入组管理</a></button>
                         <button type="button" class="btn btn-info"><a th:href="@{/templist(departmentId=${departmentId},groupId=${groupId})}" style="color: white">模板设置</a></button>
-                        <button type="button" class="btn btn-info"><a href="/followUpSetting" style="color: white">随访规则设定</a></button>
-                        <button type="button" class="btn btn-info"><a href="/plan" style="color: white">诊疗方案</a></button>
+                        <button type="button" class="btn btn-info"><a th:href="@{/followUpSetting(groupId=${groupId})}" style="color: white">随访规则设定</a></button>
+                        <button type="button" class="btn btn-info"><a th:href="@{/plan(groupId=${groupId})}" style="color: white">诊疗方案</a></button>
                     </div>
                     <hr>
                 </div>

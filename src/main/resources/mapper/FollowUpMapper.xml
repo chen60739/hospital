@@ -8,7 +8,6 @@
     <result column="follow_patient_id" jdbcType="INTEGER" property="followPatientId" />
     <result column="follow_state" jdbcType="TINYINT" property="followState" />
   </resultMap>
-  
   <resultMap id="sub" type="com.example.hospital.dto.SupFollowUp" extends="BaseResultMap">
     <result column="dictionary_name" property="dictionaryName" jdbcType="VARCHAR"></result>
     <result column="group_name" property="groupName" jdbcType="VARCHAR"></result>
@@ -97,7 +96,7 @@
   </update>
   
   <update id="changeFollowState">
-    update follow_up
+    update `follow_up`
     set follow_state = #{followState,jdbcType=TINYINT}
     where follow_id = #{followId,jdbcType=INTEGER}
   </update>
@@ -110,8 +109,8 @@
           SELECT
           f.*, p.patient_name
       FROM
-          follow_up f,
-          patient p
+          `follow_up` f,
+          `patient` p
       WHERE
           f.follow_patient_id = p.patient_id
   </select>
@@ -119,15 +118,15 @@
   <select id="getDistinctFollowTime" resultType="date">
     SELECT DISTINCT f.follow_time
       FROM
-          follow_up f,
-          patient p
+          `follow_up` f,
+          `patient` p
       WHERE
           f.follow_patient_id = p.patient_id
   </select>
   <!--查询完整的随访组-->
   <select id="selectFollowUp" resultMap="sub">
     select follow_up.*,dictionary.dictionary_name,groups.group_name
-      from follow_up,dictionary,groups
+      from `follow_up`,`dictionary`,`groups`
         WHERE follow_up.follow_group_id =groups.group_id
 	      AND follow_up.follow_department_id = dictionary.dictionary_id
   </select>

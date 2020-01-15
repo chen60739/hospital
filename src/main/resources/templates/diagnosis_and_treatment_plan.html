@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/bootstrap-table.css">
     <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/grade.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/bootstrap-table.js"></script>
     <script src="/js/bootstrap-table-zh-CN.js"></script>
@@ -58,7 +59,7 @@
                 <div id="list" style="display: block" >
                     <form action="savePlan">
                         <input id="pid" type="hidden" name="programmeId" >
-<!--                        <input id="did" type="hidden" name="departmentId">-->
+                        <input id="did" type="hidden" name="departmentId">
                         <table border="1" align="center">
                             <tr>
                                 <td colspan="2" align="center">
@@ -118,10 +119,11 @@
 </body>
 <script>
     $(function () {
+        var departmentId=[[${groupId}]];
+        console.log(departmentId);
         var mmm = new Array();
         var iii = new Array();
         var chch = new Array();
-        var departmentId=11509;
         $.get("/findPlan",{},function (result) {
             for (var i = 0; i <result.length ; i++) {
                 if(result[i].oneId==14000){
@@ -135,7 +137,7 @@
                 }
             }
         });
-        $.post("findAllProgramme",{"departmentId":departmentId},function (res) {
+        $.post("findAllProgramme",{"departmentId":[[${groupId}]]},function (res) {
             var count;
             var programmeId
             for (var i = 0; i < res.length; i++) {
@@ -147,6 +149,7 @@
                 var treatment1 = res[0].treatment;
                 var operation1 = res[0].operation;
                 var notice1 = res[0].notice;
+                var departmentId=res[i].departmentId;
                 if (i == 0) {
                     $("#programmeName").html(count);
                     $(".fangan").val(count);
@@ -154,6 +157,7 @@
                     $("#treatment").html(treatment1);
                     $("#operation").html(operation1);
                     $("#notice").html(notice1);
+                    $("#did").val(departmentId);
                     for (var j = 0; j < mmm.length; j++) {
                         $(".medication").append("<option value='" + mmm[j].dictionaryId + "'>" + mmm[j].dictionaryName + "</option>")
                         for (var k = 0; k < medication1.length; k++) {
@@ -200,6 +204,7 @@
                     $("#planContainer").append("<div id='list" + count + "' style=\"display: block\">\n" +
                         "                 <form action=\"savePlan\">\n" +
                         "                    <input id='pid" + count + "' value='" + programmeId + "' type=\"hidden\" name=\"programmeId\">\n" +
+                        "                    <input id=\"did"+count+"\"  type=\"hidden\" name=\"departmentId\">\n"+
                         "                    <table border=\"1\" align=\"center\">\n" +
                         "                       <tr>\n" +
                         "                         <td colspan=\"2\" align=\"center\">\n" +
@@ -249,6 +254,7 @@
                         "                    </table>\n" +
                         "                  </form>\n" +
                         "                </div>");
+                    $("#did"+count+"").val(departmentId);
                     var treatment = res[i].treatment;
                     var operation = res[i].operation;
                     var notice = res[i].notice;

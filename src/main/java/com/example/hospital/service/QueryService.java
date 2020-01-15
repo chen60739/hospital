@@ -12,6 +12,8 @@ import java.util.List;
  * @date 2019/12/24
  */
 public interface QueryService {
+    List<Grade> findGrade(Integer gradeId);
+
     int removeFollowByRuleId(Integer selectRuleId);
     int changeFollowRule(FollowUpRule followUpRule);
     int removeByRemindersId(Integer remindersId);
@@ -37,7 +39,7 @@ public interface QueryService {
      * 查询所有随访计划
      * @return
      */
-    List<SuperFollow> findAllFollow();
+    List<SuperFollow> findAllFollow(Integer upGroupId);
     /**
      * 查询提醒方式
      * @return

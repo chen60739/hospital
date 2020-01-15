@@ -20,6 +20,13 @@ public class QueryController {
     @Resource
     QueryService queryService;
 
+    @RequestMapping("/showPower")
+    @ResponseBody
+    public List<Grade> showPower(Integer gradeId){
+        List<Grade> grades=queryService.findGrade(gradeId);
+        return grades;
+    }
+
     @RequestMapping("/findRemind")
     @ResponseBody
     public List<Dictionary> findRemind(){
@@ -29,8 +36,8 @@ public class QueryController {
 
     @RequestMapping("/findAllFollow")
     @ResponseBody
-    public List<SuperFollow> findAllFollow(){
-        List<SuperFollow> followList=  queryService.findAllFollow();
+    public List<SuperFollow> findAllFollow(Integer upGroupId){
+        List<SuperFollow> followList=  queryService.findAllFollow(upGroupId);
         System.err.println(followList);
         return followList;
     }
@@ -38,7 +45,6 @@ public class QueryController {
     @RequestMapping("/saveFollowUpRule")
     @ResponseBody
     public Integer saveFollowUpRule(FollowUpRule followUpRule ,String tamplateId,String remindersDictionaryId,String remindersOccupationId){
-        System.err.println(followUpRule.getRuleId());
         if(followUpRule.getRuleId()==null|| "".equals(followUpRule.getRuleId())){
             queryService.addFollowUpRule(followUpRule);
         }else {
@@ -99,48 +105,26 @@ public class QueryController {
         Checked c = new Checked();
         Test t =new Test();
         if(!"".equals(pid) && pid!=null){
-           //Programme p= queryService.getByProgrammeName(Programme.getProgrammeName());
-               // String pName=p.getProgrammeName();
-                //pName.substring(pName.lastIndexOf("(")+1,pName.lastIndexOf(")"));
-                //Programme.setProgrammeName();
             queryService.changeProgramme(Programme);
             queryService.removeMedication(pid);
-            for (Integer integer : medicationDictionaryId) {
-                m.setMedicationId(pid);
-                m.setMedicationDictionaryId(integer);
-                queryService.addMedication(m);
-            }
             queryService.removeTest(pid);
-            for (Integer integer : testDictionaryId) {
-                t.setTestId(pid);
-                t.setTestDictionaryId(integer);
-                queryService.addTest(t);
-            }
             queryService.removeChecked(pid);
-            for (Integer integer : checkedDictionaryId) {
-                c.setCheckedId(pid);
-                c.setCheckedDictionaryId(integer);
-                queryService.addChecked(c);
-            }
-        }else{
-            queryService.addProgramme(Programme);
-            Integer ProgrammeId=Programme.getProgrammeId();
-            System.err.println(ProgrammeId);
-            for (Integer integer : medicationDictionaryId) {
-                m.setMedicationId(ProgrammeId);
-                m.setMedicationDictionaryId(integer);
-                queryService.addMedication(m);
-            }
-            for (Integer integer : testDictionaryId) {
-                t.setTestId(ProgrammeId);
-                t.setTestDictionaryId(integer);
-                queryService.addTest(t);
-            }
-            for (Integer integer : checkedDictionaryId) {
-                c.setCheckedId(ProgrammeId);
-                c.setCheckedDictionaryId(integer);
-                queryService.addChecked(c);
-            }
+        }else{ queryService.addProgramme(Programme); }
+        Integer ProgrammeId=Programme.getProgrammeId();
+        for (Integer integer : medicationDictionaryId) {
+            m.setMedicationId(ProgrammeId);
+            m.setMedicationDictionaryId(integer);
+            queryService.addMedication(m);
+        }
+        for (Integer integer : testDictionaryId) {
+            t.setTestId(ProgrammeId);
+            t.setTestDictionaryId(integer);
+            queryService.addTest(t);
+        }
+        for (Integer integer : checkedDictionaryId) {
+            c.setCheckedId(ProgrammeId);
+            c.setCheckedDictionaryId(integer);
+            queryService.addChecked(c);
         }
         return "redirect:/plan";
     }

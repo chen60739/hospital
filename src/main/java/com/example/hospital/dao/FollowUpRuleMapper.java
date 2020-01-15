@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface FollowUpRuleMapper {
-    List<SuperFollow> selectAllFollow();
+    List<SuperFollow> selectAllFollow(Integer upGroupId);
 
     int deleteByPrimaryKey(Integer ruleId);
 

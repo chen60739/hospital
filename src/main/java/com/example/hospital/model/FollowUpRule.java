@@ -30,6 +30,8 @@ public class FollowUpRule implements Serializable,Cloneable{
     private Boolean isScheduling ;
     /** 0 提前   1  延后 */
     private Boolean isPostpone ;
+    /** 所属组id*/
+    private Integer upGroupId;
 
     /** 主键 */
     public Integer getRuleId(){
@@ -118,6 +120,9 @@ public class FollowUpRule implements Serializable,Cloneable{
         this.isPostpone = isPostpone;
     }
 
+    public Integer getUpGroupId() { return upGroupId; }
+    public void setUpGroupId(Integer upGroupId) { this.upGroupId = upGroupId; }
+
     @Override
     public String toString() {
         return "FollowUpRule{" +
@@ -132,6 +137,7 @@ public class FollowUpRule implements Serializable,Cloneable{
                 ", advanceNotice=" + advanceNotice +
                 ", isScheduling=" + isScheduling +
                 ", isPostpone=" + isPostpone +
+                ", upGroupId=" + upGroupId +
                 '}';
     }
 }

@@ -118,7 +118,8 @@ public class IndexController {
     }
 
     @RequestMapping("/plan")
-    public String plan(){
+    public String plan(@RequestParam("groupId") Integer groupId,Model model){
+        model.addAttribute("groupId",groupId);
         return "diagnosis_and_treatment_plan";
     }
 
@@ -145,7 +146,8 @@ public class IndexController {
         return "template_overview";
     }
     @RequestMapping("/followUpSetting")
-    public String followUpSetting(){
+    public String followUpSetting(@RequestParam("groupId") Integer groupId,Model model){
+        model.addAttribute("groupId",groupId);
         return "follow_up_rule_setting";
     }
 

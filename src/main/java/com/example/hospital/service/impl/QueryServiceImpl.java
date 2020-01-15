@@ -6,6 +6,7 @@ import com.example.hospital.dto.SuperProgramme;
 import com.example.hospital.model.*;
 import com.example.hospital.service.QueryService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -32,6 +33,13 @@ public class QueryServiceImpl implements QueryService {
     SelectTemplateMapper selectTemplateMapper;
     @Resource
     RemindersMapper remindersMapper;
+    @Resource
+    GradeMapper gradeMapper;
+
+    @Override
+    public List<Grade> findGrade(Integer gradeId) {
+        return gradeMapper.selectByGradeGid(gradeId);
+    }
 
     @Override
     public int removeFollowByRuleId(Integer selectRuleId) {
@@ -64,8 +72,8 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public List<SuperFollow> findAllFollow() {
-        return followUpRuleMapper.selectAllFollow();
+    public List<SuperFollow> findAllFollow(Integer upGroupId) {
+        return followUpRuleMapper.selectAllFollow(upGroupId);
     }
 
     @Override

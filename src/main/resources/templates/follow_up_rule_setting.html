@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/selectcheck.css">
     <script src="/js/selectcheck.js"></script>
     <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
+    <script src="/js/grade.js"></script>
 </head>
 <style>
     .btnrow{
@@ -321,12 +322,11 @@
         }else {
             $.post("saveFollowUpRule",{"isScheduling":isScheduling,"isPostpone":isPostpone,"benchmarkEvent":benchmarkEvent,"isInHospital":isInHospital,"isFirst":isFirst,"thatVisit":thatVisit,
                 "beginTime":beginTime,"intervalTime":intervalTime,"baselineCount":baselineCount,"advanceNotice":advanceNotice,"tamplateId":tamplateId,"remindersDictionaryId":remindersDictionaryId,
-                "remindersOccupationId":remindersOccupationId,"ruleId":ruleId},function (result) {
+                "remindersOccupationId":remindersOccupationId,"ruleId":ruleId,"upGroupId":[[${groupId}]]},function (result) {
             })
         }
     } );
     $(function () {
-
         var followRuleList;
         var remindList ;
         $.get("findRemind",{},function (res) {
@@ -336,7 +336,7 @@
                 // $(".remindxia").append("<option value='"+res[i].dictionaryId+"'>" + res[i].dictionaryName + "</option>");
             }
         });
-        $.get("findAllFollow",{},function (result) {
+        $.get("findAllFollow",{"upGroupId":[[${groupId}]]},function (result) {
             $("#followNumber").val(result.length+1);
             followRuleList=result;
             console.log(followRuleList);
@@ -825,7 +825,7 @@
             showPage(listname);
             count++;
         });
-        $(document).on("click","#hebing",function () {
+        $(document).on("click","#tSave",function () {
             $('#myModal').modal('toggle');
             var s='';
             var tam='';
@@ -842,8 +842,6 @@
             }else{alert(s==''?'你还没有选择任何内容！':s);}
 
     })
-
-
         $(document).on("click",".showPage",function () {
             $("#yes1").attr("checked",false);
             $("#noo").attr("checked",false);
@@ -852,7 +850,7 @@
             var string=this.value.substring(10,this.value.length);
             console.log(string)
             console.log(followRuleList.length)
-            if(followRuleList.length>1){
+            if(followRuleList.length>=1){
                 var showText="";
                 var tamplateString='';
                 for (let i = 0; i <followRuleList.length ; i++) {
