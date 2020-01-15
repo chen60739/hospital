@@ -28,6 +28,12 @@ public class GroupsServiceImpl implements GroupsService{
     }
 
     @Override
+    public Groups selectByGroupId(Integer groupId) {
+        Groups groups = groupsMapper.selectByPrimaryKey(groupId);
+        return groups;
+    }
+
+    @Override
     public List<Groups> selectAllGroups() {
         List<Groups> groups = groupsMapper.selectAll();
         return groups;
@@ -37,10 +43,13 @@ public class GroupsServiceImpl implements GroupsService{
     public List<Dictionary> findAll() {
         return dictionaryMapper.selectAll();
     }
+
     @Override
     public List<Dictionary> findAll1() {
         return dictionaryMapper.selectAll1();
-    } @Override
+    }
+
+    @Override
     public List<Dictionary> findAll2() {
         return dictionaryMapper.selectAll2();
     }

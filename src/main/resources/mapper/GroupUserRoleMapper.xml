@@ -125,20 +125,20 @@
 
 
   <!--权限管理页面   查询-->
-  <select id="selectAllGroupUser" resultMap="super">
-    select d.dictionary_name as dname,d2.dictionary_name as dname2,d3.dictionary_name as dname3,g.group_role_id,g.group_user_id,g.id,g.group_id,select_role.menu_name,u.department_id,u.user_name,u.user_id
-    FROM `group_user_role` g,`user` u ,`dictionary` d,`dictionary` d2,`dictionary` d3,`select_role`,`groups`
-    where g.group_user_id=u.user_id
-    AND g.group_role_id=d.dictionary_id
-    AND g.grade_id=select_role.role_id
-    AND g.group_occupation_id=d3.dictionary_id
-    AND u.department_id=d2.dictionary_id
-    AND g.group_id=groups.group_id
-    AND g.is_del=0
-    <if test="occupationId!=null and occupationId!=''">
-      AND d3.dictionary_name like CONCAT("%",#{occupationId},"%")
-    </if>
-  </select>
+    <select id="selectAllGroupUser" resultMap="super">
+        select d.dictionary_name as dname,d2.dictionary_name as dname2,d3.dictionary_name as dname3,g.group_role_id,g.group_user_id,g.id,g.group_id,select_role.menu_name,user.department_id,user.user_name,user.user_id
+        FROM `group_user_role` g,`user`,`dictionary` d,`dictionary` d2,`dictionary` d3,`select_role`,`groups`
+        where g.group_user_id=user.user_id
+        AND g.group_role_id=d.dictionary_id
+        AND g.grade_id=select_role.role_id
+        AND g.group_occupation_id=d3.dictionary_id
+        AND user.department_id=d2.dictionary_id
+        AND g.group_id=#{groupId}
+        AND g.is_del=0
+        <if test="occupationId!=null and occupationId!=''">
+            AND d3.dictionary_name like CONCAT("%",#{occupationId},"%")
+        </if>
+    </select>
 
   <!--批量删除-->
   <update id="deleteById">
@@ -167,5 +167,13 @@
   <insert id="updateGroupUserRole1">
     update `group_user_role` SET  group_role_id =#{groupRoleId} where id=#{id}
   </insert>
+  <!--新增一条用户权限-->
+  <insert id="insertGroupUserRole">
+    insert into `group_user_role`(group_user_id,group_role_id,group_id,group_occupation_id,grade_id,is_del) VALUES(#{groupUserId},#{groupRoleId},#{groupId},#{groupOccupationId},#{gradeId},0)
+  </insert>
+  <!--修改角色名称和等级-->
+  <update id="updateOccupationGrade">
+    update `group_user_role` SET group_occupation_id =#{groupOccupationId},grade_id =#{gradeId} where id=#{id}
+  </update>
 
 </mapper>

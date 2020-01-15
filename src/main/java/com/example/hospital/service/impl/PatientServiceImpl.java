@@ -2,14 +2,17 @@ package com.example.hospital.service.impl;
 
 
 import com.example.hospital.dao.PatientMapper;
+import com.example.hospital.dao.PlanningGroupMapper;
 import com.example.hospital.dto.SuperPatient;
 import com.example.hospital.model.Patient;
+import com.example.hospital.model.PlanningGroup;
 import com.example.hospital.service.PatientService;
 
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 
@@ -21,6 +24,9 @@ import java.util.List;
 public class PatientServiceImpl implements PatientService {
     @Resource
    private PatientMapper patientMapper;
+    @Resource
+    private PlanningGroupMapper planningGroupMapper;
+
     @Override
     public List<SuperPatient> findPatients(SuperPatient superPatient, String preTime, String sufTime, int group1) throws ParseException {
         String time1=null;
@@ -57,8 +63,13 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void insert(Patient patient) {
+    public void insert(Patient patient, Integer groupId) {
         patientMapper.insert(patient);
+        PlanningGroup planningGroup = new PlanningGroup();
+        planningGroup.setPPatientId(patient.getPatientId());
+        planningGroup.setInGroupTime(new Date());
+        planningGroup.setPGroupId(groupId);
+        planningGroupMapper.insert(planningGroup);
     }
 
     @Override

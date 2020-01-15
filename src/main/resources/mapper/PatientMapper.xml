@@ -90,12 +90,12 @@
           gg.group_department_id,
           f.follow_id
       FROM
-          planning_group g,
-          patient p,
-          follow_up_rule r,
-          groups gg,
-          follow_up f,
-          dictionary d
+          `planning_group` g,
+          `patient` p,
+          `follow_up_rule` r,
+          `groups` gg,
+          `follow_up` f,
+          `dictionary` d
       WHERE
       gg.group_department_id = d.dictionary_id
       AND g.p_patient_id = p.patient_id
@@ -132,7 +132,7 @@
           follow_time,
           follow_patient_id
           FROM
-          follow_up
+          `follow_up`
       WHERE follow_time > NOW()
       ) AS n ON a.patient_id = n.follow_patient_id
   </select>
@@ -150,7 +150,7 @@
     delete from `patient`
     where patient_id = #{patientId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.example.hospital.model.Patient">
+  <insert id="insert" parameterType="com.example.hospital.model.Patient" useGeneratedKeys="true" keyProperty="patientId">
     insert into `patient` (patient_id, patient_name, patient_sex,
       patient_birthday, nation_id, outpatient_service, 
       hospitalization_number, disease_name, disease, 
@@ -302,10 +302,10 @@
     &lt;!&ndash;查询药师下的病人&ndash;&gt;
     <select id="selectPatient"  resultMap="BaseResultMap">
        SELECT patient_id from patient where department_id=#{dId}
-    </select>-->
+    </select>
 
-    <!--查询技师下的病人-->
-    <!--<select id="selectPatient"  resultMap="BaseResultMap">
+    &lt;!&ndash;查询技师下的病人&ndash;&gt;
+    <select id="selectPatient"  resultMap="BaseResultMap">
        SELECT patient_id from patient where department_id=#{dId}
     </select>
 -->

@@ -23,20 +23,60 @@ public interface GroupUserRoleMapper {
 
     int updateByPrimaryKey(GroupUserRole record);
 
-    //权限管理页面--查询
-    List<SupGroupUserRole> selectAllGroupUser(@Param("occupationId") String occupationId);
+    /**
+     * 权限管理页面--查询
+     * @param occupationId
+     * @param groupId
+     * @return
+     */
+    List<SupGroupUserRole> selectAllGroupUser(@Param("occupationId") String occupationId,@Param("groupId")Integer groupId);
 
-    //批量删除
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
     int deleteById(@Param("ids") String ids);
 
-    //根据科室id查询 姓名
+    /**
+     * 根据科室id查询 姓名
+     * @param departmentId
+     * @param userName
+     * @return
+     */
     List<SupGroupUserRole> selectNameByDepartmentId(@Param("departmentId") Integer departmentId, @Param("userName") String userName);
 
-    //新增用户
+    /**
+     * 新增用户
+     * @param groupUserId
+     * @param id
+     * @return
+     */
     int updateGroupUserRole(@Param("groupUserId") String groupUserId, @Param("id") Integer id);
 
-    //修改权限
+    /**
+     * 修改权限
+     * @param id
+     * @param groupRoleId
+     * @return
+     */
     int updateGroupUserRole1(@Param("id") Integer id, @Param("groupRoleId") String groupRoleId);
+
+    /**
+     * 新增用户权限
+     * @param groupUserRole
+     * @return
+     */
+    int insertGroupUserRole(GroupUserRole groupUserRole);
+
+    /**
+     * 修改角色级别和角色名称
+     * @param groupUserRole
+     * @return
+     */
+    int updateOccupationGrade(GroupUserRole groupUserRole);
+
+
 
 
 }

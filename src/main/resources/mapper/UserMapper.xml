@@ -346,4 +346,8 @@
   <select id="getUserByPhone" resultMap="BaseResultMap">
     SELECT * FROM `user` WHERE user_phone=#{phone}
   </select>
+
+  <update id="updatePwdById">
+    UPDATE `user` SET user_pwd=#{pwd} WHERE user_id=#{id}
+  </update>
 </mapper>

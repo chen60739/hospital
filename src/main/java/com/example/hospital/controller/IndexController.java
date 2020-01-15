@@ -1,10 +1,12 @@
 package com.example.hospital.controller;
 
+import com.example.hospital.dto.LablePro;
 import com.example.hospital.model.Dictionary;
 import com.example.hospital.model.Groups;
 import com.example.hospital.model.Lable;
 import com.example.hospital.model.User;
 import com.example.hospital.service.impl.GroupsServiceImpl;
+import com.example.hospital.service.impl.LableServiceImpl;
 import com.example.hospital.service.impl.TemplateServiceImpl;
 import com.example.hospital.service.impl.UserServiceImpl;
 import org.slf4j.Logger;
@@ -61,13 +63,11 @@ public class IndexController {
 
 
     @RequestMapping("/one")
-    public String one(@RequestParam("groupId") Integer groupId,
-                      @RequestParam("departmentId") Integer departmentId,
-                      Model model){
+    public String one(@RequestParam("groupId") Integer groupId,Model model){
         try {
-            model.addAttribute("groupId",groupId);
-            model.addAttribute("departmentId",departmentId);
-            LOGGER.info("IndexController-----one  成功" + departmentId);
+            Groups groups = groupsService.selectByGroupId(groupId);
+            model.addAttribute("group",groups);
+            LOGGER.info("IndexController-----one  成功" + groupId);
         }catch (Exception e){
             LOGGER.info("IndexController-----one  失败");
         }
@@ -133,7 +133,9 @@ public class IndexController {
     }
 
     @RequestMapping("/groupPower")
-    public String groupPower(){
+    public String groupPower(Model model,Integer groupId,Integer departmentId){
+        model.addAttribute("groupId",groupId);
+        model.addAttribute("departmentId",departmentId);
         return "group_power";
     }
 
@@ -156,15 +158,12 @@ public class IndexController {
     public String dataReview(){
         return "data_review";
     }
-    @RequestMapping("/term")
-    public String term(){
-        return "term_management";
-    }
+
 
     @RequestMapping("/getLableTree")
     @ResponseBody
-    public List<Lable> getLableTree(){
-        List<Lable> treeData = templateService.getTreeData();
+    public List<LablePro> getLableTree(){
+        List<LablePro> treeData = templateService.getTreeData();
         return treeData;
     }
 

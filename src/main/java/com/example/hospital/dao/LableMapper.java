@@ -1,5 +1,6 @@
 package com.example.hospital.dao;
 
+import com.example.hospital.dto.LablePro;
 import com.example.hospital.model.Lable;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,7 +20,11 @@ public interface LableMapper {
 
     int updateByPrimaryKey(Lable record);
 
-    List<Lable> selectAll();
+    /**
+     * 查询所有标签
+     * @return
+     */
+    List<LablePro> selectAll();
 
     /**
      * 通过模板id查找
@@ -27,4 +32,11 @@ public interface LableMapper {
      * @return
      */
     List<Lable> selectSome(Integer tempId);
+
+    /**
+     * 查找一级标签
+     * @return
+     */
+    List<Lable> selectOneLevel();
+
 }

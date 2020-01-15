@@ -1,14 +1,10 @@
 package com.example.hospital.dao;
 
-import com.example.hospital.dto.SuperUser;
 import com.example.hospital.model.User;
-import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.List;
 @Component
 @Mapper
@@ -62,16 +58,6 @@ public interface UserMapper {
     List<User> getUserOne(Integer userId);
 
     /**
-     *  //入组管理查询医生
-     * @return
-     */
-    List<User> selectDoctor();
-
-    //权限管理页面--查询
-    List<SuperUser> selectAllUser(@Param("occupationId") String occupationId);
-    /*List<SuperUser> selectAllUser1();*/
-
-    /**
      * 批量删除
      * @param ids
      * @return
@@ -91,4 +77,12 @@ public interface UserMapper {
      * @return
      */
     User getUserByPhone(String phone);
+
+    /**
+     * 通过用户id修改密码
+     * @param id
+     * @param pwd
+     * @return
+     */
+    int updatePwdById(@Param("id") Integer id,@Param("pwd") String pwd);
 }

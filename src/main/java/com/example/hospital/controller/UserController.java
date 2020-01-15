@@ -175,4 +175,17 @@ public class UserController {
         return list;
     }
 
+    /**
+     * 账户设置-修改当前用户密码
+     * @param id
+     * @param pwd
+     * @return
+     */
+    @RequestMapping("/changePwd")
+    @ResponseBody
+    public Map<String,String> changePwd(Integer id,String pwd){
+        Map<String,String> res = userService.changePwdById(id,pwd);
+        return res;
+    }
+
 }
