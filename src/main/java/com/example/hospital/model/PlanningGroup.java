@@ -18,7 +18,7 @@ public class PlanningGroup implements Serializable,Cloneable{
     /** 患者id */
     private Integer pPatientId ;
     /** 入组时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date inGroupTime ;
 

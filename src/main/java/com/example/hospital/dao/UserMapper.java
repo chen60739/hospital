@@ -1,5 +1,6 @@
 package com.example.hospital.dao;
 
+import com.example.hospital.dto.SuperUser;
 import com.example.hospital.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -50,6 +51,16 @@ public interface UserMapper {
 
     List<User> selectOne(Integer userId);//查询单条
 
+    /**
+     * 用户界面条件查询加显示
+     * @param userId
+     * @param userName
+     * @param userSex
+     * @param userPhone
+     * @param userEmail
+     * @param dictionaryName
+     * @return
+     */
     List<User> getUserAll(@Param("userId") Integer userId, @Param("userName") String userName, @Param("userSex") Integer userSex,
                           @Param("userPhone") String userPhone, @Param("userEmail") String userEmail, @Param("dictionaryName") String dictionaryName);
 
@@ -58,11 +69,21 @@ public interface UserMapper {
     List<User> getUserOne(Integer userId);
 
     /**
+     *  //入组管理查询医生
+     * @return
+     */
+    List<User> selectDoctor();
+
+    //权限管理页面--查询
+    List<SuperUser> selectAllUser(@Param("occupationId") String occupationId);
+
+
+    /**
      * 批量删除
      * @param ids
      * @return
      */
-    int deleteById(@Param("ids") String ids);
+    int removeUserById(@Param("ids") String ids);
 
     /**
      * 根据id查询用户

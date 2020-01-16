@@ -14,9 +14,13 @@ public class PlanningGroupServiceImpl implements PlanningGroupService {
     @Resource
     private PlanningGroupMapper planningGroupMapper;
 
+    /**
+     * 插入入组id病人id
+     * @param record
+     * @return
+     */
     @Override
     public int insert(PlanningGroup record) {
-        record.setInGroupTime(new Date());
         return planningGroupMapper.insert(record);
     }
 }

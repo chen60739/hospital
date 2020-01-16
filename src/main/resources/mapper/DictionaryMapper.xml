@@ -106,4 +106,9 @@
   <select id="selectGroupRoleName" resultMap="BaseResultMap">
     SELECT  dictionary_name FROM `dictionary` WHERE  dictionary_id=#{id}
   </select>
+
+  <!--查询疾病-->
+  <select id="getDisease" resultMap="BaseResultMap">
+      select dictionary_id,dictionary_name from `dictionary` where dictionary_id between 22001 and 29999
+  </select>
 </mapper>

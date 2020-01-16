@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -140,7 +141,9 @@ public class IndexController {
     }
 
     @RequestMapping("/intoGroup")
-    public String intoGroup(){
+    public String intoGroup(Integer groupId ,ModelMap map){
+        System.out.println(groupId);
+        map.put("groupId",groupId);
         return "into_group_management";
     }
     @RequestMapping("/tempView")

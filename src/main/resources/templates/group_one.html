@@ -30,6 +30,8 @@
                 <hr>
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
+                        <button type="button" class="btn btn-info"><a href="/groupPower" style="color: white">权限管理</a></button>
+                        <button type="button" class="btn btn-info"><a th:href="@{/intoGroup(groupId=${groupId})}" style="color: white">入组管理</a></button>
                         <button type="button" class="btn btn-info"><a th:href="@{/groupPower(departmentId=${group.groupDepartmentId},groupId=${group.groupId})}" style="color: white">权限管理</a></button>
                         <button type="button" class="btn btn-info"><a href="/intoGroup" style="color: white">入组管理</a></button>
                         <button type="button" class="btn btn-info"><a th:href="@{/templist(departmentId=${group.groupDepartmentId},groupId=${group.groupId})}" style="color: white">模板设置</a></button>
@@ -328,7 +330,7 @@
 
     }
     function  add() {
-        var outpatientService2 =$('#outPatientService2').val();
+        var outpatientService2 =$('#outpatientService2').val();
         var pName=$('#PName').val();
         var Number=$('#Number').val();
         var birthday=$('#birthday').val();

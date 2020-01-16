@@ -7,6 +7,11 @@ import org.apache.ibatis.annotations.Mapper;
 public interface PlanningGroupMapper {
     int deleteByPrimaryKey(Integer planningId);
 
+    /**
+     * 插入入组id病人id
+     * @param record
+     * @return
+     */
     int insert(PlanningGroup record);
 
     int insertSelective(PlanningGroup record);

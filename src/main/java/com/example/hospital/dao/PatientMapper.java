@@ -37,5 +37,33 @@ public interface PatientMapper {
 
     int deleteById(@Param("ids")  String ids);
 
+    /**
+     * 查询科室下病人id
+     * @param dId
+     * @return
+     */
     List<Patient> selectPatientByDepartment(@Param("dId")Integer dId);
+
+    /**
+     * 查询user下的病人id
+     * @return
+     */
+    List<Patient> selectPatientByUser(Integer leadOff);
+
+    /**
+     * 根据疾病编码查询病人id
+     * @param code1
+     * @param code2
+     * @return
+     */
+    List<Patient> selectPatientByDiseaseCode(@Param("code1") String code1,@Param("code2")String code2);
+
+    /**
+     * 根据疾病名称查询病人id
+     * @param diseaseName
+     * @return
+     */
+    List<Patient> selectPatientByDiseaseName(@Param("diseaseName")String diseaseName);
+
+
 }

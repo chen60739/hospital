@@ -72,8 +72,46 @@ public class PatientServiceImpl implements PatientService {
         planningGroupMapper.insert(planningGroup);
     }
 
+    /**
+     * 查询科室下病人的id
+     * @param dId
+     * @return
+     */
     @Override
     public List<Patient> selectPatientByDepartment(Integer dId) {
         return patientMapper.selectPatientByDepartment(dId);
     }
+
+    /**
+     * 查询user下的病人·
+     * @param leadOff
+     * @return
+     */
+    @Override
+    public List<Patient> selectPatientByUser(Integer leadOff) {
+        return patientMapper.selectPatientByUser(leadOff);
+    }
+
+    /**
+     * 根据疾病编码查询病人id
+     * @param code1
+     * @param code2
+     * @return
+     */
+    @Override
+    public List<Patient> selectPatientByDiseaseCode(String code1, String code2) {
+        return patientMapper.selectPatientByDiseaseCode(code1,code2);
+    }
+
+    /**
+     * 根据疾病名称查询病人id
+     * @param diseaseName
+     * @return
+     */
+    @Override
+    public List<Patient> selectPatientByDiseaseName(String diseaseName) {
+        return patientMapper.selectPatientByDiseaseName(diseaseName);
+    }
+
+
 }

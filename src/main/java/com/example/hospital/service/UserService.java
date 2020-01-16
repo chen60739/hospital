@@ -40,7 +40,7 @@ public interface UserService {
     int updateByPrimaryKeySelective(User record);
 
     //批量删除
-    int removeById(String ids);
+    int removeUserById(String ids);
 
     User selectByPrimaryKey(Integer userId);//查询单条
 
