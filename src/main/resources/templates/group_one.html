@@ -32,9 +32,9 @@
                     <div class="col-xs-12 col-md-12">
                         <button type="button" class="btn btn-info"><a th:href="@{/groupPower(departmentId=${group.groupDepartmentId},groupId=${group.groupId})}" style="color: white">权限管理</a></button>
                         <button type="button" class="btn btn-info"><a href="/intoGroup" style="color: white">入组管理</a></button>
-                        <button type="button" class="btn btn-info"><a th:href="@{/templist(departmentId=${departmentId},groupId=${groupId})}" style="color: white">模板设置</a></button>
-                        <button type="button" class="btn btn-info"><a th:href="@{/followUpSetting(groupId=${groupId})}" style="color: white">随访规则设定</a></button>
-                        <button type="button" class="btn btn-info"><a th:href="@{/plan(groupId=${groupId})}" style="color: white">诊疗方案</a></button>
+                        <button type="button" class="btn btn-info"><a th:href="@{/templist(departmentId=${group.groupDepartmentId},groupId=${group.groupId})}" style="color: white">模板设置</a></button>
+                        <button type="button" class="btn btn-info"><a th:href="@{/followUpSetting(groupId=${group.groupId})}" style="color: white">随访规则设定</a></button>
+                        <button type="button" class="btn btn-info"><a th:href="@{/plan(groupId=${group.groupId})}" style="color: white">诊疗方案</a></button>
                     </div>
                     <hr>
                 </div>
