@@ -175,4 +175,22 @@ public class UserController {
         return list;
     }
 
+    //批量删除
+    @ResponseBody
+    @RequestMapping("removeUserById")
+    public String  removeUserById(String ids){
+        String substring = ids.substring(0, ids.length() - 1);
+        String[] split = substring.split(",");
+        try{
+            for (int i=0;i<split.length;i++){
+                userService.removeUserById(split[i]);
+            }
+            return "success";
+        }catch (NumberFormatException e){
+            e.printStackTrace();
+            return "error";
+        }
+
+    }
+
 }

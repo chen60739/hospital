@@ -121,14 +121,14 @@ public class UserServiceImpl implements UserService {
         return userMapper.insertUser(record);
     }
 
- /*   @Override
-    public List<SuperUser> findAllUser(String occupationId) {
-        System.out.println(occupationId);
-        return userMapper.selectAllUser(occupationId);
-    }*/
-
+    /**
+     * 根据id 批量删除user
+     *
+     * @param ids
+     * @return
+     */
     @Override
-    public int removeById(String ids) {
-        return userMapper.deleteById(ids);
+    public int removeUserById(String ids) {
+        return userMapper.removeUserById(ids);
     }
 }

@@ -18,7 +18,12 @@
 
 
   </resultMap>
-  <resultMap id="SuperResultMap" type="com.example.hospital.dto.SuperPatient" extends="BaseResultMap">
+    <resultMap id="super" type="com.example.hospital.dto.SuperPatient" extends="BaseResultMap">
+        <result column="dictionary_id" javaType="INTEGER" property="dictionaryId"/>
+        <result column="dictionary_name" jdbcType="VARCHAR" property="dictionaryName" />
+    </resultMap>
+
+    <resultMap id="SuperResultMap" type="com.example.hospital.dto.SuperPatient" extends="BaseResultMap">
     <association property="planningGroups" javaType="com.example.hospital.model.PlanningGroup">
       <id column="planning_id" jdbcType="INTEGER" property="planningId" />
       <result column="p_group_id" jdbcType="INTEGER" property="pGroupId" />
@@ -289,24 +294,19 @@
        SELECT patient_id from patient where department_id=#{dId}
     </select>
 
-    <!--查询医生下的病人-->
-    <select id="selectPatient"  resultMap="BaseResultMap">
-       SELECT patient_id from patient where department_id=#{dId}
+    <!--查询医生、护士、药师、技师下的病人-->
+    <select id="selectPatientByUser"  resultMap="BaseResultMap">
+       SELECT patient_id from patient where lead_off=#{leadoff}
     </select>
 
-    <!--查询护士下的病人-->
-    <select id="selectPatient"  resultMap="BaseResultMap">
-       SELECT patient_id from patient where department_id=#{dId}
+    <!--根据疾病编码查询病人-->
+    <select id="selectPatientByDiseaseCode"  resultMap="BaseResultMap">
+       SELECT patient_id from patient WHERE disease BETWEEN #{code1} and #{code2}
     </select>
 
-    <!--查询药师下的病人-->
-    <select id="selectPatient"  resultMap="BaseResultMap">
-       SELECT patient_id from patient where department_id=#{dId}
-    </select>
-
-    <!--查询技师下的病人-->
-    <select id="selectPatient"  resultMap="BaseResultMap">
-       SELECT patient_id from patient where department_id=#{dId}
+    <!--根据疾病名称查询病人-->
+    <select id="selectPatientByDiseaseName"  resultMap="BaseResultMap">
+       SELECT patient_id from patient WHERE disease_name=#{diseaseName}
     </select>
 
 </mapper>

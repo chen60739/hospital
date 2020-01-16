@@ -40,7 +40,7 @@
   <select id="getUser" resultMap="super">
     SELECT user_id, user_name,dictionary_name FROM `user` ,`dictionary`
     <where>
-      department_id=dictionary_id and is_del=0
+      department_id=dictionary_id and is_del=0 and occupation_id=12001
       <if test="dictionaryName!= null and dictionaryName != ''">
         and dictionary_id = #{dictionaryName}
       </if>
@@ -334,7 +334,7 @@
   </select>-->
 
   <!--批量删除-->
-  <update id="deleteById">
+  <update id="removeUserById">
     UPDATE `user` SET is_del=1 WHERE user_id=#{ids}
   </update>
 

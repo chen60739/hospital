@@ -32,4 +32,11 @@ public interface DictionaryMapper {
 
     //根据id查询权限名字
     Dictionary selectGroupRoleName(@Param("id") String id);
+
+    /**
+     * 查询疾病和疾病编码的回显
+     * @return
+     */
+    List<Dictionary> getDisease();
+
 }
