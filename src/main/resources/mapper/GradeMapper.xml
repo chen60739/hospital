@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hospital.dao.GradeMapper">
+  <resultMap id="BaseResultMap" type="com.example.hospital.model.Grade">
+    <id column="g_id" jdbcType="INTEGER" property="gId" />
+    <result column="grade_gid" jdbcType="INTEGER" property="gradeGid" />
+    <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
+    <result column="grade_url" jdbcType="VARCHAR" property="gradeUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    g_id, grade_gid, grade_name, grade_url
+  </sql>
+
+  <select id="selectByGradeGid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `grade`
+    where grade_gid = #{gradeGid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `grade`
+    where g_id = #{gId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.hospital.model.Grade">
+    insert into `grade` (g_id, grade_gid, grade_name,
+      grade_url)
+    values (#{gId,jdbcType=INTEGER}, #{gradeGid,jdbcType=INTEGER}, #{gradeName,jdbcType=VARCHAR}, 
+      #{gradeUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.hospital.model.Grade">
+    insert into `grade`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gId != null">
+        g_id,
+      </if>
+      <if test="gradeGid != null">
+        grade_gid,
+      </if>
+      <if test="gradeName != null">
+        grade_name,
+      </if>
+      <if test="gradeUrl != null">
+        grade_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gId != null">
+        #{gId,jdbcType=INTEGER},
+      </if>
+      <if test="gradeGid != null">
+        #{gradeGid,jdbcType=INTEGER},
+      </if>
+      <if test="gradeName != null">
+        #{gradeName,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeUrl != null">
+        #{gradeUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.Grade">
+    update `grade`
+    <set>
+      <if test="gradeGid != null">
+        grade_gid = #{gradeGid,jdbcType=INTEGER},
+      </if>
+      <if test="gradeName != null">
+        grade_name = #{gradeName,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeUrl != null">
+        grade_url = #{gradeUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where g_id = #{gId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.Grade">
+    update `grade`
+    set grade_gid = #{gradeGid,jdbcType=INTEGER},
+      grade_name = #{gradeName,jdbcType=VARCHAR},
+      grade_url = #{gradeUrl,jdbcType=VARCHAR}
+    where g_id = #{gId,jdbcType=INTEGER}
+  </update>
+</mapper>

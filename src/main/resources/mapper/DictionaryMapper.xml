@@ -10,6 +10,11 @@
   <sql id="Base_Column_List">
     dictionary_id, dictionary_name, one_id, two_id
   </sql>
+  <select id="selectVisit" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from `dictionary`
+    where one_id=23000
+  </select>
   <select id="selectProgramme" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

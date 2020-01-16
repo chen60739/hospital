@@ -1,10 +1,12 @@
 package com.example.hospital.service.impl;
 
 import com.example.hospital.dao.*;
+import com.example.hospital.dto.SuperFollow;
 import com.example.hospital.dto.SuperProgramme;
 import com.example.hospital.model.*;
 import com.example.hospital.service.QueryService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,6 +27,59 @@ public class QueryServiceImpl implements QueryService {
     CheckedMapper checkedMapper;
     @Resource
     ProgrammeMapper programmeMapper;
+    @Resource
+    FollowUpRuleMapper followUpRuleMapper;
+    @Resource
+    SelectTemplateMapper selectTemplateMapper;
+    @Resource
+    RemindersMapper remindersMapper;
+    @Resource
+    GradeMapper gradeMapper;
+
+    @Override
+    public List<Grade> findGrade(Integer gradeId) {
+        return gradeMapper.selectByGradeGid(gradeId);
+    }
+
+    @Override
+    public int removeFollowByRuleId(Integer selectRuleId) {
+        return selectTemplateMapper.deleteByFollowUpRuleId(selectRuleId);
+    }
+
+    @Override
+    public int changeFollowRule(FollowUpRule followUpRule) {
+        return followUpRuleMapper.updateFollowRuleByid(followUpRule);
+    }
+
+    @Override
+    public int removeByRemindersId(Integer remindersId) {
+        return remindersMapper.deleteByRemindersId(remindersId);
+    }
+
+    @Override
+    public int addFollowUpRule(FollowUpRule followUpRule) {
+        return followUpRuleMapper.insertFollowUpRule(followUpRule);
+    }
+
+    @Override
+    public int addFollowTemplate(SelectTemplate selectTemplate) {
+        return selectTemplateMapper.insertFollowTemplate(selectTemplate);
+    }
+
+    @Override
+    public int addReminders(Reminders reminders) {
+        return remindersMapper.insertReminders(reminders);
+    }
+
+    @Override
+    public List<SuperFollow> findAllFollow(Integer upGroupId) {
+        return followUpRuleMapper.selectAllFollow(upGroupId);
+    }
+
+    @Override
+    public List<Dictionary> findVisit() {
+        return dictionaryMapper.selectVisit();
+    }
 
     @Override
     public Programme getByProgrammeName(String programmeName) {

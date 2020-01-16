@@ -9,6 +9,9 @@ import java.util.List;
 
 @Mapper
 public interface DictionaryMapper {
+    //查询提醒方式
+    List<Dictionary> selectVisit();
+    //查询方案
     List<Dictionary> selectProgramme();
 
     int deleteByPrimaryKey(Integer dictionaryId);

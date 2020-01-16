@@ -6,10 +6,14 @@
     <result column="lable_name" jdbcType="VARCHAR" property="lableName" />
     <result column="lable_type" jdbcType="VARCHAR" property="lableType" />
     <result column="lable_upper_id" jdbcType="INTEGER" property="lableUpperId" />
+    <result column="lable_create_time" jdbcType="TIMESTAMP" property="lableCreateTime" />
+    <result column="lable_create_user_id" jdbcType="INTEGER" property="lableCreateUserId" />
+    <result column="check_state" jdbcType="TINYINT" property="checkState" />
     <result column="conditions" jdbcType="VARCHAR" property="conditions" />
   </resultMap>
   <sql id="Base_Column_List">
-    lable_id, lable_name, lable_type,lable_upper_id, conditions
+    lable_id, lable_name, lable_type, lable_upper_id, lable_create_time,
+    lable_create_user_id, check_state, conditions
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -67,6 +71,12 @@
       <if test="lableType != null">
         lable_type = #{lableType,jdbcType=VARCHAR},
       </if>
+      <if test="lableUpperId != null">
+        lable_upper_id = #{lableUpperId},
+      </if>
+      <if test="checkState != null">
+        check_state = #{checkState},
+      </if>
       <if test="conditions != null">
         conditions = #{conditions,jdbcType=VARCHAR},
       </if>
@@ -80,9 +90,23 @@
       conditions = #{conditions,jdbcType=VARCHAR}
     where lable_id = #{lableId,jdbcType=INTEGER}
   </update>
+
+  <resultMap id="pro" type="com.example.hospital.dto.LablePro" extends="BaseResultMap">
+    <result column="user_name" property="userName" />
+    <result column="department" property="department" />
+  </resultMap>
     
-    <select id="selectAll" resultMap="BaseResultMap">
-        SELECT	* FROM `lable`
+    <select id="selectAll" resultMap="pro">
+      SELECT
+          l.*, u.user_name,
+          d.dictionary_name AS department
+      FROM
+          `lable` l,
+          `user` u,
+          `dictionary` d
+      WHERE
+          l.lable_create_user_id = u.user_id
+      AND u.department_id = d.dictionary_id
     </select>
 
     <select id="selectSome" resultMap="BaseResultMap">
@@ -95,4 +119,8 @@
           l.lable_id = s.lable_id
       AND s.temp_id = #{tempId}
     </select>
+
+  <select id="selectOneLevel" resultMap="BaseResultMap">
+    SELECT * FROM `lable` WHERE lable_upper_id = 0
+  </select>
 </mapper>

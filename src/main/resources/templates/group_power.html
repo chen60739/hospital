@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/hospital.css">
     <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
     <script src="/plugs/multi-select/jquery.multi-select.js"></script>
+    <script src="/js/grade.js"></script>
 </head>
 <style>
     .power{
@@ -128,47 +129,47 @@
                                 <div class="col-sm-offset-2 col-sm-10">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10001">管理随访组
+                                            <input type="checkbox" name="power" class="role" value="10001">管理随访组
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10002">病例管理
+                                            <input type="checkbox" name="power" class="role" value="10002">病例管理
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10003">数据录入
+                                            <input type="checkbox" name="power" class="role" value="10003">数据录入
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10004">修改其他创建者数据
+                                            <input type="checkbox" name="power"  class="role" value="10004">修改其他创建者数据
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10005">查看隐私数据
+                                            <input type="checkbox" name="power" class="role" value="10005">查看隐私数据
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10006">统计分析
+                                            <input type="checkbox" name="power" class="role" value="10006">统计分析
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10007">随访规则设置
+                                            <input type="checkbox" name="power" class="role" value="10007">随访规则设置
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10008">查看
+                                            <input type="checkbox" name="power" class="role" value="10008">查看
                                         </label>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" class="role" value="10009">检索
+                                            <input type="checkbox" name="power" class="role" value="10009">检索
                                         </label>
                                     </div>
                                 </div>
@@ -180,7 +181,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" id="save">保存</button>
+                <button type="button" class="btn btn-info" id="save">保存</button>
             </div>
         </div>
     </div>
@@ -188,7 +189,7 @@
 <input id="groupUserId" type="hidden" value="">
 
 
-
+<!--新增模态框-->
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -201,11 +202,11 @@
                     <div class="col-xs-6">
                         <div class="form-group">
                             <div class="input-group">
-                                <div class="input-group-addon">责任医院</div>
-                                <select class="form-control" id="hospital1">
+                                <div class="input-group-addon">级别</div>
+                                <select class="form-control" id="level">
                                     <option value="">-请选择-</option>
                                     <option value="1">二级</option>
-                                    <option value="3">三级</option>
+                                    <option value="2">三级</option>
                                 </select>
                             </div>
                         </div>
@@ -213,8 +214,8 @@
                     <div class="col-xs-6">
                         <div class="form-group">
                             <div class="input-group">
-                                <div class="input-group-addon">责任科室</div>
-                                <select class="form-control" id="department1">
+                                <div class="input-group-addon">角色名称</div>
+                                <select class="form-control" id="department">
                                     <option value="">-请选择-</option>
                                     <option value="12001">医生</option>
                                     <option value="12002">护士</option>
@@ -229,13 +230,62 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" id="save1" data-toggle="modal" data-target="#myModal" onclick="save()">保存</button>
+                <button type="button" class="btn btn-info" id="newSave">保存</button>
             </div>
         </div>
     </div>
 </div>
+<!--编辑模态框-->
+<div class="modal fade" id="update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel2">随访组编辑</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">级别</div>
+                                <select class="form-control" id="updatelevel">
+                                    <option value="">-请选择-</option>
+                                    <option value="1">二级</option>
+                                    <option value="2">三级</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">角色名称</div>
+                                <select class="form-control" id="updatedepartment">
+                                    <option value="">-请选择-</option>
+                                    <option value="12001">医生</option>
+                                    <option value="12002">护士</option>
+                                    <option value="12003">技师</option>
+                                    <option value="12004">药师</option>
+                                    <option value="12005">随访员</option>
+                                    <option value="12006">组长</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" id="updateSave">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="rowId">
+<input type="hidden" id="groupOccupationId">
+<input type="hidden" id="gradeId">
 </body>
-<script>
+<script th:inline="javascript">
     $('#public-methods').multiSelect({
     });
 
@@ -250,9 +300,6 @@
     });
 
     $(function () {
-
-
-
         selectDiceionary();
         var tableColumns = [
             {checkbox:true},
@@ -262,46 +309,66 @@
                 formatter: function(value,row){
                     return '<button type="button" data-toggle="modal" data-target="#myModal" class="RoleOfPower btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-gear"></i></button>';
                 }},
-            {field: 'groupUserId', title: '用户',align:'center', sortable: true},
-            {field: 'groupRoleId', title: '权限',align:'center', sortable: true},
+            {field: 'userName', title: '用户',align:'center', sortable: true},
+            {field: 'd1', title: '权限',align:'center', sortable: true},
             {field: 'operate', title: '操作',align:'center', events: 'operateEvents',formatter: operateFormatter}
         ];
-        /*var data1 = [{"name":"内分泌随访",
-            "lv":"60%",
-            "person":"张三",
-            "state":"开放",
-            "class":"内分泌科",
-            "creatTime":"2018-11-12"},
-            {"name":"内分泌随访",
-                "lv":"40%",
-                "person":"xx",
-                "state":"开放",
-                "class":"内分泌科",
-                "creatTime":"2018-11-12"
-            }];*/
 
         window.operateEvents = {
             //科室选中
             'click .RoleOfPower': function (e, value, row, index) {
-                $("#groupUserId").val(row.id)
+
+                $("input[name='power']").prop("checked", false)
+                var boxObj = $("input[name='power']");  //获取所有的复选框
+                var permissionsList =row.groupRoleId;
+                var permissions=permissionsList.split(",");
+                for (var i=0;i<boxObj.length;i++){
+                    for (var j=0;j<permissions.length;j++){
+                        if (boxObj[i].value==permissions[j]){
+                            boxObj[i].checked=true;
+                            break;
+                        }
+                    }
+                }
+
+
+
+                var op = '';
+                renId = (row.groupUserId).split(',');
+                ren = (row.userName).split(',');
+                $.each(renId,function (index) {
+                    op+='<option value="'+renId[index]+'" selected>'+ren[index]+'</option>'
+                })
+                $("#rowId").val(row.id)
                 $("#administrative").children("option").each(function(){
-                    var  depement =$("#administrative").val(row.departmentid);
                     var text=$(this).val();
-                    if(depement==text){
-                        $(this).attr("selected","selected");
+                    if(text==[[${departmentId}]]){
+                        $(this).prop("selected",true);
+                        return false;
                     }
                 })
-                //根据科室回显姓名
-                /*administrative()*/
+                $("#public-methods").empty();
                 search1();
             },
             'click .RoleOfEdit': function (e, value, row, index) {
-                alert("A");
+                $("#rowId").val(row.id)
+                $("#updatedepartment").children("option").each(function(){
+                    var text=$(this).text();
+                    if(text==row.d3){
+                        $(this).prop("selected",true);
+                        return false;
+                    }
+                })
+                $("#updatelevel").children("option").each(function(){
+                    var text=$(this).text();
+                    if(text==row.selectRole.menuName){
+                        $(this).prop("selected",true);
+                        return false;
+                    }
+                })
             },
             //删除单条语句
             'click .RoleOfDel': function (e, value, row, index) {
-                console.log(e)
-                console.log(value),console.log(row),console.log(index)
                 var ids="";
                 $(row).each(function(){
                     ids+=this.id+",";
@@ -315,23 +382,19 @@
 
                     }
                 })
-
-
             }
         };
 
 
         function operateFormatter(value, row, index) {
             return [
-                '<button type="button" class="RoleOfEdit btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-pencil"></i></button>',
+                '<button type="button" class="RoleOfEdit btn btn-default btn-sm" style="margin-right:15px;" data-toggle="modal" data-target="#update"><i class="fa fa-pencil"></i></button>',
                 '<button type="button" class="RoleOfDel btn btn-default btn-sm" style="margin-right:15px;"><i class="fa fa-trash"></i></button>'
             ].join('');
         }
-        /*$.get("findAllUser",function (data) {*/
             $('#tableL01').bootstrapTable('destroy');   //动态加载表格之前，先销毁表格+
             $('#tableL01').bootstrapTable({//表格初始化
                 columns: tableColumns,  //表头
-                /* data:data1, //通过ajax返回的数据*/
                 width:300,
                 height:368,
                 url:"findAllUser",
@@ -348,17 +411,12 @@
                 showRefresh: false,
                 showExport: false,
                 showFooter: true,
-                // exportTypes: ['csv', 'txt', 'xml'],
                 clickToSelect: true,
                 toolbar:"#toolbar",
-                /*data:formatData(data),*/
-                /*onClickCell: function(params){
-                    location.href="/one";
-                }*/
                 queryParams: function queryParams(params){
                     var param = {
                         occupationId:$("#name").val(),
-                        groupId:$("")
+                        groupId:[[${groupId}]]
                     };
                     return param;
                 },
@@ -366,27 +424,6 @@
             $(document).on('click', "#search",function(){
                 $('#tableL01').bootstrapTable('refresh');
             });
-        /*})*/
-        // 格式化数据
-        /*var formatData = function (data) {
-            var l = [];
-            var d;
-            for (var i = 0; i < data.superUsers.length && data.superUsers1.length; i++) {
-                var m = data.superUsers[i]
-                var mm=data.superUsers1[i]
-                    d = {
-                   "menuName":m.selectRole.menuName,    //角色级别
-                    "dictionaryName":m.dictionaryName,  //角色名称
-                    "userName":m.userName,              //用户
-                         "dictionaryName1":mm.dictionaryName,//权限
-                }
-                l.push(d)
-            }
-            return l
-        };*/
-        //科室选中
-
-
     })
 
     //清空
@@ -435,41 +472,54 @@
         })
     }
     //改变科室查询名字--根据科室查询名字
+    var renId;
+    var ren;
     function search1() {
+        var varoption = "";
+        $("#public-methods").find('option:selected').each(function () {
+            varoption += '<option value="'+$(this).val()+'" selected>'+$(this).text()+'</option>';
+        })
+        $("#public-methods").empty();
         var a =$("#administrative").val();
         var name1 =$("#name1").val();
+        $("#public-methods").append(varoption);
         $.get("findNameByDepartmentId",{"departmentId":a,"userName":name1},function(rs){
-            $("#public-methods").empty();
-            var varoption = "";
+            //$("#public-methods").empty();
+            varoption = "";
             for (var i = 0; i < rs.length; i++) {
+                if($("#public-methods").find('option[value=' + rs[i].userId + ']').length==1){
+                    continue;
+                }
                 varoption += "<option value='"+rs[i].userId+"'>" + rs[i].userName+ "</option>";
             }
             $("#public-methods").append(varoption);
-
+            for (var i = 0; i < renId.length; i++) {
+                var op = $("#public-methods").find('option[value=' + renId[i] + ']');
+                switch (op.length){
+                    case 0:
+                        $("#public-methods").append('<option value="' + renId[i] + '" selected>' + ren[i] + '</option>');
+                        break;
+                    case 1:
+                        $("#public-methods").find('option[value=' + renId[i] + ']').prop("selected", true);
+                        break;
+                    default:
+                        var a =$("#public-methods").find('option:not(:selected)[value=' + renId[i] + ']');
+                        a.remove()
+                }
+            }
             //刷新multiSelect框
             $('#public-methods').multiSelect('refresh');
         })
     }
-   /* //修改用户
-    $("#save").click(function(){
-        var aa=$('#public-methods').val();
-        var bb="";
-        for (var i=0;i<aa.length;i++){
-            bb+=aa[i]+",";
-        }
-        $.get("changeGroupUser",{
-            "groupUserId":bb
-        },function (rs) {
-            if(rs=1){
-                $("#myModal").modal('hide')//取消模态框
-                $("#tableL01").bootstrapTable('refresh', rs);
-            }
-        })
-    })*/
 
     //修改用户--添加权限
     $("#save").click(function(){
+        var groupOccupationId = $("#groupOccupationId").val() //角色级别
+        var gradeId=$("#gradeId").val()         //角色名称
 
+
+        var groupUserRoleId=$("#rowId").val()//获取当前行的id
+        var groupId=[[${groupId}]]
         var voteList = [];
         var qq="";
         $(".role").each(function(){
@@ -482,24 +532,85 @@
         }
         var aa=$('#public-methods').val();
         var bb="";
-        var id=$("#groupUserId").val();
+        var id=$("#rowId").val();
         for (var i=0;i<aa.length;i++){
             bb+=aa[i]+",";
         }
-        $.get("changeGroupUser",{
-            "groupUserId":bb,
-            "id":id,
-            "groupRoleId":qq,
-        },function (rs) {
-            if(rs="success"){
-                $("#myModal").modal('hide')//取消模态框
-                $(".role").prop("checked",false);
+
+        var cbs = $("input[type=checkbox]")
+        var checkNum = 0;
+        for (var i = 0; i < cbs.length; i++) {
+            if (cbs[i].checked) {
+                checkNum++;
+            }
+        }
+        if (aa=="" || checkNum==0 ){
+            alert("请选择用户和权限")
+        }else {
+            if (groupUserRoleId == ""){
+                $.get("saveGroupUserRole",{
+                    "groupUserId":bb,
+                    "groupRoleId":qq,
+                    "groupId":groupId,
+                    "groupOccupationId":groupOccupationId,
+                    "gradeId":gradeId
+                },function(rs){
+                    if(rs==1){
+                        $("#myModal").modal('hide')//取消模态框
+                        $(".role").prop("checked",false);
+                        $("#tableL01").bootstrapTable('refresh', rs);
+                    }
+                })
+            }else {
+                $.get("changeGroupUser",{
+                    "groupUserId":bb,
+                    "id":id,
+                    "groupRoleId":qq,
+                },function (rs) {
+                    if(rs="success"){
+                        $("#myModal").modal('hide')//取消模态框
+                        $(".role").prop("checked",false);
+                        $("#tableL01").bootstrapTable('refresh', rs);
+                    }
+                })
+            }
+
+        }
+    })
+    $("#updateSave").click(function () {
+        var gradeId = $("#updatelevel").val();
+        var groupOccupationId=$("#updatedepartment").val();
+        var groupUserRoleId=$("#rowId").val()
+        $.get("updateOccupationGrade",{
+            "gradeId":gradeId,
+            "groupOccupationId":groupOccupationId,
+            "id":groupUserRoleId
+        },function(rs){
+            if(rs==1){
+                $("#update").modal('hide')//取消模态框
                 $("#tableL01").bootstrapTable('refresh', rs);
             }
         })
     })
 
+    $("#newSave").click(function () {
+        $("#groupOccupationId").val($("#department").val())
+        $("#gradeId").val($("#level").val())
+        var level=$("#level option:selected").text();
+        var department=$("#department option:selected").text();
+        var qq={menuName:level};
+        $("#tableL01").bootstrapTable('insertRow', {index: 1, row: {selectRole:qq,d3:department}})
+        $("#myModal1").modal('hide')//取消模态框
+    })
 
+    $(document).on('click','#select-all',function () {
+        $('#public-methods').multiSelect('select_all');
+        return false;
+    })
+    $(document).on('click','#deselect-all',function () {
+        $('#public-methods').multiSelect('deselect_all');
+        return false;
+    })
 </script>
 
 </html>

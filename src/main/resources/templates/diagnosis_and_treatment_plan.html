@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/bootstrap-table.css">
     <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/grade.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/bootstrap-table.js"></script>
     <script src="/js/bootstrap-table-zh-CN.js"></script>
@@ -58,12 +59,12 @@
                 <div id="list" style="display: block" >
                     <form action="savePlan">
                         <input id="pid" type="hidden" name="programmeId" >
-<!--                        <input id="did" type="hidden" name="departmentId">-->
+                        <input id="did" type="hidden" name="departmentId">
                         <table border="1" align="center">
                             <tr>
                                 <td colspan="2" align="center">
-                                    <input id="fangan" placeholder="" name="programmeName" >
-                                    <button id="baocun" type="submit" class="btn btn-info btn-sm">保存</button>
+                                    <input class="fangan" placeholder="" name="programmeName" >
+                                    <button id="baocun" type="submit" class="btn btn-info btn-sm baocun">保存</button>
                                     <span id="#jymz" ></span>
 
                                 </td>
@@ -117,34 +118,12 @@
 </div>
 </body>
 <script>
-        var old;
-        $("#fangan").on('focus', function () {
-            old = this.value;
-        }).change(function() {
-            var programmeName = $(this).val();
-            programmeName.trim();
-        if (old==programmeName){
-            $("#baocun").attr("disabled",false);
-        }else{
-            $.post("changeProgrammeName",{"programmeName":programmeName},function (message) {
-                alert(message);
-                if(message==true){
-                    $("#jymz").text("✔");
-                    $("#jymz").css("color","green");
-                    $("#baocun").attr("disabled",false);
-                }else {
-                    $("#jymz").text("方案名已被使用！");
-                    $("#jymz").css("color","red");
-                    $("#baocun").attr("disabled","true");
-                }
-            });
-        }
-    });
     $(function () {
+        var departmentId=[[${groupId}]];
+        console.log(departmentId);
         var mmm = new Array();
         var iii = new Array();
         var chch = new Array();
-        var departmentId=11509;
         $.get("/findPlan",{},function (result) {
             for (var i = 0; i <result.length ; i++) {
                 if(result[i].oneId==14000){
@@ -158,7 +137,7 @@
                 }
             }
         });
-        $.post("findAllProgramme",{"departmentId":departmentId},function (res) {
+        $.post("findAllProgramme",{"departmentId":[[${groupId}]]},function (res) {
             var count;
             var programmeId
             for (var i = 0; i < res.length; i++) {
@@ -170,13 +149,15 @@
                 var treatment1 = res[0].treatment;
                 var operation1 = res[0].operation;
                 var notice1 = res[0].notice;
+                var departmentId=res[i].departmentId;
                 if (i == 0) {
                     $("#programmeName").html(count);
-                    $("#fangan").val(count);
+                    $(".fangan").val(count);
                     $("#pid").val(programmeId);
                     $("#treatment").html(treatment1);
                     $("#operation").html(operation1);
                     $("#notice").html(notice1);
+                    $("#did").val(departmentId);
                     for (var j = 0; j < mmm.length; j++) {
                         $(".medication").append("<option value='" + mmm[j].dictionaryId + "'>" + mmm[j].dictionaryName + "</option>")
                         for (var k = 0; k < medication1.length; k++) {
@@ -223,11 +204,12 @@
                     $("#planContainer").append("<div id='list" + count + "' style=\"display: block\">\n" +
                         "                 <form action=\"savePlan\">\n" +
                         "                    <input id='pid" + count + "' value='" + programmeId + "' type=\"hidden\" name=\"programmeId\">\n" +
+                        "                    <input id=\"did"+count+"\"  type=\"hidden\" name=\"departmentId\">\n"+
                         "                    <table border=\"1\" align=\"center\">\n" +
                         "                       <tr>\n" +
                         "                         <td colspan=\"2\" align=\"center\">\n" +
-                        "                            <input id=\"fangan\" placeholder=\"请输入方案名\" value='"+count+"'  name=\"programmeName\" >\n" +
-                        "                            <button type=\"submit\" class=\"btn btn-info btn-sm\">保存</button>\n" +
+                        "                            <input class=\"fangan\" placeholder=\"请输入方案名\" value='"+count+"'  name=\"programmeName\" >\n" +
+                        "                            <button id=\"baocun\" type=\"submit\" class=\"btn btn-info btn-sm baocun\">保存</button>\n" +
                         "                           </td>\n" +
                         "                        </tr>\n" +
                         "                        <tr style=\"height: 70px\">\n" +
@@ -272,6 +254,7 @@
                         "                    </table>\n" +
                         "                  </form>\n" +
                         "                </div>");
+                    $("#did"+count+"").val(departmentId);
                     var treatment = res[i].treatment;
                     var operation = res[i].operation;
                     var notice = res[i].notice;
@@ -341,8 +324,8 @@
                 "                    <table border=\"1\" align=\"center\">\n" +
                 "                       <tr>\n" +
                 "                         <td colspan=\"2\" align=\"center\">\n" +
-                "                            <input id=\"fangan\" placeholder=\"请输入方案名称\" name=\"programmeName\" >\n" +
-                "                            <button type=\"submit\" class=\"btn btn-info btn-sm\">保存</button>\n" +
+                "                            <input class=\"fangan\" placeholder=\"请输入方案名称\" name=\"programmeName\" >\n" +
+                "                            <button id=\"baocun\" type=\"submit\" class=\"btn btn-info btn-sm baocun\">保存</button>\n" +
                 "                           </td>\n" +
                 "                        </tr>\n" +
                 "                        <tr style=\"height: 70px\">\n" +
@@ -480,7 +463,34 @@
             }
         });
 
-    })
+    });
+    var old;
+    $(document).on('focus',".fangan",function () {
+        old = this.value;
+        console.log(old);
+    });
+        $(document).on('change','.fangan',function () {
+        var programmeName = $(this).val();
+        programmeName.trim();
+        if (old==programmeName){
+            $(this).next().attr("disabled",false);
+        }else if(programmeName==""||programmeName==null){
+            $(this).next().attr("disabled","true");
+        }else {
+            $.post("changeProgrammeName",{"programmeName":programmeName},function (message) {
+                console.log(message);
+                if(message==true){
+                    $("#jymz").html("✔");
+                    $("#jymz").css("color","green");
+                    $(".baocun").attr("disabled",false);
+                }else {
+                    $("#jymz").html("方案名已被使用！");
+                    $("#jymz").css("color","red");
+                    $(".baocun").attr("disabled","true");
+                }
+            });
+        }
+    });
 
 </script>
 </html>

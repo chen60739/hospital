@@ -3,37 +3,33 @@
 <mapper namespace="com.example.hospital.dao.SelectTemplateMapper">
   <resultMap id="BaseResultMap" type="com.example.hospital.model.SelectTemplate">
     <id column="st_id" jdbcType="INTEGER" property="stId" />
-    <result column="select_template_id" jdbcType="INTEGER" property="selectTemplateId" />
     <result column="select_rule_id" jdbcType="INTEGER" property="selectRuleId" />
     <result column="template_id" jdbcType="INTEGER" property="templateId" />
   </resultMap>
   <sql id="Base_Column_List">
-    st_id, select_template_id, select_rule_id, template_id
+    st_id, select_rule_id, template_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from `select_template`
     where st_id = #{stId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByFollowUpRuleId" parameterType="java.lang.Integer">
     delete from `select_template`
-    where st_id = #{stId,jdbcType=INTEGER}
+    where select_rule_id = #{selectRuleId}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.SelectTemplate">
-    insert into `select_template` (st_id, select_template_id, select_rule_id,
-      template_id)
-    values (#{stId,jdbcType=INTEGER}, #{selectTemplateId,jdbcType=INTEGER}, #{selectRuleId,jdbcType=INTEGER}, 
-      #{templateId,jdbcType=INTEGER})
+    insert into `select_template` (st_id, select_rule_id, template_id
+      )
+    values (#{stId,jdbcType=INTEGER}, #{selectRuleId,jdbcType=INTEGER}, #{templateId,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.example.hospital.model.SelectTemplate">
+  <insert id="insertFollowTemplate" parameterType="com.example.hospital.model.SelectTemplate">
     insert into `select_template`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="stId != null">
         st_id,
-      </if>
-      <if test="selectTemplateId != null">
-        select_template_id,
       </if>
       <if test="selectRuleId != null">
         select_rule_id,
@@ -46,9 +42,6 @@
       <if test="stId != null">
         #{stId,jdbcType=INTEGER},
       </if>
-      <if test="selectTemplateId != null">
-        #{selectTemplateId,jdbcType=INTEGER},
-      </if>
       <if test="selectRuleId != null">
         #{selectRuleId,jdbcType=INTEGER},
       </if>
@@ -60,9 +53,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.example.hospital.model.SelectTemplate">
     update `select_template`
     <set>
-      <if test="selectTemplateId != null">
-        select_template_id = #{selectTemplateId,jdbcType=INTEGER},
-      </if>
       <if test="selectRuleId != null">
         select_rule_id = #{selectRuleId,jdbcType=INTEGER},
       </if>
@@ -74,8 +64,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.hospital.model.SelectTemplate">
     update `select_template`
-    set select_template_id = #{selectTemplateId,jdbcType=INTEGER},
-      select_rule_id = #{selectRuleId,jdbcType=INTEGER},
+    set select_rule_id = #{selectRuleId,jdbcType=INTEGER},
       template_id = #{templateId,jdbcType=INTEGER}
     where st_id = #{stId,jdbcType=INTEGER}
   </update>

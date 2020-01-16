@@ -16,9 +16,9 @@
     from `reminders`
     where rem_id = #{remId,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByRemindersId" parameterType="java.lang.Integer">
     delete from `reminders`
-    where rem_id = #{remId,jdbcType=INTEGER}
+    where reminders_id = #{remindersId}
   </delete>
   <insert id="insert" parameterType="com.example.hospital.model.Reminders">
     insert into `reminders` (rem_id, reminders_id, reminders_dictionary_id,
@@ -26,7 +26,7 @@
     values (#{remId,jdbcType=INTEGER}, #{remindersId,jdbcType=INTEGER}, #{remindersDictionaryId,jdbcType=INTEGER}, 
       #{remindersOccupationId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.example.hospital.model.Reminders">
+  <insert id="insertReminders" parameterType="com.example.hospital.model.Reminders">
     insert into `reminders`
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="remId != null">

@@ -17,7 +17,7 @@ public interface PatientService {
     //批量删除
     int delById(String ids);
 
-    void insert(Patient patient);
+    void insert(Patient patient, Integer groupId);
 
     Patient selectById(Integer patientId);
 

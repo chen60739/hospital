@@ -5,10 +5,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/grade.js"></script>
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/css/hospital.css">
+    <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
 </head>
+<style>
+    i{
+        position: absolute;
+        left:420px;
+        top:8px;
+    }
+</style>
 <body>
 <div th:replace="navigation :: nav"></div>
 <div class="container-fluid main" style="height: 550px">
@@ -17,9 +26,9 @@
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon">旧密码</div>
-                    <input type="text" class="form-control" id="old" placeholder="请输入旧密码">
-                    <span></span>
+                    <input type="password" class="form-control" id="old" placeholder="请输入旧密码" >
                 </div>
+                <i></i>
             </div>
         </div>
     </div>
@@ -28,8 +37,7 @@
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon">新密码</div>
-                    <input type="text" class="form-control" id="new" placeholder="6-16位字母、数字、符号">
-                    <span></span>
+                    <input type="password" class="form-control" id="new" placeholder="6-16位字母、数字、符号">
                 </div>
             </div>
         </div>
@@ -39,18 +47,62 @@
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon">确认新密码</div>
-                    <input type="text" class="form-control" id="" placeholder="请再次输入新密码">
+                    <input type="password" class="form-control" id="yes" placeholder="请再次输入新密码">
                 </div>
+                <i></i>
             </div>
         </div>
     </div>
     <div class="row">
-        <button class="btn-info btn" style="margin-left: 350px">保存</button>
+        <button class="btn-info btn" id="save" style="margin-left: 350px">保存</button>
     </div>
 </div>
 </body>
-<script>
+<script th:inline="javascript">
+    var a;
+    var b;
+    $('#old').blur(function () {
+        var old = $('#old').val();
+        if([[${session.user.userPwd}]]==old){
+            $('#old').parent().next().attr('class','fa fa-check');
+            $('#old').parent().next().css('color','green');
+            a=true;
+        } else {
+            $('#old').parent().next().attr('class','fa fa-close');
+            $('#old').parent().next().css('color','red');
+            a=false;
+        }
+    })
 
+    $('#yes').blur(function () {
+        var n = $('#new').val();
+        if($('#yes').val()==n){
+            $('#yes').parent().next().attr('class','fa fa-check');
+            $('#yes').parent().next().css('color','green');
+            b=true;
+        }else {
+            $('#yes').parent().next().attr('class','fa fa-close');
+            $('#yes').parent().next().css('color','red');
+            b=false;
+        }
+    })
+
+    $('#new').blur(function () {
+        $('#yes').trigger('blur');
+    })
+
+    $('#save').click(function () {
+        if (a==true && b==true){
+            var id = [[${session.user.userId}]]
+            var pwd = $('#new').val();
+            $.getJSON('/changePwd',{"id":id,"pwd":pwd},function (res) {
+                alert(res.mes);
+                window.location.href="/exit";
+            })
+        }else {
+            alert("信息有误")
+        }
+    })
 </script>
 
 </html>

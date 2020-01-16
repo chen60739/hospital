@@ -64,4 +64,6 @@ public interface UserService {
      * @return
      */
     Map<String,String> checkUser(String phone, String password, HttpSession session);
+
+    Map<String,String> changePwdById(Integer id, String pwd);
 }

@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/selectcheck.css">
     <script src="/js/selectcheck.js"></script>
     <script src="https://use.fontawesome.com/38f0aa120f.js"></script>
+    <script src="/js/grade.js"></script>
 </head>
 <style>
     .btnrow{
@@ -45,18 +46,19 @@
             </div>
         </div>
         <div class="col-xs-12 col-md-12">
-            <div class="col-xs-2" id="btnContainer" style="border:1px #e1e1e1;border-right-style:solid">
-                <div class="btnrow">
-                    <button type="button" value="base" class="btn btn-info showPage">基线</button>
+            <div class="col-xs-3"  id="btnContainer" style="border:1px #e1e1e1;border-right-style:solid">
+                <div class="btnrow" style="padding-left: 65px;">
+                    <button type="button" value="base" class="btn btn-info showPage ">基线</button>
+                    <input type="hidden" id="followNumber" value="">
                 </div>
-                <div class="follow-btn">
-                    <button type="button" value="department" class="btn btn-default showPage">
-                        <div align="left">
-                        随访规则1<br>
-                        事件：本科室第一次手术<br>
-                        起始时间：事件后一月<br>
-                        间隔时间:1月，共6次<br>
-                        提前5天自动通知
+                <div class="follow-btn btnrow">
+                    <button type="button" value="department1" class="btn btn-default showPage" style="width: 198px;">
+                        <div id="shijian1" align="left">
+                            随访规则1<br>
+                            事件：<br>
+                            起始时间：<br>
+                            间隔时间:<br>
+                            提前_天自动通知
                         </div>
                     </button>
                 </div>
@@ -65,48 +67,52 @@
                 </div>
             </div>
             <div class="col-xs-9" style="border:1px #e1e1e1;border-left-style:solid">
+<!--                <form id="addForm"  method="post">-->
                 <div class="col-xs-12" style="margin-top: 10px;margin-left: 50px;">
                     <div class="row" style="margin-left: 100px">
                         <label>节假日设定（节假日是否排期）：</label>
+
                         <label class="checkbox-inline">
-                            <input type="radio" name="yesno" value="option1">是
+                            <input id="yes1" type="checkbox"  name="isScheduling" value="1">是
                         </label>
                         <label class="checkbox-inline">
-                            <input type="radio" name="yesno" value="option2">提前到上一工作日
+                            <input id="no" type="radio" name="isPostpone" value="0">提前到上一工作日
                         </label>
                         <label class="checkbox-inline">
-                            <input type="radio" name="yesno" value="option2">顺延到下一工作日
+                            <input id="noo" type="radio" name="isPostpone" value="1">顺延到下一工作日
                         </label>
                     </div>
                 </div>
+
                 <div class="col-xs-12" id="planContainer">
                     <div id="base" style="display: block">
                         <div class="col-xs-6 col-xs-offset-5">
                             <button class="btn btn-info" data-toggle="modal" data-target="#myModal">引用模板</button>
                         </div>
                     </div>
-                    <div id="department" style="display: none">
+                    <div id="department1" class="index" style="display: none">
                         <div style="padding-left: 30px"><h4>1.时点设置</h4></div>
+                        <input type="hidden" id="fupid1">
                         <div class="row">
                             <div class="col-xs-12 col-xs-offset-1">
                                 <label>基准事件：</label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">门诊
+                                <label class="radio-inline benchmarkEvent1">
+                                    <input type="radio" name="benchmarkEvent1" id="inlineRadioa" value="60001">门诊
                                 </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">入院
+                                <label class="radio-inline benchmarkEvent1">
+                                    <input type="radio" name="benchmarkEvent1" id="inlineRadiob" value="60002">入院
                                 </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">出院
+                                <label class="radio-inline benchmarkEvent1">
+                                    <input type="radio" name="benchmarkEvent1" id="inlineRadioc" value="60003">出院
                                 </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option3">手术
+                                <label class="radio-inline benchmarkEvent1">
+                                    <input type="radio" name="benchmarkEvent1" id="inlineRadiod" value="60004">手术
                                 </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option3">入ICU
+                                <label class="radio-inline benchmarkEvent1">
+                                    <input type="radio" name="benchmarkEvent1" id="inlineRadioe" value="60005">入ICU
                                 </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="inlineRadioOptions" id="inlineRadio6" value="option3">出ICU
+                                <label class="radio-inline benchmarkEvent1">
+                                    <input type="radio" name="benchmarkEvent1" id="inlineRadiof" value="60006">出ICU
                                 </label>
                             </div>
                         </div>
@@ -114,60 +120,70 @@
                             <div class="col-xs-12 col-xs-offset-1">
                                 <label>筛选条件：</label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="di" id="inlineRadio7" value="option1">本院
+                                    <input type="radio" name="isInHospital1" id="inlineRadiog1" value="0">本院
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="di" id="inlineRadio8" value="option2">本科室
+                                    <input type="radio" name="isInHospital1" id="inlineRadioh1" value="1">本科室
                                 </label>
                                 <br>
                                 <label class="radio-inline" style="padding-left: 94px">
-                                    <input type="radio" name="ci" id="inlineRadio9" value="option3">首次
+                                    <input type="radio" name="isFirst1" id="inlineRadioi1" value="0">首次
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="ci" id="inlineRadio10" value="option3">末次
+                                    <input type="radio" name="isFirst1" id="inlineRadioj1" value="1">末次
                                 </label>
                                 <br>
                                 <label class="radio-inline" style="padding-left: 94px">
-                                    <input type="radio" name="y" id="inlineRadio11" value="option3">本就诊
+                                    <input type="radio" name="thatVisit1" id="inlineRadiok1" value="0">本就诊
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="y" id="inlineRadio12" value="option3">任意就诊
+                                    <input type="radio" name="thatVisit1" id="inlineRadiol1" value="1">任意就诊
                                 </label>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-4 col-xs-offset-1">
+                            <div class="col-xs-5 col-xs-offset-1">
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">起始</div>
-                                        <input type="date" class="form-control" placeholder="请输入密码">
+                                        <input id="beginTimeNian1" type="number" name="beginTimeNian"  value=" " min="0" class="form-control" >
+                                        <div class="input-group-addon">年</div>
+                                        <input id="beginTimeYue1" type="number" name="beginTimeYue" value=" " min="0" class="form-control" >
+                                        <div class="input-group-addon">月</div>
+                                        <input id="beginTimeRi1" type="number" name="beginTimeRi" value=" " min="0" class="form-control" >
+                                        <div class="input-group-addon">日</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-4 col-xs-offset-1">
+                            <div class="col-xs-5 col-xs-offset-1">
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">间隔</div>
-                                        <input type="date" class="form-control" placeholder="请输入密码">
+                                        <input id="intervalTimeNian1" type="number" name="intervalTimeNian" value=" " min="0" class="form-control" >
+                                        <div class="input-group-addon">年</div>
+                                        <input id="intervalTimeYue1" type="number" name="intervalTimeYue" value=" " min="0" class="form-control" >
+                                        <div class="input-group-addon">月</div>
+                                        <input id="intervalTimeRi1" type="number" name="intervalTimeRi" value=" " min="0" class="form-control" >
+                                        <div class="input-group-addon">日</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-4 col-xs-offset-1">
+                            <div class="col-xs-5 col-xs-offset-1">
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">持续</div>
-                                        <input type="number" class="form-control" placeholder="">
+                                        <input id="baselineCount1" type="number"  name="baselineCount" class="form-control" min="0" placeholder="">
                                         <div class="input-group-addon">次</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-4 col-xs-offset-1">
+                            <div class="col-xs-5 col-xs-offset-1">
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">提前</div>
-                                        <input type="number" class="form-control" placeholder="">
+                                        <input id="advanceNotice1" type="number" name="advanceNotice" class="form-control" min="0" placeholder="">
                                         <div class="input-group-addon">天自动通知</div>
                                     </div>
                                 </div>
@@ -176,8 +192,10 @@
                         <hr>
                         <div style="padding-left: 30px"><h4>2.模板选择</h4></div>
                         <div class="row">
-                            <div class="col-xs-4 col-xs-offset-1">
-                                <button class="btn btn-info" data-toggle="modal" data-target="#myModal" style="width: 120px">引用CRF模板</button>
+                            <div class="col-xs-7 col-xs-offset-1 ">
+                                <input type="hidden" id="selectTemplateId" value="">
+                                <button class="btn btn-info showmoban" data-toggle="modal" data-target="#myModal" style="width: 120px">引用CRF模板</button>
+                                <div style="display:inline-block "></div>
                             </div>
                         </div>
                         <hr>
@@ -192,7 +210,7 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">提醒方式：</div>
-                                        <select class="form-control">
+                                        <select id="remindshang1" class="form-control remind">
                                             <option>-请选择-</option>
                                         </select>
                                     </div>
@@ -202,8 +220,10 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">发送至：</div>
-                                        <select class="form-control">
+                                        <select id="doctorshang1" class="form-control doctor">
                                             <option>-请选择-</option>
+                                            <option value="12001">医生</option>
+                                            <option value="12005">随访员</option>
                                         </select>
                                     </div>
                                 </div>
@@ -219,7 +239,7 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">提醒方式：</div>
-                                        <select class="form-control">
+                                        <select id="remindxia1" class="form-control remind">
                                             <option>-请选择-</option>
                                         </select>
                                     </div>
@@ -229,8 +249,10 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <div class="input-group-addon">发送至：</div>
-                                        <select class="form-control">
+                                        <select id="doctorxia1" class="form-control doctor">
                                             <option>-请选择-</option>
+                                            <option value="12001">医生</option>
+                                            <option value="12005">随访员</option>
                                         </select>
                                     </div>
                                 </div>
@@ -238,11 +260,12 @@
                         </div>
                     </div>
                 </div>
+<!--                </form>-->
                 <div class="col-xs-6 col-xs-offset-5">
                     <div class="row">
                         <div class="form-group">
                             <div class="input-group">
-                                <button type="button" class="btn btn-info">保存</button>
+                                <button id="saveFollow" type="button" class="btn btn-info">保存</button>
                             </div>
                         </div>
                     </div>
@@ -257,10 +280,599 @@
 </body>
 
 <script>
+    var idx;
+    $(document).on("click","#saveFollow",function () {
+        var isScheduling, isPostpone,benchmarkEvent,isInHospital,isFirst,thatVisit,beginTime,intervalTime,baselineCount,advanceNotice;
+        var tamplateId,remindersDictionaryId,remindersOccupationId,ruleId;
+        $(".index").each(function() {
+            //判断每一个div，其css中display是否为block//
+            if($(this).css("display") == "block") {
+                idx= $(this).attr("id");
+                idx=idx.substring(10,idx.length);
+                console.log(idx)
+            }
+        });
+        if ($("#yes1").is(":checked")) {isScheduling = 1;}else {isScheduling=0;}
+        isPostpone= $("input[name=isPostpone]:checked").val();
+        benchmarkEvent=$("input[name=benchmarkEvent"+idx+"]:checked").val();
+        isInHospital =$("input[name=isInHospital"+idx+"]:checked").val();
+        isFirst= $("input[name=isFirst"+idx+"]:checked").val();
+        thatVisit=$("input[name=thatVisit"+idx+"]:checked").val();
+        if(($("#beginTimeNian"+idx+"").val()==""|| $("#beginTimeNian"+idx+"").val()=="0") && ($("#beginTimeYue"+idx+"").val()==""||$("#beginTimeYue"+idx+"").val()=="0") && ($("#beginTimeRi"+idx+"").val()==""||$("#beginTimeRi"+idx+"").val()=="0")){
+            beginTime="";
+        }else{
+            beginTime =$("#beginTimeNian"+idx+"").val()+","+$("#beginTimeYue"+idx+"").val()+","+$("#beginTimeRi"+idx+"").val();
+        }
+        if(($("#intervalTimeNian"+idx+"").val()=="" || $("#intervalTimeNian"+idx+"").val()=="0") && ($("#intervalTimeYue"+idx+"").val()==""|| $("#intervalTimeYue"+idx+"").val()=="0") && ($("#intervalTimeRi"+idx+"").val()==""|| $("#intervalTimeRi"+idx+"").val()=="0")){
+            intervalTime="";
+        }else {
+            intervalTime=$("#intervalTimeNian"+idx+"").val()+","+$("#intervalTimeYue"+idx+"").val()+","+$("#intervalTimeRi"+idx+"").val();
+        }
+        baselineCount=$("#baselineCount"+idx+"").val();
+        advanceNotice=$("#advanceNotice"+idx+"").val();
+        tamplateId=$("#selectTemplateId").val();
+        remindersDictionaryId=$("#remindshang"+idx+" option:selected").val()+","+$("#remindxia"+idx+" option:selected").val();
+        remindersOccupationId=$("#doctorshang"+idx+" option:selected").val()+","+$("#doctorxia"+idx+" option:selected").val();
+        ruleId=$("#fupid"+idx+"").val();
+        if(isPostpone==null || isPostpone=="" || benchmarkEvent ==null || benchmarkEvent =="" || isInHospital==null || isInHospital=="" || isFirst==null || isFirst==""
+            || thatVisit==null || thatVisit==""  || advanceNotice==null || advanceNotice=="" || tamplateId==null || tamplateId==""
+            || remindersDictionaryId==null || remindersDictionaryId=="" || remindersOccupationId==null || remindersOccupationId=="" || beginTime=="" || intervalTime==""){
+            alert("请完善随访计划后再保存！！！");
+            return false;
+        }else {
+            $.post("saveFollowUpRule",{"isScheduling":isScheduling,"isPostpone":isPostpone,"benchmarkEvent":benchmarkEvent,"isInHospital":isInHospital,"isFirst":isFirst,"thatVisit":thatVisit,
+                "beginTime":beginTime,"intervalTime":intervalTime,"baselineCount":baselineCount,"advanceNotice":advanceNotice,"tamplateId":tamplateId,"remindersDictionaryId":remindersDictionaryId,
+                "remindersOccupationId":remindersOccupationId,"ruleId":ruleId,"upGroupId":[[${groupId}]]},function (result) {
+            })
+        }
+    } );
     $(function () {
+        var followRuleList;
+        var remindList ;
+        $.get("findRemind",{},function (res) {
+            remindList=res;
+            for (let i = 0; i <res.length ; i++) {
+                $(".remind").append("<option value='"+res[i].dictionaryId+"'>" + res[i].dictionaryName + "</option>");
+                // $(".remindxia").append("<option value='"+res[i].dictionaryId+"'>" + res[i].dictionaryName + "</option>");
+            }
+        });
+        $.get("findAllFollow",{"upGroupId":[[${groupId}]]},function (result) {
+            $("#followNumber").val(result.length+1);
+            followRuleList=result;
+            console.log(followRuleList);
+            for (let j = 0; j <result.length ; j++) {
+                if(j==0){
+                    var shijian = "事件: ";
+                    $("#fupid1").val(result[j].ruleId);
+                    // if(result[j].isScheduling!=null){$("#yes1").attr("checked","checked");}
+                    // if(result[j].isPostpone){$("#noo").attr("checked","checked");}else {$("#no").attr("checked","checked");}
+                    if(result[j].isInHospital){
+                        $("#inlineRadioh1").attr("checked","checked");
+                        shijian+="本院";
+                    }else {$("#inlineRadiog1").attr("checked","checked");
+                        shijian+="本科室";
+                    }
+                    if(result[j].isFirst){$("#inlineRadioj1").attr("checked","checked");
+                        shijian+="第一次";
+                    }else{$("#inlineRadioi1").attr("checked","checked");
+                        shijian+="最后一次"
+                    }
+                    shijian+=$(".benchmarkEvent1 input[ value ='"+result[j].benchmarkEvent+"']").parent().text();
+                    $(".benchmarkEvent1 input[ value ='"+result[j].benchmarkEvent+"']").attr("checked","checked");
+                    if(result[j].thatVisit){$("#inlineRadiol1").attr("checked","checked");}else{$("#inlineRadiok1").attr("checked","checked");}
+                    let begin =  result[j].beginTime.split(",",-1);
+                    let interval = result[j].intervalTime.split(",",-1);
+                    let beginDiv="事件后";
+                    let intervalDiv="";
+                    let chishu = "";
+                    if(begin[0]==0||begin[0]==""){$("#beginTimeNian1").val(" ");}else {$("#beginTimeNian1").val(begin[0]); beginDiv+=begin[0]+"年"}
+                    if(begin[1]==0||begin[1]==""){$("#beginTimeYue1").val(" ");}else {$("#beginTimeYue1").val(begin[1]); beginDiv+=begin[1]+"月"}
+                    if(begin[2]==0||begin[2]==""){$("#beginTimeRi1").val(" ");}else {$("#beginTimeRi1").val(begin[2]); beginDiv+=begin[2]+"天"}
+                    if(interval[0]==0||interval[0]==""){$("#intervalTimeNian1").val(" ");}else {$("#intervalTimeNian1").val(interval[0]); intervalDiv+=interval[0]+"年"}
+                    if(interval[1]==0||interval[1]==""){$("#intervalTimeYue1").val(" ");}else {$("#intervalTimeYue1").val(interval[1]);intervalDiv+=interval[1]+"月"}
+                    if(interval[2]==0||interval[2]==""){$("#intervalTimeRi1").val(" ");}else {$("#intervalTimeRi1").val(interval[2]);intervalDiv+=interval[2]+"天"}
+                    if(result[j].baselineCount==0||result[j].baselineCount==""){
+                        $("#baselineCount1").val("");
+                        chishu="持续进行";
+                    }else{
+                        $("#baselineCount1").val(result[j].baselineCount);
+                        chishu=", 共"+result[j].baselineCount+"次";
+                    }
+                    $("#advanceNotice1").val(result[j].advanceNotice);
+                    $("#shijian1").html("随访规则1<br>\n" +
+                        "                        "+shijian+"<br>\n" +
+                        "                        起始时间："+beginDiv+"<br>\n" +
+                        "                        间隔时间:"+intervalDiv+""+chishu+"<br>\n" +
+                        "                        提前"+result[j].advanceNotice+"天自动通知");
+                    let remind = result[j].reminders;
+                    for (let i = 0; i < remind.length; i++) {
+                        if(i==0){
+                            $("#remindshang1 option[value='"+remind[i].remindersDictionaryId+"']").attr("selected","selected")
+                            $("#doctorshang1 option[value='"+remind[i].remindersOccupationId+"']").attr("selected","selected")
+                        }else{
+                            $("#remindxia1 option[value='"+remind[i].remindersDictionaryId+"']").attr("selected","selected")
+                            $("#doctorxia1 option[value='"+remind[i].remindersOccupationId+"']").attr("selected","selected")
+                        }
+                    }
+                }else {
+                    var count=j+1;
+                    $("#planContainer").append("<div id=\"department"+count+"\" class=\"index\" style=\"display: none\">\n" +
+                        "                        <div style=\"padding-left: 30px\"><h4>1.时点设置</h4></div>\n" +
+                        "                           <input type=\"hidden\" id=\"fupid"+count+"\">\n"+
+                        "                        <div class=\"row\">\n" +
+                        "                            <div class=\"col-xs-12 col-xs-offset-1\">\n" +
+                        "                                <label>基准事件：</label>\n" +
+                        "                                <label class=\"radio-inline benchmarkEvent"+count+"\">\n" +
+                        "                                    <input type=\"radio\" name=\"benchmarkEvent"+count+"\" id=\"inlineRadioa"+count+"\" value=\"60001\">门诊\n" +
+                        "                                </label>\n" +
+                        "                                <label class=\"radio-inline benchmarkEvent"+count+"\">\n" +
+                        "                                    <input type=\"radio\" name=\"benchmarkEvent"+count+"\" id=\"inlineRadiob"+count+"\" value=\"60002\">入院\n" +
+                        "                                </label>\n" +
+                        "                                <label class=\"radio-inline benchmarkEvent"+count+"\">\n" +
+                        "                                    <input type=\"radio\" name=\"benchmarkEvent"+count+"\" id=\"inlineRadioc"+count+"\" value=\"60003\">出院\n" +
+                        "                                </label>\n" +
+                        "                                <label class=\"radio-inline benchmarkEvent"+count+"\">\n" +
+                        "                                    <input type=\"radio\" name=\"benchmarkEvent"+count+"\" id=\"inlineRadiod"+count+"\" value=\"60004\">手术\n" +
+                        "                                </label>\n" +
+                        "                                <label class=\"radio-inline benchmarkEvent"+count+"\">\n" +
+                        "                                    <input type=\"radio\" name=\"benchmarkEvent"+count+"\" id=\"inlineRadioe"+count+"\" value=\"60005\">入ICU\n" +
+                        "                                </label>\n" +
+                        "                                <label class=\"radio-inline benchmarkEvent"+count+"\">\n" +
+                        "                                    <input type=\"radio\" name=\"benchmarkEvent"+count+"\" id=\"inlineRadiof"+count+"\" value=\"60006\">出ICU\n" +
+                        "                                </label>\n" +
+                        "                            </div>\n" +
+                        "                        </div>\n" +
+                        "                        <div class=\"row\">\n" +
+                        "                            <div class=\"col-xs-12 col-xs-offset-1\">\n" +
+                        "                                <label>筛选条件：</label>\n" +
+                        "                                <label class=\"radio-inline\">\n" +
+                        "                                    <input type=\"radio\" name=\"isInHospital"+count+"\" id=\"inlineRadiog"+count+"\" value=\"0\">本院\n" +
+                        "                                </label>\n" +
+                        "                                <label class=\"radio-inline\">\n" +
+                        "                                    <input type=\"radio\" name=\"isInHospital"+count+"\" id=\"inlineRadioh"+count+"\" value=\"1\">本科室\n" +
+                        "                                </label>\n" +
+                        "                                <br>\n" +
+                        "                                <label class=\"radio-inline\" style=\"padding-left: 94px\">\n" +
+                        "                                    <input type=\"radio\" name=\"isFirst"+count+"\" id=\"inlineRadioi"+count+"\" value=\"0\">首次\n" +
+                        "                                </label>\n" +
+                        "                                <label class=\"radio-inline\">\n" +
+                        "                                    <input type=\"radio\" name=\"isFirst"+count+"\" id=\"inlineRadioj"+count+"\" value=\"1\">末次\n" +
+                        "                                </label>\n" +
+                        "                                <br>\n" +
+                        "                                <label class=\"radio-inline\" style=\"padding-left: 94px\">\n" +
+                        "                                    <input type=\"radio\" name=\"thatVisit"+count+"\" id=\"inlineRadiok"+count+"\" value=\"0\">本就诊\n" +
+                        "                                </label>\n" +
+                        "                                <label class=\"radio-inline\">\n" +
+                        "                                    <input type=\"radio\" name=\"thatVisit"+count+"\" id=\"inlineRadiol"+count+"\" value=\"1\">任意就诊\n" +
+                        "                                </label>\n" +
+                        "                            </div>\n" +
+                        "                        </div>\n" +
+                        "                        <div class=\"row\">\n" +
+                        "                            <div class=\"col-xs-5 col-xs-offset-1\">\n" +
+                        "                                <div class=\"form-group\">\n" +
+                        "                                    <div class=\"input-group\">\n" +
+                        "                                        <div class=\"input-group-addon\">起始</div>\n" +
+                        "                                        <input id=\"beginTimeNian"+count+"\" type=\"number\" name=\"beginTimeNian\"  value=\" \" min=\"0\" class=\"form-control\" >\n" +
+                        "                                        <div class=\"input-group-addon\">年</div>\n" +
+                        "                                        <input id=\"beginTimeYue"+count+"\" type=\"number\" name=\"beginTimeYue\" value=\" \" min=\"0\" class=\"form-control\" >\n" +
+                        "                                        <div class=\"input-group-addon\">月</div>\n" +
+                        "                                        <input id=\"beginTimeRi"+count+"\" type=\"number\" name=\"beginTimeRi\" value=\" \" min=\"0\" class=\"form-control\" >\n" +
+                        "                                        <div class=\"input-group-addon\">日</div>\n" +
+                        "                                    </div>\n" +
+                        "                                </div>\n" +
+                        "                            </div>\n" +
+                        "                            <div class=\"col-xs-5 col-xs-offset-1\">\n" +
+                        "                                <div class=\"form-group\">\n" +
+                        "                                    <div class=\"input-group\">\n" +
+                        "                                        <div class=\"input-group-addon\">间隔</div>\n" +
+                        "                                        <input id=\"intervalTimeNian"+count+"\" type=\"number\" name=\"intervalTimeNian\" value=\" \" min=\"0\" class=\"form-control\" >\n" +
+                        "                                        <div class=\"input-group-addon\">年</div>\n" +
+                        "                                        <input id=\"intervalTimeYue"+count+"\" type=\"number\" name=\"intervalTimeYue\" value=\" \" min=\"0\" class=\"form-control\" >\n" +
+                        "                                        <div class=\"input-group-addon\">月</div>\n" +
+                        "                                        <input id=\"intervalTimeRi"+count+"\" type=\"number\" name=\"intervalTimeRi\" value=\" \" min=\"0\" class=\"form-control\" >\n" +
+                        "                                        <div class=\"input-group-addon\">日</div>\n" +
+                        "                                    </div>\n" +
+                        "                                </div>\n" +
+                        "                            </div>\n" +
+                        "                        </div>\n" +
+                        "                        <div class=\"row\">\n" +
+                        "                            <div class=\"col-xs-5 col-xs-offset-1\">\n" +
+                        "                                <div class=\"form-group\">\n" +
+                        "                                    <div class=\"input-group\">\n" +
+                        "                                        <div class=\"input-group-addon\">持续</div>\n" +
+                        "                                        <input id=\"baselineCount"+count+"\" type=\"number\"  name=\"baselineCount\" class=\"form-control\" min=\"0\" placeholder=\"\">\n" +
+                        "                                        <div class=\"input-group-addon\">次</div>\n" +
+                        "                                    </div>\n" +
+                        "                                </div>\n" +
+                        "                            </div>\n" +
+                        "                            <div class=\"col-xs-5 col-xs-offset-1\">\n" +
+                        "                                <div class=\"form-group\">\n" +
+                        "                                    <div class=\"input-group\">\n" +
+                        "                                        <div class=\"input-group-addon\">提前</div>\n" +
+                        "                                        <input id=\"advanceNotice"+count+"\" type=\"number\" name=\"advanceNotice\" class=\"form-control\" min=\"0\" placeholder=\"\">\n" +
+                        "                                        <div class=\"input-group-addon\">天自动通知</div>\n" +
+                        "                                    </div>\n" +
+                        "                                </div>\n" +
+                        "                            </div>\n" +
+                        "                        </div>\n" +
+                        "                        <hr>\n" +
+                        "                        <div style=\"padding-left: 30px\"><h4>2.模板选择</h4></div>\n" +
+                        "                        <div class=\"row\">\n" +
+                        "                            <div class=\"col-xs-7 col-xs-offset-1 \">\n" +
+                        "                                <input type=\"hidden\" id=\"selectTemplateId\" value=\"\">\n" +
+                        "                                <button class=\"btn btn-info showmoban\" data-toggle=\"modal\" data-target=\"#myModal\" style=\"width: 120px\">引用CRF模板</button>\n" +
+                        "                                <div style=\"display:inline-block \"></div>\n" +
+                        "                            </div>\n" +
+                        "                        </div>\n" +
+                        "                        <hr>\n" +
+                        "                        <div style=\"padding-left: 30px\"><h4>3.提醒方式</h4></div>\n" +
+                        "                        <div class=\"row\">\n" +
+                        "                            <div class=\"col-xs-4 col-xs-offset-1\">\n" +
+                        "                                <button class=\"btn btn-info\" style=\"width: 150px\">引用随访提醒模板</button>\n" +
+                        "                            </div>\n" +
+                        "                        </div>\n" +
+                        "                        <div class=\"row\">\n" +
+                        "                            <div class=\"col-xs-4 col-xs-offset-1\">\n" +
+                        "                                <div class=\"form-group\">\n" +
+                        "                                    <div class=\"input-group\">\n" +
+                        "                                        <div class=\"input-group-addon\">提醒方式：</div>\n" +
+                        "                                        <select id=\"remindshang"+count+"\" class=\"form-control remind"+count+"\">\n" +
+                        "                                            <option>-请选择-</option>\n" +
+                        "                                        </select>\n" +
+                        "                                    </div>\n" +
+                        "                                </div>\n" +
+                        "                            </div>\n" +
+                        "                            <div class=\"col-xs-4 col-xs-offset-1\">\n" +
+                        "                                <div class=\"form-group\">\n" +
+                        "                                    <div class=\"input-group\">\n" +
+                        "                                        <div class=\"input-group-addon\">发送至：</div>\n" +
+                        "                                        <select id=\"doctorshang"+count+"\" class=\"form-control doctor\">\n" +
+                        "                                            <option>-请选择-</option>\n" +
+                        "                                            <option value=\"12001\">医生</option>\n" +
+                        "                                            <option value=\"12005\">随访员</option>\n" +
+                        "                                        </select>\n" +
+                        "                                    </div>\n" +
+                        "                                </div>\n" +
+                        "                            </div>\n" +
+                        "                        </div>\n" +
+                        "                        <div class=\"row\">\n" +
+                        "                            <div class=\"col-xs-4 col-xs-offset-1\">\n" +
+                        "                                <button class=\"btn btn-info\" style=\"width: 170px\">引用数据项预警模板</button>\n" +
+                        "                            </div>\n" +
+                        "                        </div>\n" +
+                        "                        <div class=\"row\">\n" +
+                        "                            <div class=\"col-xs-4 col-xs-offset-1\">\n" +
+                        "                                <div class=\"form-group\">\n" +
+                        "                                    <div class=\"input-group\">\n" +
+                        "                                        <div class=\"input-group-addon\">提醒方式：</div>\n" +
+                        "                                        <select id=\"remindxia"+count+"\" class=\"form-control remind"+count+"\">\n" +
+                        "                                            <option>-请选择-</option>\n" +
+                        "                                        </select>\n" +
+                        "                                    </div>\n" +
+                        "                                </div>\n" +
+                        "                            </div>\n" +
+                        "                            <div class=\"col-xs-4 col-xs-offset-1\">\n" +
+                        "                                <div class=\"form-group\">\n" +
+                        "                                    <div class=\"input-group\">\n" +
+                        "                                        <div class=\"input-group-addon\">发送至：</div>\n" +
+                        "                                        <select id=\"doctorxia"+count+"\" class=\"form-control doctor\">\n" +
+                        "                                            <option>-请选择-</option>\n" +
+                        "                                            <option value=\"12001\">医生</option>\n" +
+                        "                                            <option value=\"12005\">随访员</option>\n" +
+                        "                                        </select>\n" +
+                        "                                    </div>\n" +
+                        "                                </div>\n" +
+                        "                            </div>\n" +
+                        "                        </div>\n" +
+                        "                    </div>" );
+                    var shijian = "事件: ";
+                    $("#fupid"+count+"").val(result[j].ruleId);
+                    // if(result[j].isScheduling!=null){$("#yes1").attr("checked","checked");}
+                    // if(result[j].isPostpone){$("#noo").attr("checked","checked");}else {$("#no").attr("checked","checked");}
+                    if(result[j].isInHospital){
+                        $("#inlineRadioh"+count+"").attr("checked","checked");
+                        shijian+="本院";
+                    }else {$("#inlineRadiog"+count+"").attr("checked","checked");
+                        shijian+="本科室";
+                    }
+                    if(result[j].isFirst){$("#inlineRadioj"+count+"").attr("checked","checked");
+                        shijian+="第一次";
+                    }else{$("#inlineRadioi"+count+"").attr("checked","checked");
+                        shijian+="最后一次"
+                    }
+                    shijian+=$(".benchmarkEvent"+count+" input[ value ='"+result[j].benchmarkEvent+"']").parent().text();
+                    $(".benchmarkEvent"+count+" input[ value ='"+result[j].benchmarkEvent+"']").attr("checked","checked");
+                    if(result[j].thatVisit){$("#inlineRadiol"+count+"").attr("checked","checked");}else{$("#inlineRadiok"+count+"").attr("checked","checked");}
+                    let begin =  result[j].beginTime.split(",",-1);
+                    let interval = result[j].intervalTime.split(",",-1);
+                    let beginDiv="事件后";
+                    let intervalDiv="";
+                    let chishu = "";
+                    if(begin[0]==0||begin[0]==""){$("#beginTimeNian"+count+"").val(" ");}else {$("#beginTimeNian"+count+"").val(begin[0]); beginDiv+=begin[0]+"年"}
+                    if(begin[1]==0||begin[1]==""){$("#beginTimeYue"+count+"").val(" ");}else {$("#beginTimeYue"+count+"").val(begin[1]); beginDiv+=begin[1]+"月"}
+                    if(begin[2]==0||begin[2]==""){$("#beginTimeRi"+count+"").val(" ");}else {$("#beginTimeRi"+count+"").val(begin[2]); beginDiv+=begin[2]+"天"}
+                    if(interval[0]==0||interval[0]==""){$("#intervalTimeNian"+count+"").val(" ");}else {$("#intervalTimeNian"+count+"").val(interval[0]); intervalDiv+=interval[0]+"年"}
+                    if(interval[1]==0||interval[1]==""){$("#intervalTimeYue"+count+"").val(" ");}else {$("#intervalTimeYue"+count+"").val(interval[1]);intervalDiv+=interval[1]+"月"}
+                    if(interval[2]==0||interval[2]==""){$("#intervalTimeRi"+count+"").val(" ");}else {$("#intervalTimeRi"+count+"").val(interval[2]);intervalDiv+=interval[2]+"天"}
+                    if(result[j].baselineCount==0||result[j].baselineCount==""){
+                        $("#baselineCount"+count+"").val("");
+                        chishu="持续进行";
+                    }else{
+                        $("#baselineCount"+count+"").val(result[j].baselineCount);
+                        chishu=", 共"+result[j].baselineCount+"次";
+                    }
+                    $("#advanceNotice"+count+"").val(result[j].advanceNotice);
+                    for (var k = 0; k <remindList.length ; k++) {
+                        var rem = "remind"+count;
+                        $("."+rem).append("<option value='"+remindList[k].dictionaryId+"'>" + remindList[k].dictionaryName + "</option>");
+                    }
+                    let remind = result[j].reminders;
+                    for (let l = 0; l < remind.length; l++) {
+                        if(l==0){
+                            $("#remindshang"+count+" option[value='"+remind[l].remindersDictionaryId+"']").attr("selected","selected")
+                            $("#doctorshang"+count+" option[value='"+remind[l].remindersOccupationId+"']").attr("selected","selected")
+                        }else{
+                            $("#remindxia"+count+" option[value='"+remind[l].remindersDictionaryId+"']").attr("selected","selected")
+                            $("#doctorxia"+count+" option[value='"+remind[l].remindersOccupationId+"']").attr("selected","selected")
+                        }
+                    }
+                    $("#addPlan").parent().before("<div class=\"follow-btn btnrow\">\n" +
+                        "    <button type=\"button\" value=\"department"+count+"\" class=\"btn btn-default showPage\" style=\"width: 198px;\">\n" +
+                        "       <div id=\"shijian"+count+"\" align=\"left\">\n" +
+                        "                  随访规则"+count+"<br>\n" +
+                        "                  "+shijian+"<br>\n" +
+                        "                  起始时间："+beginDiv+"<br>\n" +
+                        "                  间隔时间:"+intervalDiv+""+chishu+"<br>\n" +
+                        "                  提前"+result[j].advanceNotice+"天自动通知</div>\n" +
+                        "     </button>");
+                }
+            }
+        });
 
+        $("#addPlan").click(function () {
+            var count=$("#followNumber").val();
+            console.log(count)
+            var addplanStr="<div class=\"follow-btn btnrow\">\n" +
+                "    <button type=\"button\" value=\"department"+count+"\" class=\"btn btn-default showPage\" style=\"width: 198px;\">\n" +
+                "       <div align=\"left\">\n" +
+                "           随访规则"+count+"<br>\n" +
+                "           事件：<br>\n" +
+                "           起始时间：<br>\n" +
+                "           间隔时间:<br>\n" +
+                "           提前_天自动通知</div>\n" +
+                "     </button>";
+            $("#addPlan").parent().before(addplanStr);
+
+            var str = "<div id=\"department"+count+"\" class=\"index\" style=\"display: none\">\n" +
+                "                        <div style=\"padding-left: 30px\"><h4>1.时点设置</h4></div>\n" +
+                "                           <input type=\"hidden\" id=\"fupid"+count+"\">\n"+
+                "                        <div class=\"row\">\n" +
+                "                            <div class=\"col-xs-12 col-xs-offset-1\">\n" +
+                "                                <label>基准事件：</label>\n" +
+                "                                <label class=\"radio-inline benchmarkEvent"+count+"\">\n" +
+                "                                    <input type=\"radio\" name=\"benchmarkEvent"+count+"\" id=\"inlineRadioa"+count+"\" value=\"60001\">门诊\n" +
+                "                                </label>\n" +
+                "                                <label class=\"radio-inline benchmarkEvent"+count+"\">\n" +
+                "                                    <input type=\"radio\" name=\"benchmarkEvent"+count+"\" id=\"inlineRadiob"+count+"\" value=\"60002\">入院\n" +
+                "                                </label>\n" +
+                "                                <label class=\"radio-inline benchmarkEvent"+count+"\">\n" +
+                "                                    <input type=\"radio\" name=\"benchmarkEvent"+count+"\" id=\"inlineRadioc"+count+"\" value=\"60003\">出院\n" +
+                "                                </label>\n" +
+                "                                <label class=\"radio-inline benchmarkEvent"+count+"\">\n" +
+                "                                    <input type=\"radio\" name=\"benchmarkEvent"+count+"\" id=\"inlineRadiod"+count+"\" value=\"60004\">手术\n" +
+                "                                </label>\n" +
+                "                                <label class=\"radio-inline benchmarkEvent"+count+"\">\n" +
+                "                                    <input type=\"radio\" name=\"benchmarkEvent"+count+"\" id=\"inlineRadioe"+count+"\" value=\"60005\">入ICU\n" +
+                "                                </label>\n" +
+                "                                <label class=\"radio-inline benchmarkEvent"+count+"\">\n" +
+                "                                    <input type=\"radio\" name=\"benchmarkEvent"+count+"\" id=\"inlineRadiof"+count+"\" value=\"60006\">出ICU\n" +
+                "                                </label>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"row\">\n" +
+                "                            <div class=\"col-xs-12 col-xs-offset-1\">\n" +
+                "                                <label>筛选条件：</label>\n" +
+                "                                <label class=\"radio-inline\">\n" +
+                "                                    <input type=\"radio\" name=\"isInHospital"+count+"\" id=\"inlineRadiog"+count+"\" value=\"0\">本院\n" +
+                "                                </label>\n" +
+                "                                <label class=\"radio-inline\">\n" +
+                "                                    <input type=\"radio\" name=\"isInHospital"+count+"\" id=\"inlineRadioh"+count+"\" value=\"1\">本科室\n" +
+                "                                </label>\n" +
+                "                                <br>\n" +
+                "                                <label class=\"radio-inline\" style=\"padding-left: 94px\">\n" +
+                "                                    <input type=\"radio\" name=\"isFirst"+count+"\" id=\"inlineRadioi"+count+"\" value=\"0\">首次\n" +
+                "                                </label>\n" +
+                "                                <label class=\"radio-inline\">\n" +
+                "                                    <input type=\"radio\" name=\"isFirst"+count+"\" id=\"inlineRadioj"+count+"\" value=\"1\">末次\n" +
+                "                                </label>\n" +
+                "                                <br>\n" +
+                "                                <label class=\"radio-inline\" style=\"padding-left: 94px\">\n" +
+                "                                    <input type=\"radio\" name=\"thatVisit"+count+"\" id=\"inlineRadiok"+count+"\" value=\"0\">本就诊\n" +
+                "                                </label>\n" +
+                "                                <label class=\"radio-inline\">\n" +
+                "                                    <input type=\"radio\" name=\"thatVisit"+count+"\" id=\"inlineRadiol"+count+"\" value=\"1\">任意就诊\n" +
+                "                                </label>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"row\">\n" +
+                "                            <div class=\"col-xs-5 col-xs-offset-1\">\n" +
+                "                                <div class=\"form-group\">\n" +
+                "                                    <div class=\"input-group\">\n" +
+                "                                        <div class=\"input-group-addon\">起始</div>\n" +
+                "                                        <input id=\"beginTimeNian"+count+"\" type=\"number\" name=\"beginTimeNian\"  value=\" \" min=\"0\" class=\"form-control\" >\n" +
+                "                                        <div class=\"input-group-addon\">年</div>\n" +
+                "                                        <input id=\"beginTimeYue"+count+"\" type=\"number\" name=\"beginTimeYue\" value=\" \" min=\"0\" class=\"form-control\" >\n" +
+                "                                        <div class=\"input-group-addon\">月</div>\n" +
+                "                                        <input id=\"beginTimeRi"+count+"\" type=\"number\" name=\"beginTimeRi\" value=\" \" min=\"0\" class=\"form-control\" >\n" +
+                "                                        <div class=\"input-group-addon\">日</div>\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                            </div>\n" +
+                "                            <div class=\"col-xs-5 col-xs-offset-1\">\n" +
+                "                                <div class=\"form-group\">\n" +
+                "                                    <div class=\"input-group\">\n" +
+                "                                        <div class=\"input-group-addon\">间隔</div>\n" +
+                "                                        <input id=\"intervalTimeNian"+count+"\" type=\"number\" name=\"intervalTimeNian\" value=\" \" min=\"0\" class=\"form-control\" >\n" +
+                "                                        <div class=\"input-group-addon\">年</div>\n" +
+                "                                        <input id=\"intervalTimeYue"+count+"\" type=\"number\" name=\"intervalTimeYue\" value=\" \" min=\"0\" class=\"form-control\" >\n" +
+                "                                        <div class=\"input-group-addon\">月</div>\n" +
+                "                                        <input id=\"intervalTimeRi"+count+"\" type=\"number\" name=\"intervalTimeRi\" value=\" \" min=\"0\" class=\"form-control\" >\n" +
+                "                                        <div class=\"input-group-addon\">日</div>\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"row\">\n" +
+                "                            <div class=\"col-xs-5 col-xs-offset-1\">\n" +
+                "                                <div class=\"form-group\">\n" +
+                "                                    <div class=\"input-group\">\n" +
+                "                                        <div class=\"input-group-addon\">持续</div>\n" +
+                "                                        <input id=\"baselineCount"+count+"\" type=\"number\"  name=\"baselineCount\" class=\"form-control\" min=\"0\" placeholder=\"\">\n" +
+                "                                        <div class=\"input-group-addon\">次</div>\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                            </div>\n" +
+                "                            <div class=\"col-xs-5 col-xs-offset-1\">\n" +
+                "                                <div class=\"form-group\">\n" +
+                "                                    <div class=\"input-group\">\n" +
+                "                                        <div class=\"input-group-addon\">提前</div>\n" +
+                "                                        <input id=\"advanceNotice"+count+"\" type=\"number\" name=\"advanceNotice\" class=\"form-control\" min=\"0\" placeholder=\"\">\n" +
+                "                                        <div class=\"input-group-addon\">天自动通知</div>\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                        <hr>\n" +
+                "                        <div style=\"padding-left: 30px\"><h4>2.模板选择</h4></div>\n" +
+                "                        <div class=\"row\">\n" +
+                "                            <div class=\"col-xs-7 col-xs-offset-1 \">\n" +
+                "                                <input type=\"hidden\" id=\"selectTemplateId\" value=\"\">\n" +
+                "                                <button class=\"btn btn-info showmoban\" data-toggle=\"modal\" data-target=\"#myModal\" style=\"width: 120px\">引用CRF模板</button>\n" +
+                "                                <div style=\"display:inline-block \"></div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                        <hr>\n" +
+                "                        <div style=\"padding-left: 30px\"><h4>3.提醒方式</h4></div>\n" +
+                "                        <div class=\"row\">\n" +
+                "                            <div class=\"col-xs-4 col-xs-offset-1\">\n" +
+                "                                <button class=\"btn btn-info\" style=\"width: 150px\">引用随访提醒模板</button>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"row\">\n" +
+                "                            <div class=\"col-xs-4 col-xs-offset-1\">\n" +
+                "                                <div class=\"form-group\">\n" +
+                "                                    <div class=\"input-group\">\n" +
+                "                                        <div class=\"input-group-addon\">提醒方式：</div>\n" +
+                "                                        <select id=\"remindshang"+count+"\" class=\"form-control remind"+count+"\">\n" +
+                "                                            <option>-请选择-</option>\n" +
+                "                                        </select>\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                            </div>\n" +
+                "                            <div class=\"col-xs-4 col-xs-offset-1\">\n" +
+                "                                <div class=\"form-group\">\n" +
+                "                                    <div class=\"input-group\">\n" +
+                "                                        <div class=\"input-group-addon\">发送至：</div>\n" +
+                "                                        <select id=\"doctorshang"+count+"\" class=\"form-control doctor\">\n" +
+                "                                            <option>-请选择-</option>\n" +
+                "                                            <option value=\"12001\">医生</option>\n" +
+                "                                            <option value=\"12005\">随访员</option>\n" +
+                "                                        </select>\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"row\">\n" +
+                "                            <div class=\"col-xs-4 col-xs-offset-1\">\n" +
+                "                                <button class=\"btn btn-info\" style=\"width: 170px\">引用数据项预警模板</button>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"row\">\n" +
+                "                            <div class=\"col-xs-4 col-xs-offset-1\">\n" +
+                "                                <div class=\"form-group\">\n" +
+                "                                    <div class=\"input-group\">\n" +
+                "                                        <div class=\"input-group-addon\">提醒方式：</div>\n" +
+                "                                        <select id=\"remindxia"+count+"\" class=\"form-control remind"+count+"\">\n" +
+                "                                            <option>-请选择-</option>\n" +
+                "                                        </select>\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                            </div>\n" +
+                "                            <div class=\"col-xs-4 col-xs-offset-1\">\n" +
+                "                                <div class=\"form-group\">\n" +
+                "                                    <div class=\"input-group\">\n" +
+                "                                        <div class=\"input-group-addon\">发送至：</div>\n" +
+                "                                        <select id=\"doctorxia"+count+"\" class=\"form-control doctor\">\n" +
+                "                                            <option>-请选择-</option>\n" +
+                "                                            <option value=\"12001\">医生</option>\n" +
+                "                                            <option value=\"12005\">随访员</option>\n" +
+                "                                        </select>\n" +
+                "                                    </div>\n" +
+                "                                </div>\n" +
+                "                            </div>\n" +
+                "                        </div>\n" +
+                "                    </div>";
+            $("#planContainer").append(str);
+            for (let k = 0; k <remindList.length ; k++) {
+                var rem = "remind"+count;
+                $("."+rem).append("<option value='"+remindList[k].dictionaryId+"'>" + remindList[k].dictionaryName + "</option>");
+            }
+            $("#yes1").attr("checked",false);
+            $("#noo").attr("checked",false);
+            $("#no").attr("checked",false);
+            $(".templateCheckbox input[name=\"template\"]").attr("checked",false);
+            var listname = 'department' + count;
+            showPage(listname);
+            count++;
+        });
+        $(document).on("click","#tSave",function () {
+            $('#myModal').modal('toggle');
+            var s='';
+            var tam='';
+            $('input[name="template"]:checked').each(function(){
+                tam+=$(this).val()+',';
+                s+=$(this).parent().text()+',';
+            });
+            if (s.length > 0) {
+                //得到选中的checkbox值序列
+                s = s.substring(0,s.length - 1);
+                tam = tam.substring(0,tam.length - 1);
+                $(".showmoban").next().html(""+s+"");
+                $(".showmoban").prev().val(""+tam+"");
+            }else{alert(s==''?'你还没有选择任何内容！':s);}
+
+    })
         $(document).on("click",".showPage",function () {
+            $("#yes1").attr("checked",false);
+            $("#noo").attr("checked",false);
+            $("#no").attr("checked",false);
+            $(".templateCheckbox input[name=\"template\"]").attr("checked",false);
+            var string=this.value.substring(10,this.value.length);
+            console.log(string)
+            console.log(followRuleList.length)
+            if(followRuleList.length>=1){
+                var showText="";
+                var tamplateString='';
+                for (let i = 0; i <followRuleList.length ; i++) {
+                    if(string==(i+1)){
+                        if(followRuleList[i].isScheduling!=null){$("#yes1").attr("checked","checked");}
+                        if(followRuleList[i].isPostpone){$("#noo").attr("checked","checked");}else {$("#no").attr("checked","checked");}
+                        for (let j = 0; j < followRuleList[i].selectTemplates.length; j++) {
+                            $(".templateCheckbox input[value="+followRuleList[i].selectTemplates[j].templateId+"]").attr("checked","checked");
+                            showText += $(".templateCheckbox input[value="+followRuleList[i].selectTemplates[j].templateId+"]").parent().text()+',';
+                            tamplateString+=(followRuleList[i].selectTemplates[j].templateId) +",";
+                        }
+                        showText = showText.substring(0,showText.length - 1);
+                        tamplateString = tamplateString.substring(0,tamplateString.length - 1);
+                        $(".showmoban").next().html(""+showText+"");
+                        $(".showmoban").prev().val(""+tamplateString+"");
+                    }
+            }
+            }
+
+            //console.log(this.value);
             showPage(this.value);
+
         })
 
         function showPage(name) {
@@ -268,13 +880,14 @@
             a.each(function () {
                 if (this.id==name){
                     $("#"+name+"").css("display","block");
+
                 }else {
                     $("#"+this.id+"").css("display","none");
                 }
             })
-        }
 
-    })
+        }
+    });
 
 </script>
 </html>

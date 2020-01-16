@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/bootstrap-table.css">
     <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/grade.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/bootstrap-table.js"></script>
     <script src="/js/bootstrap-table-zh-CN.js"></script>
@@ -246,6 +247,18 @@
         selectLevel1();
         selectdepartment1();
         /*edit();*/
+
+            // getUserGrade();
+            // function getUserGrade() {
+            //     var user = $("#gradeId").val();
+            //     $.get("showPower",{"gradeId":user},function (result) {
+            //         console.log(result);
+            //         for (let i = 0; i <result.length ; i++) {
+            //             $(".gradeMenu").append("<li><a href=\""+result[i].gradeUrl+"\">"+result[i].gradeName+"</a></li>");
+            //         }
+            //     })
+            // }
+
         var tableColumns = [
             {checkbox: true},
             {field: 'groupId',title:'编号',visible:false,align:'center', sortable: true},
@@ -281,8 +294,7 @@
             toolbar:'#toolbar',
             onClickRow: function(params){
                 var groupId=params.groupId;
-                var departmentId = params.groupDepartmentId;
-                location.href="/one?groupId="+groupId+"&departmentId="+departmentId;
+                location.href="/one?groupId="+groupId;
             },
             queryParams: function queryParams(params){
                 var param = {

@@ -15,6 +15,7 @@
     <script src="/plugs/zTree/js/jquery.ztree.core.js"></script>
     <script src="/plugs/zTree/js/jquery.ztree.exhide.js"></script>
     <script src="/plugs/zTree/js/fuzzysearch.js"></script>
+    <script src="/js/grade.js"></script>
     <script src="/plugs/zTree/js/jquery.ztree.excheck.js"></script>
 </head>
 <style>
@@ -42,20 +43,134 @@
                 </div>
             </div>
             <div class="col-xs-9" style="border:1px #e1e1e1;border-left-style: solid;height: 590px">
-                <form style="margin: 30px">
-                    <div class="row form-body form-horizontal m-t">
-                        <div class="col-md-12 droppable sortable ui-droppable ui-sortable">
-
-
+                <div class="row">
+                    <div class="col-xs-2">
+                        <h4 style="margin-top: 25px;">提交信息：</h4>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">名称</div>
+                                    <input type="text" class="form-control" id="name" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">创建人</div>
+                                    <input type="text" class="form-control" id="penple" readonly>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </form>
+                    <div class="col-xs-3">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">类型</div>
+                                    <input type="text" class="form-control" id="type" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">科室</div>
+                                    <input type="text" class="form-control" id="department" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">分类</div>
+                                    <input type="text" class="form-control" id="upperName" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">创建时间</div>
+                                    <input type="text" class="form-control" id="ctime" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-2">
+                        <h4 style="margin-top: 25px;">修改为：</h4>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">名称</div>
+                                    <input type="text" class="form-control" id="lableName">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">分类</div>
+                                    <select class="form-control" id="upperId">
+                                        <option value="">请选择</option>
+                                        <option th:each="t:${type}" th:value="${t.lableId}" th:text="${t.lableName}">请选择</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">类型</div>
+                                    <select class="form-control" id="lableType">
+                                        <option value="">请选择</option>
+                                        <option value="input">文本</option>
+                                        <option value="select">下拉框</option>
+                                        <option value="title">标题</option>
+                                        <option value="number">数值</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <button class="btn-info btn" style="margin-left: 350px;" id="save">确定</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
 </body>
 <script>
+    var lable;
+    $('#save').click(function () {
+        var name = $('#lableName').val();
+        var upperId = $('#upperId').val();
+        var type = $('#lableType').val();
+        if (name==''||upperId==''||type==''){
+            alert("填写不完整");
+        }
+        var data = {"lableId":lable.lableId,
+                    "lableName":name,
+                    "lableUpperId":upperId,
+                    "lableType":type};
+        $.getJSON('/updateLable',data,function (res) {
+            alert(res.mes);
+        })
+    })
+
     var zTreeObj;
     // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
     var setting = {
@@ -66,51 +181,96 @@
         view: {
             nameIsHTML: true, //允许name支持html
             selectedMulti: false,
-            showIcon: false
+            showIcon: false,
+            fontCss: setFontCss
         },
         edit: {
             enable: false,
             editNameSelectAll: false
         },
         data: {
+            key:{
+                name:"lableName"
+            },
             simpleData: {
-                enable: true
+                enable: true,
+                idKey: "lableId",
+                pIdKey: "lableUpperId",
+                rootPId: 0,
+                upperId:'lableUpperId'
             }
         },
         callback: {
-            onClick: zTreeOnClick
+            onClick: zTreeOnClick,
         },
+        async: {
+            enable: true,
+            url: '/getLableTree',
+        }
 
     };
 
 
 
     function zTreeOnClick(event, treeId, treeNode) {
-        //alert(treeNode.tId + ", " + treeNode.name);
+        lable = treeNode;
         var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+        treeObj.checkAllNodes(false);
         if (treeNode.checked){
             treeObj.checkNode(treeNode,false, true);
-            $("#info").remove();
         }else {
             treeObj.checkNode(treeNode,true, true);
-            $(tableList(treeNode.id)).appendTo($(".sortable"));
+        }
+        $('#name').val(treeNode.lableName.substring(0,treeNode.lableName.indexOf('(')));
+        $('#ctime').val(treeNode.lableCreateTime);
+        $('#upperName').val(getUp(treeNode).lableName);
+        $('#penple').val(treeNode.userName);
+        $('#department').val(treeNode.department);
+        switch (treeNode.lableType){
+            case 'title':
+                $('#type').val("标题");
+                break;
+            case 'input':
+                $('#type').val("文本");
+                break;
+            case 'number':
+                $('#type').val("数值");
+                break;
+            case 'select':
+                $('#type').val("下拉框");
+                break;
+        }
+
+    }
+
+    function setFontCss(treeId, treeNode) {
+        return treeNode.checkState == false ? {color:"red"} : {};
+    };
+
+    function getUp(p){
+        if (p.getParentNode()!=null){
+            p = p.getParentNode();
+            return getUp(p);
+        }else {
+            return p;
         }
     }
 
-    // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
-    var zNodes = [
-        {name:"基本信息", open:true, children:[
-                {name:"患者唯一标识",id:"id"}, {name:"test1_2"}]},
-        {name:"首页信息",
-            open:false,
-            children:[
-                {name:"test2_1"},
-                {name:"test2_2"}
-                ]}
-    ];
     $(document).ready(function(){
-        zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-        fuzzySearch('treeDemo','#key',null,true); //初始化模糊搜索方法
+        $.getJSON('/getLableTree',function (data) {
+            for (var i=0;i<data.length;i++){
+                var la = data[i];
+                if (la.lableUpperId!=0) {
+                    if (la.checkState) {
+                        la.lableName += "(已审批)"
+                    } else {
+                        la.lableName += "(待审批)"
+                    }
+                }
+            }
+            zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, data);
+            fuzzySearch('treeDemo', '#key', null, true); //初始化模糊搜索方法
+        })
     });
 
 
